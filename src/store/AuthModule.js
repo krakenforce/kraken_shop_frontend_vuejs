@@ -1,4 +1,3 @@
-import AuthService from '../services/AuthService.js';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -20,5 +19,8 @@ export const auth = {
             state.status.loggedIn = true;
             state.user = {...state.user, accessToken : accessToken};
         }
+    },
+    modules:{
+        
     }
 };
