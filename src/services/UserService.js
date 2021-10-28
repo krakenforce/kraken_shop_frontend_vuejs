@@ -8,6 +8,13 @@ class UserService{
     getUserBoard(){
         return api.get('/test/user');
     }
+
+    getCategory(){
+        return api.get('/product')
+                    .then((response) => {
+                        console.log(response);
+                    });
+    }
 }
 
 export default new UserService();

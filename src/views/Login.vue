@@ -24,6 +24,7 @@
                           autocomplete="false"
                           class="mt-16"
                           prepend-icon="fas fa-user"
+                          v-model="username"
                         />
 
                         <v-text-field
@@ -34,6 +35,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
+                          v-model="password"
                         />
                         <v-row>
                           <v-col cols="12" sm="7">
@@ -49,7 +51,7 @@
                             >
                           </v-col>
                         </v-row>
-                        <v-btn color="blue" dark block tile>Login</v-btn>
+                        <v-btn color="blue" @click="handleLogin()" dark block tile>Login</v-btn>
                         <h6 class="text-center grey--text mt-4 mb-3">
                           Or log in using
                         </h6>
@@ -126,6 +128,7 @@
                           autocomplete="false"
                           class="mt-16"
                           prepend-icon="fas fa-user"
+                          v-model="username"
                         />
 
                         <v-text-field
@@ -136,6 +139,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="far fa-envelope"
+                          v-model="email"
                         />
 
                         <v-text-field
@@ -146,6 +150,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
+                          v-model="password"
                         />
 
                         <v-text-field
@@ -156,6 +161,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
+                          v-model="confirmPassword"
                         />
                         <v-row>
                           <v-col cols="12" sm="7">
@@ -171,7 +177,7 @@
                             >
                           </v-col>
                         </v-row>
-                        <v-btn color="blue" dark block tile>Sign up</v-btn>
+                        <v-btn color="blue" @click="handleRegister()" dark block tile>Sign up</v-btn>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -186,12 +192,28 @@
 </template>
 
 <script>
+import AuthService from '../services/AuthService'
+//import router from '../router'
+
 export default {
   name: "Login",
   data() {
     return {
       step: 1,
+      username: '',
+      password: '',
+      email: '',
+      confirmPassword: '',
     };
+  },
+  methods: {
+    handleLogin(){
+      AuthService.login(this.username, this.password); 
+    },
+    handleRegister(){
+      AuthService.register(this.username, this.email, this. password);
+    
+    }
   },
   props: {
     source: String,

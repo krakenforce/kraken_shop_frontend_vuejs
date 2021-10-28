@@ -3,11 +3,11 @@ import TokenService from './TokenService';
 
 class AuthService{
     
-    login({username, password}){
+    login(username, password){
         return api
             .post("/auth/login", {
-                username,
-                password
+                "username" : username,
+                "password" : password
             })
             .then((response) => {
                 if(response.data.accessToken){
@@ -22,12 +22,12 @@ class AuthService{
         TokenService.removeUser;
     }
 
-    register({username, email, password}){
+    register(username, email, password){
         return api
             .post("/auth/signup", {
-                username,
-                email,
-                password
+                "username" : username,
+                "email" : email,
+                "password" :password
             })
             .then((response) => {
                 return response.data;
