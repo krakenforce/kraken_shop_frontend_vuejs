@@ -3,9 +3,9 @@
     <Header @handleDrawer="drawer = !drawer" />
     <Sidebar :drawer="drawer" />
     <v-main>
-      <v-container class="py-8 px-6" fluid>
+      <!-- <v-container class="py-8 px-6" fluid> -->
         <router-view></router-view>
-      </v-container>
+      <!-- </v-container> -->
     </v-main>
   </v-app>
 </template>

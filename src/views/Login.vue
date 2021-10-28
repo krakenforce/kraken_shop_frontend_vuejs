@@ -208,11 +208,11 @@ export default {
   },
   methods: {
     handleLogin(){
-      AuthService.login(this.username, this.password); 
+      AuthService.login(this.username, this.password);
+      this.$router.push("/");
     },
     handleRegister(){
       AuthService.register(this.username, this.email, this. password);
-    
     }
   },
   props: {
@@ -222,6 +222,7 @@ export default {
 </script>
 
 <style  scoped>
+
 .v-application .rounded-bl-xl {
   border-bottom-left-radius: 300px !important;
 }

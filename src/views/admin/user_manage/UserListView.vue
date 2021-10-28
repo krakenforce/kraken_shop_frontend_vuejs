@@ -106,7 +106,6 @@
             >
           </v-col>
         </v-row>
-
         <UserDetail />
       </v-window-item>
     </v-window>

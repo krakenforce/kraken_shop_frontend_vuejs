@@ -19,11 +19,24 @@ import Feedback from "./views/admin/crm/Feedback.vue"
 import Comment from "./views/admin/crm/Comment.vue"
 import Banner from "./views/admin/marketing/Banner.vue"
 import SalePromote from "./views/admin/marketing/SalePromote.vue"
+import Home from './views/user/Home.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+    {
+        path: '/',
+        name: 'Home',
+        component: Home,
+        children: [
+            {
+                path: '/about',
+                name: 'About',
+                component: About
+            }
+        ]
+    },
     {
         path: '/login',
         name: 'Login',
