@@ -10,7 +10,7 @@
 
         <v-row class="mt-4">
           <v-col cols="12" sm="3">
-            <v-text-field label="User Search" />
+            <v-text-field label="User Search" v-model="testStr" />
           </v-col>
           <v-col cols="12" sm="3">
             <v-combobox
@@ -122,6 +122,7 @@ export default {
   },
   data() {
     return {
+      testStr: "",
       testValue: "",
       step: 1,
       items: ["ADMIN", "USER"],
@@ -222,6 +223,9 @@ export default {
         },
       ],
     };
+  },
+  mounted() {
+    this.testStr = "hello"
   },
   props: {
     source: String,

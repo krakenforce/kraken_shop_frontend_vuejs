@@ -115,8 +115,9 @@
           <v-list-item-title>Statistics</v-list-item-title>
         </template>
 
-        <v-list-item v-for="([title, icon], i) in statistics"
+        <v-list-item v-for="([title, icon, route], i) in statistics"
          :key="i"
+         :to="route"
          link>
           <v-list-item-title>{{title}}</v-list-item-title>
           <v-list-item-icon>
@@ -158,7 +159,7 @@ export default {
   props: ["drawer"],
   data() {
     return {
-      dashroute: "/admin",
+      dashroute: "/admin/dash",
       userManage: [
         ["User", "fas fa-user", "/admin/user-list"],
         ["VIP", "fab fa-vuejs", "/admin/vip-user"],
@@ -180,9 +181,9 @@ export default {
         ["Comment", "fas fa-comments", "/admin/comment-manage"],
       ],
       statistics: [
-        ["Sales", "fas fa-chart-line"],
-        ["Product", "fab fa-product-hunt"],
-        ["User", "fas fa-user"]
+        ["Sales", "fas fa-chart-line", "/admin/sale-statistics"],
+        ["Product", "fab fa-product-hunt", "/admin/product-statistics"],
+        ["User", "fas fa-user", "/admin/user-statistics"]
       ],
       marketing: [
         ["Sale Promote", "fas fa-user","/admin/sale-promote"],

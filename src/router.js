@@ -20,6 +20,11 @@ import Comment from "./views/admin/crm/Comment.vue"
 import Banner from "./views/admin/marketing/Banner.vue"
 import SalePromote from "./views/admin/marketing/SalePromote.vue"
 import Home from './views/user/Home.vue'
+import SaleStatistics from './views/admin/statistic/Sale.vue'
+import ProductStatistics from './views/admin/statistic/Product.vue'
+import UserStatistics from './views/admin/statistic/User.vue'
+import Dash from './views/admin/dash/Dash.vue'
+
 
 
 Vue.use(VueRouter)
@@ -62,6 +67,10 @@ const routes = [
         name: 'Admin DashBoard',
         component: DashBoard,
         children: [
+            {
+                path: 'dash',
+                component: Dash,
+            },
             {
                 path: 'user-list',
                 component: UserListView,
@@ -109,6 +118,18 @@ const routes = [
             {
                 path: 'comment-manage',
                 component: Comment,
+            },
+            {
+                path: 'sale-statistics',
+                component: SaleStatistics
+            },
+            {
+                path: 'product-statistics',
+                component: ProductStatistics
+            },
+            {
+                path: 'user-statistics',
+                component: UserStatistics
             },
             {
                 path: 'banner',
