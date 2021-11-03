@@ -1,9 +1,11 @@
 <template>
   <v-card>
-    <v-tabs color="red accent-4" left background-color="black">
+    <v-tabs color="blue accent-4" background-color="black">
       <v-tab class="white--text">Tất Cả</v-tab>
       <v-tab class="white--text">Nổi Bật</v-tab>
       <v-tab class="white--text">Mới Ra Mắt</v-tab>
+
+      <v-btn class="ma-2" outlined color="blue"> More </v-btn>
 
       <v-tab-item v-for="n in 4" :key="n">
         <v-container fluid black>

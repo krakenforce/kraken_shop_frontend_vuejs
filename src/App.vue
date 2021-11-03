@@ -12,7 +12,7 @@
 <script>
 import Menu from "./components/user/Menu.vue";
 //import ProductList from './views/user/ProductList.vue';
-import Homepage from './views/user/ProductList.vue'
+import Homepage from './views/user/UserRoles.vue'
 
 export default {
   name: "App",

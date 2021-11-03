@@ -5,9 +5,8 @@
         <div class="ma-5 pa-5">
           <v-container class="text-center" black justify="center" fill-height>
             <v-row>
-              <v-col cols="auto">
-                <Carousel />
-                <ProuductDetail />
+              <v-col cols="12" md="12">
+                <ProuductDetailComponent />
                 <Footer />
               </v-col>
             </v-row>
@@ -19,14 +18,12 @@
 </template>
 
 <script>
-import Carousel from "../../components/user/Carousel.vue";
-import ProuductDetail from "../../components/user/ProductDetail.vue";
+import ProuductDetailComponent from "../../components/user/ProductDetailComponent.vue";
 import Footer from "../../components/user/Footer.vue";
 export default {
   name: "ProductDetail",
   components: {
-    Carousel,
-    ProuductDetail,
+    ProuductDetailComponent,
     Footer,
   },
 };

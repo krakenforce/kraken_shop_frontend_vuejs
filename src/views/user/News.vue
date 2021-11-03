@@ -7,7 +7,7 @@
             <v-row>
               <v-col cols="auto">
                 <Carousel />
-                <News />
+                <NewsComponent />
                 <Footer />
               </v-col>
             </v-row>
@@ -20,13 +20,13 @@
 
 <script>
 import Carousel from "../../components/user/Carousel.vue";
-import News from "../../components/user/News.vue";
+import NewsComponent from "../../components/user/NewsComponent.vue";
 import Footer from "../../components/user/Footer.vue";
 export default {
   name: "News",
   components: {
     Carousel,
-    News,
+    NewsComponent,
     Footer,
   },
 };

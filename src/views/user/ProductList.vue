@@ -7,7 +7,7 @@
             <v-row>
               <v-col cols="auto">
                 <Carousel />
-                <ProductList />
+                <ProductListComponent />
                 <Footer />
               </v-col>
             </v-row>
@@ -20,13 +20,13 @@
 
 <script>
 import Carousel from "../../components/user/Carousel.vue";
-import ProductList from "../../components/user/ProductListComponent.vue";
+import ProductListComponent from "../../components/user/ProductListComponent.vue";
 import Footer from "../../components/user/Footer.vue";
 export default {
   name: "ProductList",
   components: {
     Carousel,
-    ProductList,
+    ProductListComponent,
     Footer,
   },
 };

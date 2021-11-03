@@ -74,23 +74,36 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="test" >
+      <div v-if="test">
         <v-row>
-          <v-col cols="12" sm="2" >
+          <v-col cols="12" md="4">
             <v-btn icon color="blue" class="mr-15">
               <v-badge color="green" content="6">
                 <v-icon>add_shopping_cart</v-icon>
               </v-badge>
             </v-btn>
           </v-col>
-          <v-spacer></v-spacer>
-          <v-col cols="12" sm="6">
-            <v-btn icon>
-              <v-avatar color="red">
-                <v-icon dark> mdi-account-circle </v-icon>
-              </v-avatar>
-              <div class="text-caption ml-2 white--text">username</div>           
-            </v-btn>
+
+          <v-col cols="12" md="5">
+            <v-menu open-on-hover bottom offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn fab dark v-bind="attrs" v-on="on">
+                  <v-avatar color="blue">
+                    <v-icon dark> mdi-account-circle </v-icon>
+                  </v-avatar>
+                </v-btn>
+              </template>
+
+              <v-list rounded dense class="black">
+                <v-list-item-group color="primary">
+                  <v-list-item v-for="(item, i) in items" :key="i">
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item.text" class="white--text"></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
       </div>
@@ -112,7 +125,15 @@ export default {
 
   data() {
     return {
-      test: false,
+      test: true,
+      items: [
+        { text: "Activity" },
+        { text: "Information" },
+        { text: "Key Bunker" },
+        { text: "Recharge" },
+        { text: "Transaction History" },
+        { text: "Log Out" },
+      ],
     };
   },
 };

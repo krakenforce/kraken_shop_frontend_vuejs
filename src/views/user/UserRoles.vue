@@ -1,13 +1,13 @@
 <template>
-  <v-container justify="center">
+  <v-container justify="center" fluid>
     <v-row justify="center" no-gutters>
       <v-col cols="12" md="10">
         <div class="ma-5 pa-5">
-          <v-container class="text-center" black justify="center" fill-height>
+          <v-container class="text-center" black justify="center" fill-height fluid>
             <v-row>
-              <v-col cols="auto">
-                <Carousel />
-                <InstructionComponent />
+              <v-col cols="12" md="12">
+                
+                <UserRolesComponent />
                 <Footer />
               </v-col>
             </v-row>
@@ -19,14 +19,12 @@
 </template>
 
 <script>
-import Carousel from "../../components/user/Carousel.vue";
-import InstructionComponent from "../../components/user/InstructionComponent.vue";
+import UserRolesComponent from "../../components/user/UserRolesComponent.vue";
 import Footer from "../../components/user/Footer.vue";
 export default {
-  name: "Instruction",
+  name: "ProductDetail",
   components: {
-    Carousel,
-    InstructionComponent,
+    UserRolesComponent,
     Footer,
   },
 };
