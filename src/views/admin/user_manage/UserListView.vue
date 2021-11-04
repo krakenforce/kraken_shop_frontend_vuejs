@@ -22,7 +22,12 @@
               outlined
               dense
               :items="roleList"
+              @change="searchUserByRole"
             ></v-combobox>
+          </v-col>
+          <v-col cols="12" sm="1">
+            <v-btn color="transparent" x-small="true" @click="reloadWindow()">
+            </v-btn>
           </v-col>
 
           <v-spacer></v-spacer>
@@ -37,12 +42,11 @@
         <v-row class="mt-4">
           <v-dialog v-model="dialog" width="500">
             <v-card>
-              <v-card-title class="text-h5">
-                Delete Confirm
-              </v-card-title>
+              <v-card-title class="text-h5"> Delete Confirm </v-card-title>
 
               <v-card-text>
-                Do you really want to delete this user {{selectedUser.username}}
+                Do you really want to delete this user
+                {{ selectedUser.username }}
               </v-card-text>
 
               <v-divider></v-divider>
@@ -52,9 +56,7 @@
                 <v-btn color="primary" text @click="dialog = false">
                   I accept
                 </v-btn>
-                <v-btn color="red" text @click="dialog = false">
-                  Cancel
-                </v-btn>
+                <v-btn color="red" text @click="dialog = false"> Cancel </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -70,9 +72,11 @@
               :loading="loading"
               class="elevation-1"
               v-model="selectedUser"
-              @click:row="clickOnTableRow"
             >
               <template v-slot:item.action="{ item }">
+                <v-btn color="green" @click="clickOnTableRow(item)">
+                  <v-icon>fas fa-info-circle</v-icon>
+                </v-btn>
                 <v-btn color="primary" @click="onButtonClick(item)">
                   <v-icon>fas fa-edit</v-icon>
                 </v-btn>
@@ -228,6 +232,32 @@ export default {
   computed: {},
 
   methods: {
+    reloadWindow() {
+      window.location.reload();
+    },
+
+    searchUserByRole(item) {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/user/search-role?keyword=" +
+            item.value +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.users = response.data.users;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
     clickOnTableRow(item) {
       this.selectedUser = item;
       this.step = 3;

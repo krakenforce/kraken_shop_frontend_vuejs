@@ -47,8 +47,7 @@
                   <v-icon>fas fa-trash</v-icon>
                 </v-btn>
               </template>
-              ></v-data-table
-            >
+              ></v-data-table>
           </v-col>
         </v-row>
       </v-window-item>
@@ -66,7 +65,7 @@
               }}</v-alert>
               <v-form @submit.prevent="createTag()">
                  <v-text-field
-                  name="name"
+                  name="id"
                   label="label"
                   v-show="false"
                   v-model="tag.tagId"
