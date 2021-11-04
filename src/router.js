@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './views/Login.vue'
+import ForgotPassword from './views/ForgotPassword.vue'
 import About from './views/About.vue'
 import DashBoard from './views/admin/DashBoard.vue'
 import UserListView from './views/admin/user_manage/UserListView.vue'
-import Redirect from './views/Redirect.vue';
-import Cancel from './views/Cancel.vue';
+import PaymentRedirect from './views/PaymentRedirect.vue';
+import PaymentCancel from './views/PaymentCancel.vue';
 import VipUser from './views/admin/user_manage/VipUser'
 import Product from "./views/admin/product_manage/Product"
 import Category from "./views/admin/product_manage/Category.vue"
@@ -48,19 +49,24 @@ const routes = [
         component: Login
     },
     {
+        path: '/forgot-password/:resetToken',
+        name: 'ForgotPassword',
+        component: ForgotPassword
+    },
+    {
         path: '/about',
         name: 'About',
         component: About
     },
     {
         path: '/cancel',
-        name: 'Cancel',
-        component: Cancel
+        name: 'PaymentCancel',
+        component: PaymentCancel
     },
     {
         path: '/redirect',
-        name: 'Redirect',
-        component: Redirect
+        name: 'PaymentRedirect',
+        component: PaymentRedirect
     },
     {
         path: '/admin/',
@@ -68,7 +74,7 @@ const routes = [
         component: DashBoard,
         children: [
             {
-                path: 'dash',
+                path: '/',
                 component: Dash,
             },
             {

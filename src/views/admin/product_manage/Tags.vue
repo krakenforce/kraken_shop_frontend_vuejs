@@ -10,9 +10,12 @@
 
         <v-row class="mt-4">
           <v-col cols="12" sm="3">
-            <v-text-field label="Tag Search">
+            <v-text-field
+              label="Tag Search"
+              v-model="searchKeyword"
+              @input="getTagsByName()"
+            >
             </v-text-field>
-
           </v-col>
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
@@ -26,11 +29,26 @@
         <v-row class="mt-4">
           <v-col cols="12" sm="12">
             <v-data-table
+              :page="1"
+              :pageCount="totalPages"
               :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              @click:row="handleClick"
-            ></v-data-table>
+              :items="tags"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
+              ref="dataTable"
+            >
+              <template v-slot:item.action="{ item }">
+                <v-btn color="primary" @click="updateTag(item)">
+                  <v-icon>fas fa-edit</v-icon>
+                </v-btn>
+                <v-btn color="red" @click="deleteTag(item)">
+                  <v-icon>fas fa-trash</v-icon>
+                </v-btn>
+              </template>
+              ></v-data-table
+            >
           </v-col>
         </v-row>
       </v-window-item>
@@ -43,162 +61,196 @@
         <div>
           <v-container>
             <v-card elevation="15" class="pa-10">
-              <v-text-field
-                label="Tag Name:"
-                type="text"
-                prepend-icon="fas fa-user"
-                required
-                clearable
-              />
+              <v-alert :type="alertMessage.type" v-if="alertMessage">{{
+                alertMessage.content
+              }}</v-alert>
+              <v-form @submit.prevent="createTag()">
+                 <v-text-field
+                  name="name"
+                  label="label"
+                  v-show="false"
+                  v-model="tag.tagId"
+                ></v-text-field>
 
-              <v-checkbox label="Confirm">Confirm</v-checkbox>
+                <v-text-field
+                  label="Tag Name:"
+                  type="text"
+                  prepend-icon="fas fa-user"
+                  required
+                  clearable
+                  v-model="tag.name"
+                />
 
-              <v-row>
-                <v-spacer></v-spacer>
-                <v-col cols="12" sm="3">
-                  <v-btn color="green" class="white--text">Create Tag</v-btn>
-                </v-col>
-              </v-row>
+                <v-checkbox label="Confirm" v-model="tag.status">Confirm</v-checkbox>
+
+                <v-row>
+                  <v-spacer></v-spacer>
+                  <v-col cols="12" sm="3">
+                    <v-btn color="green" class="white--text" type="submit">SAVE</v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
             </v-card>
           </v-container>
         </div>
       </v-window-item>
-
-      <v-window-item :value="3">
-        <h1>{{ testValue.name }}</h1>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-col cols="12" sm="3">
-            <v-btn color="purple" class="white--text" @click="step -= 2"
-              >Go back to tag manage</v-btn
-            >
-          </v-col>
-        </v-row>
-
-        <h1>Product List belong to tag</h1>
-      </v-window-item>
     </v-window>
+    <v-dialog v-model="dialog.status" width="400">
+      <v-card>
+        <v-card-title class="text-h5 grey"> Notification </v-card-title>
+
+        <v-card-text>
+          {{ dialog.message }}
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="reloadWindow()"> OK </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import api from "../../../services/api"
 
 export default {
   name: "Tags",
-  components: {
-    
-  },
+  components: {},
   data() {
     return {
       testValue: "",
       step: 1,
-      items: ["ADMIN", "USER"],
+      searchKeyword: "",
+      dialog: {
+        status: false,
+        message: "",
+      },
+
+      alertMessage: {
+        type: "",
+        content: "",
+      },
+
+      //tag model
+      tag: {
+        tagId: "",
+        name: "",
+        status: "",
+      },
+
+      //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      tags: [],
+      loading: true,
+      options: {},
       headers: [
-        {
-          text: "Dessert (100g serving)",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Calories", value: "calories" },
-        { text: "Fat (g)", value: "fat" },
-        { text: "Carbs (g)", value: "carbs" },
-        { text: "Protein (g)", value: "protein" },
-        { text: "Iron (%)", value: "iron" },
+        { text: "Tag Id", value: "tagId" },
+        { text: "Tag Name", value: "name" },
+        { text: "Status", value: "status" },
         { text: "Action", value: "action" },
-      ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
       ],
     };
   },
   props: {
     source: String,
   },
-  methods: {
-    handleClick(value) {
-      this.step = 3;
-      this.testValue = value;
+
+  watch: {
+    options: {
+      handler() {
+        this.getAllTags();
+      },
+      deep: true,
     },
+  },
+  methods: {
+    reloadWindow(){
+      window.location.reload();
+    },
+
+    createTag() {
+      if (this.tag.name === "") {
+        this.alertMessage.type = "error";
+        this.alertMessage.content = "Please enter info";
+      } else {
+        api
+          .post("/tag", this.tag)
+          .then((response) => {
+            console.log(response.data);
+            this.alertMessage.type = "success";
+            this.alertMessage.content = "Save Tag Success";
+            window.location.reload();
+          })
+          .catch((error) => {
+            Promise.reject(error);
+            this.alertMessage.type = "error";
+            this.alertMessage.content = "Save Tag Fail";
+          });
+      }
+    },
+    deleteTag(item) {
+      api
+        .delete("/tag/" + item.tagId)
+        .then((response) => {
+          this.dialog.status = true;
+          this.dialog.message= response.data.message;
+          
+        })       
+        .catch((error) => {
+          this.dialog.status = true;
+          this.dialog.message= error.response.data.message;
+        });
+    },
+
+    updateTag(item){
+      this.tag = item;
+      this.step = 2;
+    },
+
+    getAllTags() {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get("/tag/?pageNo=" + pageNumber + "&pageSize=" + itemsPerPage)
+        .then((response) => {
+          this.loading = false;
+          this.tags = response.data.tags;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+    getTagsByName() {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/tag/search?keyword=" +
+            this.searchKeyword +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.tags = response.data.tags;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+  },
+  mounted() {
+    this.getAllTags();
   },
 };
 </script>

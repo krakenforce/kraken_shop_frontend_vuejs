@@ -32,10 +32,15 @@
         <v-row class="mt-4">
           <v-col cols="12" sm="12">
             <v-data-table
+              :page="1"
+              :pageCount="totalPages"
+              :items="vipUserClasses"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
               :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              @click:row="handleClick"
+              @click:row="clickOnRow"
             ></v-data-table>
           </v-col>
         </v-row>
@@ -80,13 +85,60 @@
 </template>
 
 <script>
+import api from "../../../services/api";
 export default {
   name: "VipUser",
   data() {
     return {
       step: 1,
       vipClasses: ["Bronze", "Silver", "Gold", "Platinum"],
+
+      //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      vipUserClasses: [],
+      loading: true,
+      options: {},
+      headers: [
+        { text: "ID", value: "id" },
+        { text: "Class name", value: "className" },
+        { text: "Discount Percentage", value: "discountPercentage" },
+        { text: "Status", value: "status" },
+      ],
     };
+  },
+  
+  watch: {
+    options: {
+      handler() {
+        this.getAllUserFromAPI();
+      },
+    },
+    deep: true,
+  },
+
+  methods: {
+    
+    clickOnRow(item){
+      console.log(item);
+    },
+
+    getAllUserVipClass(){
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+      api.get('/user_vip?pageNo=' + pageNumber + '&pageSize=' + itemsPerPage)
+      .then((response) => {
+          this.loading = false;
+          this.vipUserClasses = response.data.userVipClasses;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+      })
+    }
+  },
+  mounted() {
+    this.getAllUserVipClass();
   },
 };
 </script>

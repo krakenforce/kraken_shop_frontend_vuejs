@@ -159,7 +159,7 @@ export default {
   props: ["drawer"],
   data() {
     return {
-      dashroute: "/admin/dash",
+      dashroute: "/admin/",
       userManage: [
         ["User", "fas fa-user", "/admin/user-list"],
         ["VIP", "fab fa-vuejs", "/admin/vip-user"],

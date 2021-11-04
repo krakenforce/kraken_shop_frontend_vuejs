@@ -1,12 +1,12 @@
 <template>
     <div>
-        This is Cancle page;
+        Payment Success
     </div>
 </template>
 
 <script>
     export default {
-        name: 'Cancel',
+        name: 'PaymentRedirect',
     }
 </script>
 
