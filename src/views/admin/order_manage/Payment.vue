@@ -6,10 +6,6 @@
         <span>You can see detail of payment</span>
 
         <v-row class="mt-4">
-          <v-col cols="12" sm="2">
-            <v-text-field label="Payment Search"> </v-text-field>
-          </v-col>
-
           <v-col cols="12" sm="3">
             <v-menu
               v-model="menu2"
@@ -21,7 +17,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="computedDateFormatted"
+                  v-model="startTime"
                   label="Start Date"
                   hint="MM/DD/YYYY format"
                   persistent-hint
@@ -32,7 +28,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="startTime"
                 no-title
                 @input="menu2 = false"
               ></v-date-picker>
@@ -50,7 +46,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="computedDateFormatted"
+                  v-model="endTime"
                   label="End Date"
                   hint="MM/DD/YYYY format"
                   persistent-hint
@@ -61,7 +57,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="endTime"
                 no-title
                 @input="menu2 = false"
               ></v-date-picker>
@@ -74,24 +70,48 @@
               outlined
               dense
               :items="items"
+              @change="searchByProvider"
             ></v-combobox>
           </v-col>
 
           <v-col cols="12" sm="1">
-              <v-btn color="green" class="white--text">
-                  <v-icon>fas fa-search</v-icon>
-              </v-btn>
+            <v-btn @click="getPaymentByTime" color="green" class="white--text">
+              <v-icon>fas fa-search</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="1">
+            <v-btn color="transparent" x-small="true" @click="reloadWindow()">
+            </v-btn>
           </v-col>
         </v-row>
+
 
         <v-row class="mt-4">
           <v-col cols="12" sm="12">
             <v-data-table
+              :page="1"
+              :pageCount="totalPages"
               :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              @click:row="handleClick"
-            ></v-data-table>
+              :items="payments"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
+              ref="dataTable"
+            >
+              <template v-slot:item.action="{ item }">
+                <v-btn color="green" @click="getDetail(item)">
+                  <v-icon>fas fa-info-circle</v-icon>
+                </v-btn>
+                <v-btn color="primary" @click="updateBanner(item)">
+                  <v-icon>fas fa-edit</v-icon>
+                </v-btn>
+                <v-btn color="red" @click="deleteBanner(item)">
+                  <v-icon>fas fa-trash</v-icon>
+                </v-btn>
+              </template>
+              ></v-data-table
+            >
           </v-col>
         </v-row>
       </v-window-item>
@@ -113,6 +133,9 @@
 </template>
 
 <script>
+import moment from "moment";
+import api from "../../../services/api";
+
 export default {
   name: "Payment",
   components: {},
@@ -121,112 +144,114 @@ export default {
       testValue: "",
       step: 1,
       items: ["PAYPAL", "BANK"],
+      startTime: null,
+      endTime: null,
+
+      //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      payments: [],
+      loading: true,
+      options: {},
       headers: [
-        {
-          text: "Dessert (100g serving)",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Calories", value: "calories" },
-        { text: "Fat (g)", value: "fat" },
-        { text: "Carbs (g)", value: "carbs" },
-        { text: "Protein (g)", value: "protein" },
-        { text: "Iron (%)", value: "iron" },
+        { text: "Id", value: "id" },
+        { text: "Datetime", value: "createdAt" },
+        { text: "Total", value: "totalPrice" },
+        { text: "Provider", value: "provider" },
         { text: "Action", value: "action" },
-      ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
       ],
     };
   },
   props: {
     source: String,
   },
+  watch: {
+    options: {
+      handler() {
+        this.getAllPayments();
+      },
+      deep: true,
+    },
+  },
   methods: {
+    reloadWindow(){
+      window.location.reload();
+    },
+
     handleClick(value) {
       this.step = 2;
       this.testValue = value;
     },
+
+    searchByProvider(item) {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/payment/search_provider?provider=" +
+            item +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.payments = response.data.payments;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+    getAllPayments() {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get("/payment?pageNo=" + pageNumber + "&pageSize=" + itemsPerPage)
+        .then((response) => {
+          this.loading = false;
+          this.payments = response.data.payments;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+    getPaymentByTime() {
+      var startTime = new Date(this.startTime);
+      var endTime = new Date(this.endTime);
+      let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
+
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/payment/search_time?startTime=" +
+            start +
+            "&endTime=" +
+            end +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.payments = response.data.payments;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+  },
+  mounted() {
+    this.getAllPayments();
   },
 };
 </script>

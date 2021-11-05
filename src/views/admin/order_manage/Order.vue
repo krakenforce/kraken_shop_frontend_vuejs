@@ -21,7 +21,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="computedDateFormatted"
+                  v-model="startTime"
                   label="Start Date"
                   hint="MM/DD/YYYY format"
                   persistent-hint
@@ -32,7 +32,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="startTime"
                 no-title
                 @input="menu2 = false"
               ></v-date-picker>
@@ -50,7 +50,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="computedDateFormatted"
+                  v-model="endTime"
                   label="End Date"
                   hint="MM/DD/YYYY format"
                   persistent-hint
@@ -61,7 +61,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="endTime"
                 no-title
                 @input="menu2 = false"
               ></v-date-picker>
@@ -70,26 +70,38 @@
 
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
-              <v-btn color="green" class="white--text">
-                  <v-icon>fas fa-search</v-icon>
-              </v-btn>
+            <v-btn @click="getOrderByTime" color="green" class="white--text">
+              <v-icon>fas fa-search</v-icon>
+            </v-btn>
           </v-col>
         </v-row>
 
         <v-row class="mt-4">
           <v-col cols="12" sm="12">
             <v-data-table
+              :page="1"
+              :pageCount="totalPages"
               :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              @click:row="handleClick"
-            ></v-data-table>
+              :items="orders"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
+              ref="dataTable"
+            >
+              <template v-slot:item.action="{ item }">
+                <v-btn color="primary" @click="showOrderDetail(item)">
+                  <v-icon>fas fa-info-circle</v-icon>
+                </v-btn>
+              </template>
+              ></v-data-table
+            >
           </v-col>
         </v-row>
       </v-window-item>
 
       <v-window-item :value="2">
-        <h1>{{ testValue.name }}</h1>
+        <h1>Detail of order : {{orderModel.id}}</h1>
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
@@ -98,13 +110,33 @@
             >
           </v-col>
         </v-row>
-        <h1>Order Detail</h1>
+        <v-row>
+          <v-col cols="12" sm="12">
+            <v-data-table
+              :page="1"
+              :pageCount="totalPages"
+              :headers="orderDetailHeaders"
+              :items="orderDetails"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
+              ref="dataTable"
+            >
+              
+              ></v-data-table
+            >
+          </v-col>
+        </v-row>
       </v-window-item>
     </v-window>
   </v-container>
 </template>
 
 <script>
+import moment from "moment";
+import api from "../../../services/api";
+
 export default {
   name: "Order",
   components: {},
@@ -113,112 +145,118 @@ export default {
       testValue: "",
       step: 1,
       items: ["ADMIN", "USER"],
+      startTime: null,
+      endTime: null,
+      orderModel: "",
+
+      //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      orders: [],
+      orderDetails: [],
+      loading: true,
+      options: {},
       headers: [
-        {
-          text: "Dessert (100g serving)",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Calories", value: "calories" },
-        { text: "Fat (g)", value: "fat" },
-        { text: "Carbs (g)", value: "carbs" },
-        { text: "Protein (g)", value: "protein" },
-        { text: "Iron (%)", value: "iron" },
+        { text: "Id", value: "id" },
+        { text: "Datetime", value: "orderDateTime" },
+        { text: "Username", value: "username" },
+        { text: "Quantity", value: "quantity" },
+        { text: "Total", value: "total" },
         { text: "Action", value: "action" },
       ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
+
+      orderDetailHeaders: [
+        { text: "Id", value: "id" },
+        { text: "Order Id", value: "orderId" },
+        { text: "Product Name", value: "productName" },
+        { text: "Product Game Code", value: "gameCode" },
+        { text: "Quantity", value: "quantity" },
+        { text: "Total", value: "total" },
       ],
     };
+  },
+  watch: {
+    options: {
+      handler() {
+        this.getAllOrders();
+      },
+      deep: true,
+    },
   },
   props: {
     source: String,
   },
   methods: {
-    handleClick(value) {
+    showOrderDetail(item) {
+      this.orderModel = item;
       this.step = 2;
-      this.testValue = value;
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/order/order_detail/" + item.id +
+            "?pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.orderDetails = response.data.orderDetails;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
     },
+
+    getOrderByTime() {
+      var startTime = new Date(this.startTime);
+      var endTime = new Date(this.endTime);
+      let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
+
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/order/search?startTime=" +
+            start +
+            "&endTime=" +
+            end +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.orders = response.data.orders;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+    getAllOrders() {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get("/order?pageNo=" + pageNumber + "&pageSize=" + itemsPerPage)
+        .then((response) => {
+          this.loading = false;
+          this.orders = response.data.orders;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+  },
+  mounted() {
+    this.getAllOrders();
   },
 };
 </script>
