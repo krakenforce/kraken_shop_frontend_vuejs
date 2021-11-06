@@ -2,7 +2,8 @@ import api from "./api";
 
 class UserService {
   getAllUser() {
-    return api.get("/users/").then((response) => {
+    api.get("/users/")
+    .then((response) => {
         return response.data;
     });
   }

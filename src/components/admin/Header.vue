@@ -34,7 +34,7 @@
       </template>
 
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
+        <v-list-item v-for="(item, index) in menus" :key="index">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -59,17 +59,18 @@
           </v-chip>
         </span>
       </template>
+      
       <v-list width="250" class="py-0" flat>
         <v-list-item two-line>
           <v-list-item-avatar>
             <img src="https://i.ibb.co/J5MnNBg/icon.png" alt="" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title> Admin </v-list-item-title>
+            <v-list-item-title>Username </v-list-item-title>
             <v-list-item-subtitle> Logged In </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="handleLogout()" v-for="(menu, index) in menus" :key="index" link :to="menu.path">
+        <v-list-item @click="logout" v-for="(menu, index) in menus" :key="index" link >
           <v-list-item-avatar>
             <v-icon> {{ menu.icon }}</v-icon>
           </v-list-item-avatar>
@@ -83,25 +84,28 @@
 </template>
 
 <script>
-import AuthService from '../../services/AuthService'
 
 export default {
   name: "Header",
   data() {
     return {
+      currentUser: null,
       selectedItem: 1,
       menus: [
         { title: "Profile", icon: "mdi-account" },
         { title: "Change Password", icon: "mdi-key" },
-        { title: "Logout", icon: "mdi-logout", path: "/login"},
+        { title: "Logout", icon: "mdi-logout"},
       ],
     };
   },
   methods: {
-    handleLogout: function(){
-      AuthService.logout();
-      console.log("log out");
+    logout(){
+      localStorage.removeItem("user");
+      this.$router.push("/login");
     }
+  },
+  mounted() {
+    this.currentUser = JSON.parse(localStorage.getItem("user"));
   },
 };
 </script>

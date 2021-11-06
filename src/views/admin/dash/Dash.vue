@@ -8,7 +8,7 @@
     <v-row>
       <v-col cols="12" sm="4">
         <v-card elevation="12" class="pa-10">
-          <v-subheader :inset="inset"> --- Total Renue --- </v-subheader>
+          <v-subheader > --- Total Renue --- </v-subheader>
           <v-img
             height="100px"
             width="100px"
@@ -18,7 +18,7 @@
       </v-col>
       <v-col cols="12" sm="4">
         <v-card elevation="12" class="pa-10">
-          <v-subheader :inset="inset"> --- This Month Revenue --- </v-subheader>
+          <v-subheader > --- This Month Revenue --- </v-subheader>
           <v-img
             height="100px"
             width="100px"
@@ -28,7 +28,7 @@
       </v-col>
       <v-col cols="12" sm="4">
         <v-card elevation="12" class="pa-10">
-          <v-subheader :inset="inset"> --- Total Order --- </v-subheader>
+          <v-subheader > --- Total Order --- </v-subheader>
           <v-img
             height="100px"
             width="100px"
@@ -41,7 +41,7 @@
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
-          <v-subheader :inset="inset"> --- User Spend Detail --- </v-subheader>
+          <v-subheader > --- User Spend Detail --- </v-subheader>
           <v-data-table
             :headers="headers"
             :items="desserts"

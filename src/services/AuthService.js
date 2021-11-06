@@ -13,8 +13,10 @@ class AuthService{
                 if(response.data.accessToken){
                     TokenService.setUser(response.data);
                 }
-
                 return response.data
+            })
+            .catch((error) => {
+                return error.response.data.message;
             });
     }
 

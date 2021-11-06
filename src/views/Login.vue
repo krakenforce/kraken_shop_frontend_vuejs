@@ -4,7 +4,6 @@
       <v-col cols="12" sm="10">
         <v-card class="elevation-6 mt-10">
           <v-window v-model="step">
-
             <!-- SIGN IN -->
             <v-window-item :value="1">
               <v-row>
@@ -48,12 +47,21 @@
                             ></v-checkbox>
                           </v-col>
                           <v-col cols="12" sm="5">
-                            <span class="caption blue--text" @click="goToWindowItem(3)"
+                            <span
+                              class="caption blue--text"
+                              @click="goToWindowItem(3)"
                               >Forget password?</span
                             >
                           </v-col>
                         </v-row>
-                        <v-btn color="blue" @click="handleLogin()" dark block tile>Login</v-btn>
+                        <v-btn
+                          color="blue"
+                          @click="handleLogin()"
+                          dark
+                          block
+                          tile
+                          >Login</v-btn
+                        >
                         <h6 class="text-center grey--text mt-4 mb-3">
                           Or log in using
                         </h6>
@@ -181,7 +189,14 @@
                             >
                           </v-col>
                         </v-row>
-                        <v-btn color="green" @click="handleRegister()" dark block tile>Sign up</v-btn>
+                        <v-btn
+                          color="green"
+                          @click="handleRegister()"
+                          dark
+                          block
+                          tile
+                          >Sign up</v-btn
+                        >
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -203,7 +218,9 @@
                       </h6>
                     </v-card-text>
                     <div class="text-center">
-                      <v-btn tile outlined dark @click="goToWindowItem(1)">SIGN IN</v-btn>
+                      <v-btn tile outlined dark @click="goToWindowItem(1)"
+                        >SIGN IN</v-btn
+                      >
                     </div>
                   </div>
                 </v-col>
@@ -229,7 +246,9 @@
                           v-model="username"
                         />
 
-                        <v-btn color="red" @click="hello" dark block tile>Reset Your Password</v-btn>
+                        <v-btn color="red" dark block tile
+                          >Reset Your Password</v-btn
+                        >
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -244,7 +263,7 @@
 </template>
 
 <script>
-import AuthService from '../services/AuthService'
+import AuthService from "../services/AuthService";
 //import router from '../router'
 
 export default {
@@ -252,24 +271,23 @@ export default {
   data() {
     return {
       step: 1,
-      username: '',
-      password: '',
-      email: '',
-      confirmPassword: '',
+      username: "",
+      password: "",
+      email: "",
+      confirmPassword: "",
     };
   },
   methods: {
-    handleLogin(){
+    handleLogin() {
       AuthService.login(this.username, this.password);
-      this.$router.push("/");
+      
     },
-    handleRegister(){
-      AuthService.register(this.username, this.email, this. password);
+    handleRegister() {
+      AuthService.register(this.username, this.email, this.password);
     },
-    goToWindowItem(value){
+    goToWindowItem(value) {
       this.step = value;
-    }
-
+    },
   },
   props: {
     source: String,
@@ -278,7 +296,6 @@ export default {
 </script>
 
 <style  scoped>
-
 .v-application .rounded-bl-xl {
   border-bottom-left-radius: 300px !important;
 }

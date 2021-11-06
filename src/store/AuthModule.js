@@ -9,12 +9,6 @@ const initialState = user
 const auth = {
     namespaced: true,
     state: initialState,
-    action:{
-        // insert code
-        refreshToken({commit}, accessToken){
-            commit('refreshToken', accessToken);
-        }
-    },
     mutations:{
         //insert code in here
         refreshToken(state, accessToken){
@@ -22,9 +16,18 @@ const auth = {
             state.user = {...state.user, accessToken : accessToken};
         }
     },
+    action:{
+        // insert code
+        refreshToken({commit}, accessToken){
+            commit('refreshToken', accessToken);
+        }
+    },
+    
     modules:{
         
     }
 };
+
+
 
 export default auth;
