@@ -1,19 +1,20 @@
 <template>
   <v-container id="abc">  
-    <v-main >
-      <div>
-          <router-view></router-view>    
-      </div>  
-    </v-main>
+    <header>
+      <Menu />
+    </header>
+    <v-content>
+      <router-view></router-view> 
+    </v-content>
   </v-container>
 </template>
 
 <script>
-
+import Menu from "./components/user/Menu.vue";
 export default {
   name: "Home",
   components: {
-    
+    Menu
   },
   data() {
     return {
@@ -21,16 +22,10 @@ export default {
     }
   },
   methods: {
-    handleClick(){
-      this.$store.test.dispatch('increment')
-    }
 
   },
   computed: {
-    count(){
-      console.log(this.$store.test.state.count)
-      return this.$store.test.state.count
-    }
+
   }
 
 };

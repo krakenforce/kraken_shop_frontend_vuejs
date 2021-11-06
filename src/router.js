@@ -25,6 +25,7 @@ import SaleStatistics from "./views/admin/statistic/Sale.vue";
 import ProductStatistics from "./views/admin/statistic/Product.vue";
 import UserStatistics from "./views/admin/statistic/User.vue";
 import Dash from "./views/admin/dash/Dash.vue";
+import Homepage from "./views/user/Homepage.vue";
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,10 @@ const routes = [
     name: "Home",
     component: Home,
     children: [
+      {
+        path: "/",
+        component: Homepage,
+      },
       {
         path: "/about",
         name: "About",
