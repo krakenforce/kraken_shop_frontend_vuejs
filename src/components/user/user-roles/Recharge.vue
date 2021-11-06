@@ -7,7 +7,12 @@
             <v-tab class="white--text">Paypal</v-tab>
             <v-tab class="white--text">Bank transfer</v-tab>
 
-
+              <v-tab-item>
+                <Paypal />
+              </v-tab-item>
+              <v-tab-item>
+                <BankTransfer />
+              </v-tab-item>
           </v-tabs>
         </v-card>
       </v-col>
@@ -16,9 +21,14 @@
 </template>
 
 <script>
+import Paypal from "./Paypal.vue"
+import BankTransfer from "./BankTransfer.vue"
 export default {
   name: "Recharge",
-  components: {},
+  components: {
+    BankTransfer,
+    Paypal,
+  },
   data() {
     return {
     };

@@ -18,26 +18,28 @@
                 </v-row>
                 <v-row dense>
                   <v-col cols="12" md="12">
-                    <v-simple-table dark>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-center text-h5">STT</th>
-                            <th class="text-center text-h5">Số hóa đơn</th>
-                            <th class="text-center text-h5">Giá trị</th>
-                            <th class="text-center text-h5">Thời gian</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="item in desserts1" :key="item.name">
-                            <td>{{ item.STT1 }}</td>
-                            <td>{{ item.SHD1 }}</td>
-                            <td>{{ item.GT1 }}</td>
-                            <td>{{ item.TG1 }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
+                    <v-data-table
+                      :page="1"
+                      :pageCount="totalPages"
+                      :headers="headers"
+                      :items="purchaseHistory"
+                      :options.sync="options"
+                      :server-items-length="totalItems"
+                      :loading="loading"
+                      class="elevation-1"
+                      v-model="selectedUser"
+                      ref="dataTable"
+                    >
+                      <!-- <template v-slot:item.action="{ item }">
+                        <v-btn color="primary" @click="onButtonClick(item)">
+                          <v-icon>fas fa-edit</v-icon>
+                        </v-btn>
+                        <v-btn color="red" @click="onButtonClick()">
+                          <v-icon>fas fa-trash</v-icon>
+                        </v-btn>
+                      </template> -->
+                      ></v-data-table
+                    >
                   </v-col>
                 </v-row>
               </v-container>
@@ -53,26 +55,27 @@
                 </v-row>
                 <v-row dense>
                   <v-col cols="12" md="12">
-                    <v-simple-table dark>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-center text-h5">STT</th>
-                            <th class="text-center text-h5">Số hóa đơn</th>
-                            <th class="text-center text-h5">Giá trị</th>
-                            <th class="text-center text-h5">Thời gian</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="item in desserts2" :key="item.name">
-                            <td>{{ item.STT2 }}</td>
-                            <td>{{ item.SHD2 }}</td>
-                            <td>{{ item.GT2 }}</td>
-                            <td>{{ item.TG2 }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
+                    <v-data-table
+                      :page="1"
+                      :pageCount="totalPages"
+                      :headers="headers"
+                      :items="cardRechargeHistory"
+                      :options.sync="options"
+                      :server-items-length="totalItems"
+                      :loading="loading"
+                      class="elevation-1"
+                      v-model="selectedUser"
+                      ref="dataTable"
+                    >
+                      <!-- <template v-slot:item.action="{ item }">
+                        <v-btn color="primary" @click="onButtonClick(item)">
+                          <v-icon>fas fa-edit</v-icon>
+                        </v-btn>
+                        <v-btn color="red" @click="onButtonClick()">
+                          <v-icon>fas fa-trash</v-icon>
+                        </v-btn>
+                      </template> -->
+                      ></v-data-table>
                   </v-col>
                 </v-row>
               </v-container>
@@ -88,26 +91,27 @@
                 </v-row>
                 <v-row dense>
                   <v-col cols="12" md="12">
-                    <v-simple-table dark>
-                      <template v-slot:default>
-                        <thead>
-                          <tr>
-                            <th class="text-center text-h5">STT</th>
-                            <th class="text-center text-h5">Số hóa đơn</th>
-                            <th class="text-center text-h5">Giá trị</th>
-                            <th class="text-center text-h5">Thời gian</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="item in desserts3" :key="item.name">
-                            <td>{{ item.STT3 }}</td>
-                            <td>{{ item.SHD3 }}</td>
-                            <td>{{ item.GT3 }}</td>
-                            <td>{{ item.TG3 }}</td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
+                    <v-data-table
+                      :page="1"
+                      :pageCount="totalPages"
+                      :headers="headers"
+                      :items="transferHistory"
+                      :options.sync="options"
+                      :server-items-length="totalItems"
+                      :loading="loading"
+                      class="elevation-1"
+                      v-model="selectedUser"
+                      ref="dataTable"
+                    >
+                      <!-- <template v-slot:item.action="{ item }">
+                        <v-btn color="primary" @click="onButtonClick(item)">
+                          <v-icon>fas fa-edit</v-icon>
+                        </v-btn>
+                        <v-btn color="red" @click="onButtonClick()">
+                          <v-icon>fas fa-trash</v-icon>
+                        </v-btn>
+                      </template> -->
+                      ></v-data-table>
                   </v-col>
                 </v-row>
               </v-container>
@@ -125,30 +129,23 @@ export default {
   components: {},
   data() {
     return {
-      desserts1: [
-        {
-          STT1: "title",
-          SHD1: "NaN",
-          GT1: "NaN",
-          TG1: "NaN",
-        },
+      //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      purchaseHistory: [],
+      cardRechargeHistory:[],
+      transferHistory:[],
+      loading: true,
+      options: {},
+      headers: [
+        { text: "No", value: "no" },
+        { text: "Bill number", value: "billNumber" },
+        { text: "Value", value: "value" },
+        { text: "Time", value: "time" },
+        { text: "Action", value: "action" },
       ],
-      desserts2: [
-        {
-          STT2: "title",
-          SHD2: "NaN",
-          GT2: "NaN",
-          TG2: "NaN",
-        },
-      ],
-      desserts3: [
-        {
-          STT3: "title",
-          SHD3: "NaN",
-          GT3: "NaN",
-          TG3: "NaN",
-        },
-      ],
+
     };
   },
 };

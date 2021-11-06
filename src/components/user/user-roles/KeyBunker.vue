@@ -5,7 +5,7 @@
         <v-container fluid black justify="center">
           <v-row dense>
             <v-col cols="12" md="12">
-              <v-simple-table dark>
+              <!-- <v-simple-table dark>
                 <template v-slot:default>
                   <thead>
                     <tr>
@@ -28,7 +28,29 @@
                     </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
+              </v-simple-table> -->
+              <v-data-table
+              :page="1"
+              :pageCount="totalPages"
+              :headers="headers"
+              :items="keyBunker"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
+              v-model="selectedUser"
+              ref="dataTable"
+            >
+              <!-- <template v-slot:item.action="{ item }">
+                <v-btn color="primary" @click="onButtonClick(item)">
+                  <v-icon>fas fa-edit</v-icon>
+                </v-btn>
+                <v-btn color="red" @click="onButtonClick()">
+                  <v-icon>fas fa-trash</v-icon>
+                </v-btn>
+              </template> -->
+              ></v-data-table
+            >
             </v-col>
           </v-row>
         </v-container>
@@ -39,10 +61,27 @@
 
 <script>
 export default {
-  name: "Recharge",
+  name: "KeyBunker",
   components: {},
   data() {
-    return {};
+    return {
+      //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      transactionsHistory: [],
+      loading: true,
+      options: {},
+      headers: [
+        { text: "No", value: "no" },
+        { text: "Bill code", value: "billCode" },
+        { text: "Product", value: "product" },
+        { text: "Code", value: "code" },
+        { text: "Received date", value: "receivedDate" },
+        { text: "Viewing date", value: "viewingDate" },
+        { text: "Action", value: "action" },
+      ],
+    };
   },
 };
 </script>

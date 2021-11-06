@@ -43,6 +43,34 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="3">
+        <h2 class="white--text">User ID:</h2>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-text-field
+          readonly="true"
+          outlined
+          color="white"
+          background-color="rgb(90, 90, 90)"
+        ></v-text-field>
+      </v-col>
+      <v-spacer></v-spacer>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="3">
+        <h2 class="white--text">Username:</h2>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-text-field
+          readonly="true"
+          outlined
+          color="white"
+          background-color="rgb(90, 90, 90)"
+        ></v-text-field>
+      </v-col>
+      <v-spacer></v-spacer>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="3">
         <h2 class="white--text">First name:</h2>
       </v-col>
       <v-col cols="12" md="4">
@@ -111,13 +139,14 @@
         <h2 class="white--text">Gender:</h2>
       </v-col>
       <v-col cols="12" md="4">
-        <v-select
-          :items="items"
-          outlined
-          placeholder="-Select-"
-          Color="black"
-          background-color="rgb(90, 90, 90)"
-        ></v-select>
+        <v-radio-group row>
+          <v-radio
+            v-for="gender in genderGroup"
+            :key="gender.text"
+            :label="gender.text"
+            :value="gender.value"
+          ></v-radio>
+        </v-radio-group>
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
@@ -126,9 +155,13 @@
         <h2 class="white--text">Marriage status:</h2>
       </v-col>
       <v-col cols="12" md="4">
-        <v-radio-group v-model="row" row>
-          <v-radio label="Married" value="radio-1"></v-radio>
-          <v-radio label="Single" value="radio-2"></v-radio>
+        <v-radio-group row>
+          <v-radio
+            v-for="status in marriageStatusGroup"
+            :key="status.text"
+            :label="status.text"
+            :value="status.value"
+          ></v-radio>
         </v-radio-group>
       </v-col>
       <v-spacer></v-spacer>
@@ -174,6 +207,15 @@ export default {
   data: () => ({
     items: ["Male", "Female", "Other"],
     row: null,
+    marriageStatusGroup: [
+      { text: "Married", value: true },
+      { text: "Single", value: false },
+    ],
+    genderGroup: [
+      { text: "Male", value: "MALE" },
+      { text: "Female", value: "FEMALE" },
+      { text: "Other", value: "OTHER" },
+    ],
   }),
 };
 </script>

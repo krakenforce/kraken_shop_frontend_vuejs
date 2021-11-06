@@ -1,26 +1,18 @@
 <template>
   <v-app id="bg">
-    <header>
-      <Menu />
-    </header>
-    <v-content>
-      <Homepage/> 
-    </v-content>
+    <v-container class="body">
+        <router-view></router-view>
+    </v-container>
   </v-app>
 </template>
 
 <script>
-import Menu from "./components/user/Menu.vue";
-//import ProductList from './views/user/ProductList.vue';
-import Homepage from './views/user/UserRoles.vue'
 
 export default {
   name: "App",
 
   components: {
-    Menu,
-    Homepage,
-    //ProductList,
+    
   },
 
   data: () => ({}),

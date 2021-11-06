@@ -2,9 +2,17 @@
   <nav>
     <div class="wrapper">
       <div class="logo"><a href="#">Draken Shop</a></div>
+      <input type="radio" name="slider" id="menu-btn" />
+      <input type="radio" name="slider" id="close-btn" />
+
       <ul class="nav-links">
+        <label for="close-btn" class="btn close-btn"
+          ><i class="fas fa-times"></i
+        ></label>
         <li>
           <a href="#" class="desktop-item">THỂ LOẠI</a>
+          <input type="checkbox" id="showMega1" />
+          <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
           <div class="mega-box">
             <div class="content">
               <div class="row">
@@ -38,6 +46,8 @@
         </li>
         <li>
           <a href="#" class="desktop-item">DANH MỤC</a>
+          <input type="checkbox" id="showMega2" />
+          <label for="showMega2" class="mobile-item">DANH MỤC</label>
           <div class="mega-box">
             <div class="content">
               <div class="row">
@@ -64,57 +74,64 @@
         </li>
         <li>
           <a href="#" class="desktop-item">THÔNG TIN</a>
+          <input type="checkbox" id="showDrop" />
+          <label for="showDrop" class="mobile-item">THÔNG TIN</label>
           <ul class="drop-menu">
             <li><a href="#">HƯỚNG DẪN</a></li>
             <li><a href="#">TIN TỨC</a></li>
           </ul>
         </li>
+
         <li><a href="#">LIÊN HỆ</a></li>
-      </ul>
-
-      <v-spacer></v-spacer>
-
-      <div v-if="test">
-        <v-row>
-          <v-col cols="12" md="4">
-            <v-btn icon color="blue" class="mr-15">
-              <v-badge color="green" content="6">
-                <v-icon>add_shopping_cart</v-icon>
-              </v-badge>
-            </v-btn>
-          </v-col>
-
-          <v-col cols="12" md="5">
-            <v-menu open-on-hover bottom offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn fab dark v-bind="attrs" v-on="on">
-                  <v-avatar color="blue">
-                    <v-icon dark> mdi-account-circle </v-icon>
-                  </v-avatar>
+        <li v-if="test">
+            <v-row>
+              <v-col cols="12" sm="3">
+                <v-btn icon color="blue" >
+                  <v-badge color="green" content="6">
+                    <v-icon>add_shopping_cart</v-icon>
+                  </v-badge>
                 </v-btn>
-              </template>
+              </v-col>
 
-              <v-list rounded dense class="black">
-                <v-list-item-group color="primary">
-                  <v-list-item v-for="(item, i) in items" :key="i">
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.text" class="white--text"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-menu>
-          </v-col>
-        </v-row>
-      </div>
+              <v-col cols="12" sm="9">
+                <v-menu open-on-hover bottom offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn  v-bind="attrs" v-on="on">
+                      <v-avatar color="blue">
+                        <v-icon dark> mdi-account-circle </v-icon>
+                      </v-avatar>
+                     <span class="ml-2"> username</span>
+                    </v-btn>
+                  </template>
 
-      <div v-if="!test">
-        <v-btn icon color="blue"> LOGIN/SIGNUP </v-btn>
-      </div>
-
-      <v-btn icon color="white" class="ml-10">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+                  <v-list rounded dense class="black">
+                    <v-list-item-group color="primary">
+                      <v-list-item v-for="(item, i) in items" :key="i">
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-text="item.text"
+                            class="white--text"
+                          ></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
+                </v-menu>
+              </v-col>
+            </v-row>
+        </li>
+        <li v-if="!test">         
+            <a class="blue--text">LOGIN/SIGNUP</a>
+        </li>
+        <li>
+          <v-btn icon color="white" class="ml-10">
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </li>
+      </ul>
+      <label for="menu-btn" class="btn menu-btn"
+        ><i class="fas fa-bars"></i
+      ></label>
     </div>
   </nav>
 </template>
@@ -125,8 +142,9 @@ export default {
 
   data() {
     return {
-      test: true,
+      test: false,
       items: [
+        { text: "Wallet: 12$" },
         { text: "Activity" },
         { text: "Information" },
         { text: "Key Bunker" },
@@ -235,6 +253,7 @@ nav .wrapper {
   width: calc(25% - 30px);
   line-height: 45px;
 }
+
 .content .row .mega-links {
   margin-left: -40px;
   border-left: 1px solid rgba(255, 255, 255, 0.09);
@@ -302,7 +321,7 @@ nav .wrapper {
     display: block;
   }
   .nav-links li {
-    margin: 15px 10px;
+    margin: 15px 20px;
   }
   .nav-links li a {
     padding: 0 20px;
@@ -322,7 +341,10 @@ nav .wrapper {
     transition: all 0.3s ease;
   }
   #showDrop:checked ~ .drop-menu,
-  #showMega:checked ~ .mega-box {
+  #showMega1:checked ~ .mega-box {
+    max-height: 100%;
+  }
+  #showMega2:checked ~ .mega-box {
     max-height: 100%;
   }
   .nav-links .desktop-item {
