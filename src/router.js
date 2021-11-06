@@ -26,6 +26,10 @@ import ProductStatistics from "./views/admin/statistic/Product.vue";
 import UserStatistics from "./views/admin/statistic/User.vue";
 import Dash from "./views/admin/dash/Dash.vue";
 import Homepage from "./views/user/Homepage.vue";
+import Contact from "./views/user/Contact.vue";
+import ProductList from "./views/user/ProductList.vue";
+import ProductDetail from "./views/user/ProductDetail.vue";
+import UserRoles from "./views/user/UserRoles.vue";
 
 Vue.use(VueRouter);
 
@@ -37,7 +41,28 @@ const routes = [
     children: [
       {
         path: "/",
+        name: "Homepage",
         component: Homepage,
+      },
+      {
+        path: "/search/:typeName/:type",
+        name: "ProductList",
+        component: ProductList,
+      },
+      {
+        path: "/product/:productId",
+        name: "ProductDetail",
+        component: ProductDetail,
+      },
+      {
+        path: "/userInfo",
+        name: "UserRoles",
+        component: UserRoles,
+      },
+      {
+        path: "/contact",
+        name: "Contact",
+        component: Contact,
       },
       {
         path: "/about",
@@ -161,6 +186,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   next();
+  window.scrollTo(0, 0)
   const loggedIn = localStorage.getItem("user");
 
   if (to.matched.some((record) => record.meta.requiredAuth)) {

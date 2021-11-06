@@ -2,7 +2,7 @@
   <v-card class="overflow-hidden black" justify="center">
     <v-container justify="center" fluid black>
       <v-row class="mb-1">
-        <v-col cols="12" md="12">
+        <v-col cols="12" sm="12">
           <v-card>
             <v-img
               src="../../assets/user/img-product.png"
@@ -14,7 +14,7 @@
       </v-row>
 
       <v-row no-gutters>
-        <v-col cols="12" md="9">
+        <v-col cols="12" sm="9">
           <v-card>
             <v-tabs color="red accent-4" centered background-color="black">
               <v-tab class="white--text">Activity</v-tab>

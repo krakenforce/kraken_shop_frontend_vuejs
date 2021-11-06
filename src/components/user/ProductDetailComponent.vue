@@ -1,89 +1,114 @@
 <template>
   <v-card class="overflow-hidden" justify="center" dark>
-    <v-container justify="center">
+    <v-container justify="left">
       <v-row class="mb-1">
-        <v-col cols="12" md="12">
+        <v-col cols="12" sm="6">
           <div>
             <v-img
-              src="../../assets/user/img-product.png"
+              :src="product.thumbnailImageUrl"
               max-height="500"
               class="grey darken-4"
               absolute
-              
             >
-              <v-container grid-list-xs justify="left">
-                <v-row no-gutters align="center">
-                  <v-col cols="12" md="5">
-                    <v-card color="transparent" class="mx-auto" max-width="500" outlined >
-                      <v-list-item three-line>
-                        <v-list-item-content>
-                          
-                          <v-list-item-title class="mb-1">
-                            <h2>PLAYERUNKNOWN'S BATTLEGROUNDS</h2>            
-                          </v-list-item-title>
-                        </v-list-item-content>
-
-                      </v-list-item>
-
-                      <v-card-actions>
-                        <v-container grid-list-xs>
-                          <v-row no-gutters>
-                            <v-col>
-                              <div class="text-overline mb-4 white"><a class="yellow-text">390.000 VND</a></div>
-                            </v-col>
-                            <v-col>
-                              <v-btn outlined color="red" class="white--text" rounded> BUY </v-btn>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                        
-                        
-                      </v-card-actions>
-                    </v-card>
-                    
-                  </v-col>
-                  <v-spacer></v-spacer>
-                </v-row>
-              </v-container>
             </v-img>
           </div>
         </v-col>
+        <v-col cols="12" sm="6">
+          <v-row class="mt-2">
+            <v-col cols="12" sm="4">
+              <h3>Product Code:</h3>
+              <span>{{ product.productCode }}</span>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <h3>Status:</h3>
+              <span>còn hàng ✔️ </span>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <a :href="product.originalProductLink" class="h3"
+                >Original link</a
+              >
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col cols="12" sm="12">
+              <v-card color="#343434" class="mx-auto" outlined>
+                <v-card-title>
+                  <h3>{{ product.name }}</h3>
+                </v-card-title>
+                <v-card-actions>
+                  <v-container grid-list-xs>
+                    <v-row>
+                      <v-col cols="12" sm="6">
+                        <div class="text-overline mb-4">
+                          <h4>
+                            <strike class="red--text"
+                              ><strong>{{ product.price }} &#36; </strong>
+                            </strike>
+                          </h4>
+                          <span class="yellow-text">
+                            <strong>{{ product.salePrice }} &#36; </strong>
+                          </span>
+                        </div>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-btn outlined color="red" class="white--text" rounded>
+                          BUY
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-spacer></v-spacer>
       </v-row>
 
       <v-row no-gutters>
-        <v-col cols="12" md="10">
+        <v-col cols="12" sm="10">
           <v-card>
-            <v-tabs color="red accent-4" left background-color="black">
-              <v-tab class="white--text">Giới thiệu game</v-tab>
-              <v-tab class="white--text">Cấu hình</v-tab>
-              <v-tab class="white--text">Hướng dẫn mua hàng</v-tab>
+            <v-tabs
+              color="red accent-4"
+              left
+              background-color="black"
+              fixed-tabs
+              v-model="tab"
+            >
+              <v-tabs-slider color="amber darken-3"></v-tabs-slider>
+              <v-tab
+                v-for="(item, index) in items"
+                :class="{ active: currentTab === index }"
+                @click="currentTab = index"
+                :key="item"
+              >
+                {{ item }}
+              </v-tab>
 
-              <v-tab-item v-for="n in 3" :key="n">
-                <v-container fluid black justify="center">
-                  <v-row>
-                    <v-col cols="auto">
-                      <h1 class="white--text">
-                        Game dự kiến ra mắt vào ngày 5/11/2021
-                      </h1>
-                      <v-btn
-                        v-for="icon in icons"
-                        :key="icon"
-                        class="mx-4"
-                        icon
-                      >
-                        <v-icon color="red" size="30px">
-                          {{ icon }}
-                        </v-icon>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-tab-item>
+              <v-tabs-items v-model="tab">
+                <v-card flat>
+                  <div v-show="currentTab === 0">
+                    <v-card-text>{{product.productDetail}}</v-card-text>
+                  </div>
+                  <div v-show="currentTab === 1">
+                    <v-card-text>{{product.productWarranty}}</v-card-text>
+                  </div>
+                  <div v-show="currentTab === 2">
+                    <v-card-text>Tab2 content</v-card-text>
+                  </div>
+                  <div v-show="currentTab === 3">
+                    <v-card-text>Tab3 content</v-card-text>
+                  </div>
+                </v-card>
+              </v-tabs-items>
             </v-tabs>
           </v-card>
         </v-col>
 
-        <v-col cols="12" md="2">
+        <v-col cols="12" sm="2">
           <v-card class="mx-auto mb-8" max-width="300" tile>
             <v-list shaped color="rgb(90, 90, 90)">
               <v-subheader class="yellow--text">DANH MỤC</v-subheader>
@@ -124,10 +149,14 @@
 <script>
 export default {
   name: "ProductDetail",
+  props: ["product"],
 
   data: () => ({
     selectedItem1: 0,
     selectedItem2: 0,
+    currentTab: 0,
+    tab: null,
+    items: ["INTRODUCTION", "WARRANTY", "BUY INSTRUCTION", "COMMENT"],
     item1: [
       { text: "Battle.Net" },
       { text: "Game Mobile" },
@@ -159,6 +188,10 @@ export default {
     ],
     icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
   }),
+  mounted() {
+    
+  },
+  created() {},
 };
 </script>
 <style scoped>

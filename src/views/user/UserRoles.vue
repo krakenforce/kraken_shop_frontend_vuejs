@@ -1,7 +1,6 @@
 <template>
-  <v-container justify="center" fluid>
     <v-row justify="center" no-gutters>
-      <v-col cols="12" md="10">
+      <v-col cols="12" sm="12">
         <div class="ma-5 pa-5">
           <v-container class="text-center" black justify="center" fill-height fluid>
             <v-row>
@@ -15,7 +14,6 @@
         </div>
       </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script>

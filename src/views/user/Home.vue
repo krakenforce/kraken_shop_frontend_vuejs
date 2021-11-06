@@ -1,11 +1,9 @@
 <template>
-  <v-app id="abc">  
+  <v-app id="abc">
     <header>
       <Menu />
     </header>
-    <v-main>
-      <router-view></router-view> 
-    </v-main>
+    <router-view></router-view>
   </v-app>
 </template>
 
@@ -14,20 +12,18 @@ import Menu from "../../components/user/Menu.vue";
 export default {
   name: "Home",
   components: {
-    Menu
+    Menu,
   },
   data() {
     return {
       currentUser: null,
-    }
+    };
   },
-  methods: {
-
+  methods: {},
+  computed: {},
+  created() {
+    this.currentUser = localStorage.getItem("user");
   },
-  computed: {
-
-  }
-
 };
 </script>
 

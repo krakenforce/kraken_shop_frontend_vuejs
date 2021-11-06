@@ -50,20 +50,23 @@
             <v-tab-item v-for="n in 3" :key="n">
               <v-container fluid black justify="center">
                 <v-row>
-                  <v-col v-for="i in 8" :key="i" cols="auto">
+                  <v-col v-for="item in products" :key="item.productId" cols="auto">
                     <v-hover v-slot="{ hover }" close-delay="200">
                       <v-card
-                        :elevation="hover ? 16 : 2"
+                        :elevation="hover ? 16 : 5"
                         :class="{ 'on-hover': hover }"
                         class="mx-auto"
                         max-width="1250"
-                        color="black"
+                        color="#343434"
+                        link
+                        @click="seeProductDetail(item)"
                       >
                         <v-row no-gutters>
                           <v-col cols="12" md="3">
                             <v-img
-                              src="../../assets/user/small-card.jpg"
-                              height="200px"
+                              :src="item.thumbnailImageUrl"
+                              height="180px"
+                              
                             ></v-img>
                           </v-col>
 
@@ -73,14 +76,17 @@
                                 <v-row dense>
                                   <v-col cols="12" md="8">
                                     <v-card-title class="yellow--text">
-                                      Call of Duty: Mobile VN</v-card-title
+                                      {{item.name}}</v-card-title
+                                    >
+                                    <v-card-title class="blue--text">
+                                      <strike><strong>{{item.price}} &#36;</strong></strike></v-card-title
                                     >
                                   </v-col>
 
                                   <v-spacer></v-spacer>
                                   <v-col cols="12" md="4">
                                     <v-card-text class="white--text"
-                                      >300 000 đ</v-card-text
+                                      > <strong>{{item.salePrice}} &#36;</strong> </v-card-text
                                     >
                                     <v-btn icon color="blue">
                                       <v-icon>add_shopping_cart</v-icon>
@@ -96,10 +102,11 @@
                   </v-col>
                     <v-pagination
                       v-model="page"
-                      :length="4"
+                      :length="totalPages"
                       circle
-                      color="blue"
+                      color="red"
                       dark
+                      @input="onPageChange"
                     ></v-pagination>
                 </v-row>
               </v-container>
@@ -114,6 +121,7 @@
 <script>
 export default {
   name: "ProductList",
+  props:["products", "totalItems", "totalPages"],
 
   data: () => ({
     selectedItem1: 0,
@@ -149,10 +157,24 @@ export default {
       { text: "Violent" },
     ],
   }),
+  methods: {
+    onPageChange(){
+      this.$emit("changePage", this.page);
+    },
+
+    seeProductDetail(item) {
+      this.$router.push({
+        name: "ProductDetail",
+        params: {
+          productId: item.productId,
+        },
+      });
+    },
+  }
 };
 </script>
 <style lang="sass" scoped>
-.v-card.on-hover.theme--light
+.v-card.on-hover.theme--dark
     background-color: white
 >.v-card__text
     color: white

@@ -277,7 +277,7 @@
         <v-card-title class="text-h5"> Notification </v-card-title>
 
         <v-card-text>
-          <h3>{{ dialog.message }}</h3>         
+          <h3>{{ dialog.message }}</h3>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -544,6 +544,31 @@ export default {
 
       this.productRequest.categoryIdSet = item.categoryChilds;
       this.productRequest.tagIdSet = item.tagChilds;
+
+      console.log(this.productRequest);
+
+      // const formData = new FormData();
+      // formData.append(
+      //   "productRequest",
+      //   new Blob([JSON.stringify(this.productRequest)], {
+      //     type: "application/json",
+      //   })
+      // );
+      // formData.append("thumbnailImage", this.thumbnailImage);
+      // console.log(this.productRequest);
+      // api
+      //   .post("/product", formData, {
+      //     headers: { "Content-Type": "multipart/form-data" },
+      //   })
+      //   .then((response) => {
+      //     console.log(response.data);
+      //     this.alertMessage.type = "success";
+      //     this.alertMessage.content = "Save Product Success";
+      //     this.reloadWindow();
+      //   })
+      //   .catch((error) => {
+      //     console.log(error.response.data);
+      //   });
 
       this.step = 2;
     },

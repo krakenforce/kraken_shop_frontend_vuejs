@@ -1,112 +1,124 @@
 <template>
-  <nav>
-    <div class="wrapper">
-      <div class="logo"><a href="#">Draken Shop</a></div>
-      <input type="radio" name="slider" id="menu-btn" />
-      <input type="radio" name="slider" id="close-btn" />
+  <v-app-bar app>
+    <nav>
+      <div class="wrapper">
+        <div class="logo"><a href="/">Kraken Shop</a></div>
+        <input type="radio" name="slider" id="menu-btn" />
+        <input type="radio" name="slider" id="close-btn" />
 
-      <ul class="nav-links">
-        <label for="close-btn" class="btn close-btn"
-          ><i class="fas fa-times"></i
-        ></label>
-        <li>
-          <a href="#" class="desktop-item">THỂ LOẠI</a>
-          <input type="checkbox" id="showMega1" />
-          <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
-          <div class="mega-box">
-            <div class="content">
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Adventure</a></li>
-                  <li><a href="#">Casual</a></li>
-                  <li><a href="#">Early Access</a></li>
-                  <li><a href="#">Indie</a></li>
-                </ul>
-              </div>
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Massively Multiplayer</a></li>
-                  <li><a href="#">Racing</a></li>
-                  <li><a href="#">RPG</a></li>
-                  <li><a href="#">Sexual Content</a></li>
-                  <li><a href="#">Simulation</a></li>
-                </ul>
-              </div>
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Sports</a></li>
-                  <li><a href="#">Strategy</a></li>
-                  <li><a href="#">Utilities</a></li>
-                  <li><a href="#">Violent</a></li>
-                </ul>
+        <ul class="nav-links">
+          <label for="close-btn" class="btn close-btn"
+            ><i class="fas fa-times"></i
+          ></label>
+          <li>
+            <a href="#" class="desktop-item">GENRE</a>
+            <input type="checkbox" id="showMega1" />
+            <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
+            <div class="mega-box">
+              <div class="content">
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="/search/genre/action">Action</a></li>
+                    <li><a href="#">Adventure</a></li>
+                    <li><a href="#">Casual</a></li>
+                    <li><a href="#">Early Access</a></li>
+                    <li><a href="#">Indie</a></li>
+                  </ul>
+                </div>
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Massively Multiplayer</a></li>
+                    <li><a href="#">Racing</a></li>
+                    <li><a href="#">RPG</a></li>
+                    <li><a href="#">Sexual Content</a></li>
+                    <li><a href="#">Simulation</a></li>
+                  </ul>
+                </div>
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Strategy</a></li>
+                    <li><a href="#">Utilities</a></li>
+                    <li><a href="#">Violent</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <a href="#" class="desktop-item">DANH MỤC</a>
-          <input type="checkbox" id="showMega2" />
-          <label for="showMega2" class="mobile-item">DANH MỤC</label>
-          <div class="mega-box">
-            <div class="content">
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Battle.Net</a></li>
-                  <li><a href="#">Game Mobile</a></li>
-                  <li><a href="#">Game Origin</a></li>
-                  <li><a href="#">Game Steam</a></li>
-                  <li><a href="#">Game Uplay</a></li>
-                  <li><a href="#">Genshin Impact</a></li>
-                </ul>
-              </div>
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Khác</a></li>
-                  <li><a href="#">Microsoft-Xbox</a></li>
-                  <li><a href="#">Package Steam</a></li>
-                  <li><a href="#">PlayStation</a></li>
-                  <li><a href="#">Wallet Code</a></li>
-                </ul>
+          </li>
+          <li>
+            <a href="#" class="desktop-item">CATEGORY</a>
+            <input type="checkbox" id="showMega2" />
+            <label for="showMega2" class="mobile-item">DANH MỤC</label>
+            <div class="mega-box">
+              <div class="content">
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Battle.Net</a></li>
+                    <li><a href="#">Game Mobile</a></li>
+                    <li><a href="#">Game Origin</a></li>
+                    <li><a href="#">Game Steam</a></li>
+                    <li><a href="#">Game Uplay</a></li>
+                    <li><a href="#">Genshin Impact</a></li>
+                  </ul>
+                </div>
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Khác</a></li>
+                    <li><a href="#">Microsoft-Xbox</a></li>
+                    <li><a href="#">Package Steam</a></li>
+                    <li><a href="#">PlayStation</a></li>
+                    <li><a href="#">Wallet Code</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <a href="#" class="desktop-item">THÔNG TIN</a>
-          <input type="checkbox" id="showDrop" />
-          <label for="showDrop" class="mobile-item">THÔNG TIN</label>
-          <ul class="drop-menu">
-            <li><a href="#">HƯỚNG DẪN</a></li>
-            <li><a href="#">TIN TỨC</a></li>
-          </ul>
-        </li>
+          </li>
+          <li>
+            <a href="#" class="desktop-item">INFOMATION</a>
+            <input type="checkbox" id="showDrop" />
+            <label for="showDrop" class="mobile-item">THÔNG TIN</label>
+            <ul class="drop-menu">
+              <li><a href="#">HƯỚNG DẪN</a></li>
+              <li><a href="#">TIN TỨC</a></li>
+            </ul>
+          </li>
 
-        <li><a href="#">LIÊN HỆ</a></li>
-        <li v-if="test">
+          <li><a href="/contact">CONTACT</a></li>
+          <li v-if="user">
             <v-row>
-              <v-col cols="12" sm="3">
-                <v-btn icon color="blue" >
+              <v-col cols="12" sm="4">
+                <v-btn icon color="blue">
                   <v-badge color="green" content="6">
-                    <v-icon>add_shopping_cart</v-icon>
+                    <v-icon>fas fa-cart-plus</v-icon>
                   </v-badge>
                 </v-btn>
               </v-col>
-
-              <v-col cols="12" sm="9">
+              <v-col cols="12" sm="8">
                 <v-menu open-on-hover bottom offset-y>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn  v-bind="attrs" v-on="on">
+                    <v-btn v-bind="attrs" v-on="on" @click="goToUserDetail">
                       <v-avatar color="blue">
-                        <v-icon dark> mdi-account-circle </v-icon>
+                        <v-icon v-if="user.avatarImageUrl == null" dark> mdi-account-circle </v-icon>
+                        <v-img v-if="user.avatarImageUrl != null " :src="user.avatarImageUrl"></v-img>
                       </v-avatar>
-                     <span class="ml-2"> username</span>
+                      <span class="ml-2">{{ user.username }}</span>
                     </v-btn>
                   </template>
 
-                  <v-list rounded dense class="black">
+                  <v-list dense class="black">
                     <v-list-item-group color="primary">
-                      <v-list-item v-for="(item, i) in items" :key="i">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            <span>WALLET: {{user.walletBalance}} $</span>
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item
+                        v-for="(item, i) in items"
+                        :key="i"
+                        @click="item.action"
+                      >
                         <v-list-item-content>
                           <v-list-item-title
                             v-text="item.text"
@@ -119,21 +131,22 @@
                 </v-menu>
               </v-col>
             </v-row>
-        </li>
-        <li v-if="!test">         
-            <a class="blue--text">LOGIN/SIGNUP</a>
-        </li>
-        <li>
-          <v-btn icon color="white" class="ml-10">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-        </li>
-      </ul>
-      <label for="menu-btn" class="btn menu-btn"
-        ><i class="fas fa-bars"></i
-      ></label>
-    </div>
-  </nav>
+          </li>
+          <li v-if="!user">
+            <a href="/login" class="blue--text">LOGIN/SIGNUP</a>
+          </li>
+          <li>
+            <v-btn icon color="white" class="ml-10">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </li>
+        </ul>
+        <label for="menu-btn" class="btn menu-btn"
+          ><i class="fas fa-bars"></i
+        ></label>
+      </div>
+    </nav>
+  </v-app-bar>
 </template>
 
 <script>
@@ -142,17 +155,28 @@ export default {
 
   data() {
     return {
-      test: false,
+      user: null,
       items: [
-        { text: "Wallet: 12$" },
-        { text: "Activity" },
-        { text: "Information" },
-        { text: "Key Bunker" },
-        { text: "Recharge" },
-        { text: "Transaction History" },
-        { text: "Log Out" },
+        { text: "Log Out", action: this.logout },
       ],
     };
+  },
+  methods: {
+    goToUserDetail() {
+      this.$router.push("/userInfo");
+    },
+
+    getUser() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+    },
+
+    logout() {
+      localStorage.removeItem("user");
+      this.$router.push("/login");
+    },
+  },
+  created() {
+    this.getUser();
   },
 };
 </script>
