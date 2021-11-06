@@ -1,16 +1,16 @@
 <template>
-  <v-container id="abc">  
+  <v-app id="abc">  
     <header>
       <Menu />
     </header>
-    <v-content>
+    <v-main>
       <router-view></router-view> 
-    </v-content>
-  </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import Menu from "./components/user/Menu.vue";
+import Menu from "../../components/user/Menu.vue";
 export default {
   name: "Home",
   components: {
