@@ -20,9 +20,8 @@ export default {
       status: true,
     }
   },
-  computed:{
+  computed:{},
 
-  },
   methods: {
     logOut() {
       this.$store.dispatch('auth/logout');
@@ -34,14 +33,19 @@ export default {
       this.logOut;
     });
   },
+  
 };
 </script>
 
-<style>
-#bg{
-  background-image: url("./assets/admin/homebackground.jpg");
-  background-size: cover;
+<style scoped>
+body {
+  font-family: "montserrat", sans-serif;
+}
+#bg {
+  background: url("./assets/user/background.jpg");
   position: relative;
+  background-size: cover;
+  background-color: black;
 }
 </style>
 
