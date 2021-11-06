@@ -4,6 +4,7 @@
       <v-col cols="12" sm="10">
         <v-card class="elevation-6 mt-10">
           <v-window v-model="step">
+            <!-- SIGN IN -->
             <v-window-item :value="1">
               <v-row>
                 <v-col cols="12" sm="6">
@@ -24,6 +25,7 @@
                           autocomplete="false"
                           class="mt-16"
                           prepend-icon="fas fa-user"
+                          v-model="username"
                         />
 
                         <v-text-field
@@ -34,6 +36,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
+                          v-model="password"
                         />
                         <v-row>
                           <v-col cols="12" sm="7">
@@ -44,12 +47,21 @@
                             ></v-checkbox>
                           </v-col>
                           <v-col cols="12" sm="5">
-                            <span class="caption blue--text"
+                            <span
+                              class="caption blue--text"
+                              @click="goToWindowItem(3)"
                               >Forget password?</span
                             >
                           </v-col>
                         </v-row>
-                        <v-btn color="blue" dark block tile>Login</v-btn>
+                        <v-btn
+                          color="blue"
+                          @click="handleLogin()"
+                          dark
+                          block
+                          tile
+                          >Login</v-btn
+                        >
                         <h6 class="text-center grey--text mt-4 mb-3">
                           Or log in using
                         </h6>
@@ -90,9 +102,11 @@
                 </v-col>
               </v-row>
             </v-window-item>
+
+            <!-- SIGN UP -->
             <v-window-item :value="2">
               <v-row>
-                <v-col cols="12" sm="6" class="blue rounded-bl-xl">
+                <v-col cols="12" sm="6" class="green rounded-bl-xl">
                   <div style="text-align: center; padding: 180px 0px">
                     <v-card-text class="white--text">
                       <h3 class="text-center">Already have an account ?</h3>
@@ -126,6 +140,7 @@
                           autocomplete="false"
                           class="mt-16"
                           prepend-icon="fas fa-user"
+                          v-model="username"
                         />
 
                         <v-text-field
@@ -136,6 +151,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="far fa-envelope"
+                          v-model="email"
                         />
 
                         <v-text-field
@@ -146,6 +162,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
+                          v-model="password"
                         />
 
                         <v-text-field
@@ -156,6 +173,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
+                          v-model="confirmPassword"
                         />
                         <v-row>
                           <v-col cols="12" sm="7">
@@ -171,7 +189,66 @@
                             >
                           </v-col>
                         </v-row>
-                        <v-btn color="blue" dark block tile>Sign up</v-btn>
+                        <v-btn
+                          color="green"
+                          @click="handleRegister()"
+                          dark
+                          block
+                          tile
+                          >Sign up</v-btn
+                        >
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </v-window-item>
+
+            <!--FORGET PASSWORD-->
+            <v-window-item :value="3">
+              <v-row>
+                <v-col cols="12" sm="6" class="red rounded-bl-xl">
+                  <div style="text-align: center; padding: 180px 0px">
+                    <v-card-text class="white--text">
+                      <h3 class="text-center">Got your Password</h3>
+                      <h6 class="text-center">
+                        Let's get you sign in
+                        <br />
+                        your account.
+                      </h6>
+                    </v-card-text>
+                    <div class="text-center">
+                      <v-btn tile outlined dark @click="goToWindowItem(1)"
+                        >SIGN IN</v-btn
+                      >
+                    </div>
+                  </div>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-card-text class="mt-12">
+                    <h4 class="text-center">Enter info to reset password</h4>
+                    <h6 class="text-center grey--text">
+                      Let's get you all set up so you can start creation
+                      <br />
+                      your Account
+                    </h6>
+                    <v-row align="center" justify="center">
+                      <v-col cols="12" sm="10">
+                        <v-text-field
+                          label="Email"
+                          type="text"
+                          outlined
+                          dense
+                          color="blue"
+                          autocomplete="false"
+                          class="mt-16"
+                          prepend-icon="fas fa-user"
+                          v-model="username"
+                        />
+
+                        <v-btn color="red" dark block tile
+                          >Reset Your Password</v-btn
+                        >
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -186,12 +263,31 @@
 </template>
 
 <script>
+import AuthService from "../services/AuthService";
+//import router from '../router'
+
 export default {
   name: "Login",
   data() {
     return {
       step: 1,
+      username: "",
+      password: "",
+      email: "",
+      confirmPassword: "",
     };
+  },
+  methods: {
+    handleLogin() {
+      AuthService.login(this.username, this.password);
+      
+    },
+    handleRegister() {
+      AuthService.register(this.username, this.email, this.password);
+    },
+    goToWindowItem(value) {
+      this.step = value;
+    },
   },
   props: {
     source: String,

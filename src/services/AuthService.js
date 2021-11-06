@@ -3,18 +3,20 @@ import TokenService from './TokenService';
 
 class AuthService{
     
-    login({username, password}){
+    login(username, password){
         return api
             .post("/auth/login", {
-                username,
-                password
+                "username" : username,
+                "password" : password
             })
             .then((response) => {
                 if(response.data.accessToken){
                     TokenService.setUser(response.data);
                 }
-
                 return response.data
+            })
+            .catch((error) => {
+                return error.response.data.message;
             });
     }
 
@@ -22,16 +24,27 @@ class AuthService{
         TokenService.removeUser;
     }
 
-    register({username, email, password}){
+    register(username, email, password){
         return api
             .post("/auth/signup", {
-                username,
-                email,
-                password
+                "username" : username,
+                "email" : email,
+                "password" : password
             })
             .then((response) => {
                 return response.data;
             });
+    }
+
+    handleResponse(response){
+        if(response.status == 401){
+            this.logout();
+            location.reload(true);
+
+            const error = response.data && response.data.message;
+            return Promise.reject(error);
+        }
+        return Promise.resolve(response);
     }
 
 }
