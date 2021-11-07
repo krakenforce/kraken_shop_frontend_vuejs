@@ -8,8 +8,8 @@
 
         <ul class="nav-links">
           <label for="close-btn" class="btn close-btn"
-            ><i class="fas fa-times"></i
-          ></label>
+            ><v-icon>mdi-dots-vertical-circle</v-icon>
+          </label>
           <li>
             <a href="#" class="desktop-item">GENRE</a>
             <input type="checkbox" id="showMega1" />
@@ -87,30 +87,67 @@
           <li v-if="user">
             <v-row>
               <v-col cols="12" sm="4">
-                <v-btn icon color="blue">
-                  <v-badge color="green" content="6">
-                    <v-icon>fas fa-cart-plus</v-icon>
-                  </v-badge>
-                </v-btn>
+                <v-menu open-on-hover top offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-badge bordered color="green" overlap>
+                      <span slot="badge">{{
+                        $store.state.shoppingCart.cartCount
+                      }}</span>
+                      <v-btn icon color="primary" dark v-bind="attrs" v-on="on">
+                        <v-icon>mdi-cart</v-icon>
+                      </v-btn>
+                    </v-badge>
+                  </template>
+                  <div v-if="$store.state.shoppingCart.cart.length > 0">
+                    <v-list class="pa-5">
+                      <v-list-item
+                        v-for="item in $store.state.shoppingCart.cart"
+                        :key="item.productId"
+                      >
+                        <v-list-item-title>{{ item.name }} x {{ item.quantity }} - ${{ item.totalPrice }}</v-list-item-title>
+                        <v-list-item-action>
+                          <v-btn color="red" @click.prevent="removeFromCart(item)">
+                            <v-icon>mdi-delete</v-icon>
+                          </v-btn>
+                        </v-list-item-action>
+
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <h2>Total: $ {{totalPrice}}</h2>
+                      <v-divider></v-divider>
+                      <v-btn @click.prevent="checkWalletBalance" class="mt-3" color="blue">Checkout</v-btn>
+                    </v-list>
+                  </div>
+                  <div v-else>
+                    <v-list class="pa-5">
+                      <h2>Cart is empty</h2>
+                    </v-list>
+                  </div>
+                </v-menu>
               </v-col>
               <v-col cols="12" sm="8">
                 <v-menu open-on-hover bottom offset-y>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn v-bind="attrs" v-on="on" @click="goToUserDetail">
                       <v-avatar color="blue">
-                        <v-icon v-if="user.avatarImageUrl == null" dark> mdi-account-circle </v-icon>
-                        <v-img v-if="user.avatarImageUrl != null " :src="user.avatarImageUrl"></v-img>
+                        <v-icon v-if="user.avatarImageUrl == null" dark>
+                          mdi-account-circle
+                        </v-icon>
+                        <v-img
+                          v-if="user.avatarImageUrl != null"
+                          :src="user.avatarImageUrl"
+                        ></v-img>
                       </v-avatar>
                       <span class="ml-2">{{ user.username }}</span>
                     </v-btn>
                   </template>
 
-                  <v-list dense class="black">
+                  <v-list dense class="black pa-5">
                     <v-list-item-group color="primary">
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>
-                            <span>WALLET: {{user.walletBalance}} $</span>
+                            <span>WALLET: {{ user.walletBalance }} $</span>
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
@@ -136,34 +173,102 @@
             <a href="/login" class="blue--text">LOGIN/SIGNUP</a>
           </li>
           <li>
-            <v-btn icon color="white" class="ml-10">
-              <v-icon>mdi-magnify</v-icon>
-            </v-btn>
+            <v-dialog transition="dialog-top-transition" max-width="600">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon class="ml-10" v-bind="attrs" v-on="on">
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+              </template>
+              <template v-slot:default="dialog">
+                <v-card class="pa-10">
+                  <v-card-text>
+                    <v-text-field
+                      dense
+                      placeholder="ENTER PRODUCT NAME TO SEARCH"
+                      label="PRODUCT NAME"
+                      v-model="searchKeyword"
+                    >
+                    </v-text-field>
+                  </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <v-btn text color="blue"  @click="searchProduct">
+                      <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                    <v-btn text color="red" @click="dialog.value = false"
+                      >Close</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
           </li>
         </ul>
         <label for="menu-btn" class="btn menu-btn"
-          ><i class="fas fa-bars"></i
-        ></label>
+          ><v-icon>mdi-dots-horizontal-circle</v-icon>
+        </label>
       </div>
     </nav>
   </v-app-bar>
 </template>
 
 <script>
+import api from "../../services/api";
+
 export default {
   name: "Menu",
 
   data() {
     return {
+      searchKeyword: '',
       user: null,
-      items: [
-        { text: "Log Out", action: this.logout },
-      ],
+      items: [{ text: "Log Out", action: this.logout }],
     };
   },
+  computed:{
+    totalPrice(){
+      let total = 0;
+      for(let item of this.$store.state.shoppingCart.cart){
+        total += item.totalPrice;
+      } 
+
+      return total;
+    }
+  },
   methods: {
+
+    checkWalletBalance(){
+      let total = this.totalPrice;
+      let walletBalance = this.user.walletBalance;
+      console.log(walletBalance);
+      console.log(total);
+      if(walletBalance < total){
+        alert("số dư không đủ, nạp thêm tiền");
+        this.$router.push("/userInfo");
+      }
+    },
+
+    removeFromCart(item){
+      this.$store.commit('removeFromCart', item);
+    },
+
     goToUserDetail() {
       this.$router.push("/userInfo");
+    },
+
+    getShoppingCart() {
+      let userId = this.user.id;
+      api
+        .get("/cart/user/" + userId)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
+    },
+
+    searchProduct() {
+      this.$router.push("/search/keyword/" + this.searchKeyword);
     },
 
     getUser() {
@@ -175,9 +280,9 @@ export default {
       this.$router.push("/login");
     },
   },
-  created() {
+  mounted() {
     this.getUser();
-  },
+  }
 };
 </script>
 <style scoped>

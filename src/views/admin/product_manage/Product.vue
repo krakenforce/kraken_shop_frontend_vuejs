@@ -41,6 +41,7 @@
           </v-col>
           <v-col cols="12" sm="1">
             <v-btn color="transparent" x-small="true" @click="reloadWindow()">
+              .
             </v-btn>
           </v-col>
 
@@ -77,6 +78,9 @@
                 <span v-text="item.productServicePackName"></span>
               </template>
               <template v-slot:item.action="{ item }">
+                <v-btn color="blue" @click="goToGameCode(item)">
+                  <v-icon>fas fa-gamepad</v-icon>
+                </v-btn>
                 <v-btn color="green" @click="updateProduct(item)">
                   <v-icon>fas fa-edit</v-icon>
                 </v-btn>
@@ -167,24 +171,24 @@
                 <v-row>
                   <v-col cols="12" sm="6">
                     <v-select
-                      v-model="productRequest.categoryIdSet"
+                      v-model="productRequest.categories"
                       :items="categories"
                       item-text="name"
-                      item-value="categoryId"
                       chips
                       label="Category"
                       multiple
+                      return-object
                     ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6">
                     <v-select
-                      v-model="productRequest.tagIdSet"
+                      v-model="productRequest.tags"
                       :items="tags"
                       item-text="name"
-                      item-value="tagId"
                       chips
                       label="Tags"
                       multiple
+                      return-object
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -258,7 +262,6 @@
       </v-window-item>
 
       <v-window-item :value="3">
-        <!-- <h1>{{ testValue.name }}</h1> -->
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
@@ -267,8 +270,48 @@
             >
           </v-col>
         </v-row>
+        <h1 v-if="product">Game Code of Product: {{ product.name }}</h1>
 
-        <UserDetail />
+        <v-form>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field label="Product Code Game" v-model="codeGame.code">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" sm="3">
+              <v-btn @click="addGameCode" color="green">ADD</v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+
+        <v-row>
+          <v-col cols="12" sm="12">
+            <v-data-table
+              :gcPage="1"
+              :pageCount="gcTotalPages"
+              :headers="gameCodeHeaders"
+              :items="productGameCodes"
+              :options.sync="gcOptions"
+              :server-items-length="gcTotalItems"
+              class="elevation-1"
+            >
+              <template v-slot:item.status="{ item }">
+                <div v-if="item.status">
+                  <v-icon>✔️</v-icon>
+                </div>
+                <div v-else>
+                  <v-icon>❌</v-icon>
+                </div>
+              </template>
+              <template v-slot:item.action="{ item }">
+                
+                <v-btn color="red" @click="deleteGameCode(item)">
+                  <v-icon>fas fa-trash</v-icon>
+                </v-btn>
+              </template>
+            </v-data-table>
+          </v-col>
+        </v-row>
       </v-window-item>
     </v-window>
 
@@ -298,6 +341,8 @@ export default {
     return {
       step: 1,
       searchKeyword: "",
+      product: null,
+      codeGame: { code: "", status: true },
 
       dialog: {
         status: false,
@@ -310,8 +355,6 @@ export default {
       },
 
       servicePacks: [],
-      categories: [],
-      tags: [],
       ckeValue: [],
 
       thumbImageUrl: "",
@@ -343,6 +386,8 @@ export default {
         },
         categoryIdSet: [],
         tagIdSet: [],
+        categories: [],
+        tags: [],
       },
 
       //product list to table
@@ -361,6 +406,19 @@ export default {
         { text: "Pack", value: "pack" },
         { text: "Action", value: "action" },
       ],
+
+      //Game CODE TABLE
+      gcPage: 0,
+      gcTotalItems: 0,
+      gcTotalPages: 0,
+      productGameCodes: [],
+      gcOptions: {},
+      gameCodeHeaders: [
+        { text: "Id", value: "id" },
+        { text: "Game code", value: "code" },
+        { text: "Status", value: "status" },
+        { text: "Action", value: "action" },
+      ],
     };
   },
   watch: {
@@ -369,9 +427,72 @@ export default {
         this.getAllProduct();
       },
     },
+    gcOption: {
+      handler() {
+        this.getGameCodeByProduct(this.product);
+      },
+    },
     deep: true,
   },
   methods: {
+    goToGameCode(item) {
+      this.product = item;
+      this.step = 3;
+      this.getGameCodeByProduct(this.product);
+    },
+
+    addGameCode() {
+      if (this.codeGame.code == "") {
+        alert("please enter game code");
+      } else {
+        api
+          .post("/game_code?productId=" + this.product.productId, this.codeGame)
+          .then((response) => {
+            console.log(response);
+            alert("add game code success");
+            this.reloadWindow();
+          })
+          .catch((error) => {
+            Promise.reject(error);
+            alert("add game code fail");
+          });
+      }
+    },
+
+    deleteGameCode(item){
+      api
+          .delete("/game_code/" + item.id)
+          .then((response) => {
+            console.log(response);
+            alert("delete game code success");
+            this.reloadWindow();
+          })
+          .catch((error) => {
+            Promise.reject(error);
+            alert("delete fail");
+          });
+    },
+
+    getGameCodeByProduct(product) {
+      //const { gcPage, itemsPerPage } = this.gcOptions;
+      //let pageNumber = gcPage - 1;
+
+      api
+        .get(
+          "/game_code/search/?productId=" +
+            product.productId +
+            "&pageNo=" +
+            0 +
+            "&pageSize=" +
+            20
+        )
+        .then((response) => {
+          this.productGameCodes = response.data.productGameCodes;
+          this.gcTotalItems = response.data.totalItems;
+          this.gcTotalPages = response.data.totalPages;
+        });
+    },
+
     returnToManagePage() {
       this.step = 1;
       this.productRequest.product.productId = "";
@@ -385,8 +506,8 @@ export default {
       this.productRequest.product.productWarranty = "";
       this.thumbImageUrl = "";
 
-      this.productRequest.categoryIdSet = [];
-      this.productRequest.tagIdSet = [];
+      this.productRequest.categories = [];
+      this.productRequest.tags = [];
     },
 
     handleSearchCategory(item) {
@@ -414,8 +535,8 @@ export default {
     },
     handleSearchTag(item) {
       this.loading = true;
-      const { page, itemsPerPage } = this.options;
-      let pageNumber = page - 1;
+      const { gcPage, itemsPerPage } = this.options;
+      let pageNumber = gcPage - 1;
       //let categoryId = item.categoryId;
 
       api
@@ -542,34 +663,10 @@ export default {
       this.productRequest.product.productWarranty = item.productWarranty;
       this.thumbImageUrl = item.thumbnailImageUrl;
 
-      this.productRequest.categoryIdSet = item.categoryChilds;
-      this.productRequest.tagIdSet = item.tagChilds;
+      this.productRequest.categories = item.categoryChilds;
+      this.productRequest.tags = item.tagChilds;
 
       console.log(this.productRequest);
-
-      // const formData = new FormData();
-      // formData.append(
-      //   "productRequest",
-      //   new Blob([JSON.stringify(this.productRequest)], {
-      //     type: "application/json",
-      //   })
-      // );
-      // formData.append("thumbnailImage", this.thumbnailImage);
-      // console.log(this.productRequest);
-      // api
-      //   .post("/product", formData, {
-      //     headers: { "Content-Type": "multipart/form-data" },
-      //   })
-      //   .then((response) => {
-      //     console.log(response.data);
-      //     this.alertMessage.type = "success";
-      //     this.alertMessage.content = "Save Product Success";
-      //     this.reloadWindow();
-      //   })
-      //   .catch((error) => {
-      //     console.log(error.response.data);
-      //   });
-
       this.step = 2;
     },
 
@@ -611,7 +708,8 @@ export default {
         });
     },
   },
-  mounted() {
+  mounted() {},
+  created() {
     this.getAllServicePack();
     this.getAllTag();
     this.getAllCategory();

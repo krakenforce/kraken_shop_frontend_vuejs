@@ -58,6 +58,7 @@ const routes = [
         path: "/userInfo",
         name: "UserRoles",
         component: UserRoles,
+        meta: { requiredAuth: true },
       },
       {
         path: "/contact",
@@ -99,7 +100,6 @@ const routes = [
     component: DashBoard,
     meta: {
       requiredAuth: true,
-      requiredRoles: ["ROLE_ADMIN", "ROLE_MODERATOR"],
     },
     children: [
       {
@@ -186,17 +186,23 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   next();
-  window.scrollTo(0, 0)
+  window.scrollTo(0, 0);
   const loggedIn = localStorage.getItem("user");
 
   if (to.matched.some((record) => record.meta.requiredAuth)) {
-    console.log(loggedIn);
-    // if (loggedIn) {
-    //   console.log("logged in")
-    // } else {
-    //   console.log("chua dang nhap, chuyen ve login");
-    //   return next("/login");
-    // }
+    if (loggedIn) {
+      let user = JSON.parse(loggedIn);
+      let adminRole = "ROLE_ADMIN";
+      let roleList = user.roles;
+      if (roleList.indexOf(adminRole) !== -1) {
+        return next();
+      } else {
+        console.log("người dùng bth ko thể vào admin");
+        return next();
+      }
+    } else {
+      return next("/login");
+    }
   } else {
     return next();
   }

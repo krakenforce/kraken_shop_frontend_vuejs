@@ -6,7 +6,8 @@ import router from './router';
 import CKEditor from 'ckeditor4-vue';
 import moment from 'moment'
 import setupInterceptors from './services/setupInterceptors';
-import store from './store';
+import store from "./store/index";
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.prototype.moment = moment;
 Vue.config.productionTip = false

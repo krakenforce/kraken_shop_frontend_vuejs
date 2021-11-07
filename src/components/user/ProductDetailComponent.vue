@@ -36,6 +36,12 @@
                 <v-card-title>
                   <h3>{{ product.name }}</h3>
                 </v-card-title>
+                <v-card-text>
+                  <!-- RATING -->
+                    <star-rating star-size="20" read-only="true" :rating="product.avgStar"></star-rating>
+                  
+                  
+                </v-card-text>
                 <v-card-actions>
                   <v-container grid-list-xs>
                     <v-row>
@@ -52,10 +58,23 @@
                         </div>
                       </v-col>
                       <v-col cols="12" sm="6">
-                        <v-btn outlined color="red" class="white--text" rounded>
-                          BUY
+                        <v-btn
+                          @click="addToCart(product)"
+                          outlined
+                          color="red"
+                          class="white--text"
+                          rounded
+                        >
+                          ADD TO CART
                         </v-btn>
                       </v-col>
+                    </v-row>
+                    <v-row>
+                      <div v-for="item in product.tagChilds" :key="item.tagId">
+                        <v-chip>
+                          {{ item.name }}
+                        </v-chip>
+                      </div>
                     </v-row>
                   </v-container>
                 </v-card-actions>
@@ -91,16 +110,44 @@
               <v-tabs-items v-model="tab">
                 <v-card flat>
                   <div v-show="currentTab === 0">
-                    <v-card-text>{{product.productDetail}}</v-card-text>
+                    <v-card-text>{{ product.productDetail }}</v-card-text>
                   </div>
                   <div v-show="currentTab === 1">
-                    <v-card-text>{{product.productWarranty}}</v-card-text>
+                    <v-card-text>{{ product.productWarranty }}</v-card-text>
                   </div>
                   <div v-show="currentTab === 2">
-                    <v-card-text>Tab2 content</v-card-text>
+                    <v-card> </v-card>
                   </div>
                   <div v-show="currentTab === 3">
-                    <v-card-text>Tab3 content</v-card-text>
+                    <v-card elevation="12" color="black">
+                      <div v-if="!user">
+                        <h2>Please login to review</h2>
+                        <a href="/login" class="btn btn-block btn-primary"
+                          >Login</a
+                        >
+                      </div>
+                      <div v-if="user">
+                        <v-card-title> Enter info to review </v-card-title>
+                        <v-form>
+                          <v-container grid-list-xs>
+                            <star-rating
+                              star-size="20"
+                              animate="true"
+                              @rating-selected="getRating"
+                            ></star-rating>
+                            <v-text-field
+                              name="name"
+                              label="Content"
+                              id="content"
+                              v-model="commentContent"
+                            ></v-text-field>
+                            <v-btn color="primary" @click="sendReview">
+                              Send Review
+                            </v-btn>
+                          </v-container>
+                        </v-form>
+                      </div>
+                    </v-card>
                   </div>
                 </v-card>
               </v-tabs-items>
@@ -147,16 +194,25 @@
 </template>
 
 <script>
+import StarRating from "vue-star-rating";
+import api from "../../services/api";
+
 export default {
   name: "ProductDetail",
   props: ["product"],
-
+  components: {
+    StarRating,
+  },
   data: () => ({
+    user: null,
+    rating: 0,
+    productRating: 0,
+    commentContent: "",
     selectedItem1: 0,
     selectedItem2: 0,
     currentTab: 0,
     tab: null,
-    items: ["INTRODUCTION", "WARRANTY", "BUY INSTRUCTION", "COMMENT"],
+    items: ["INTRODUCTION", "WARRANTY", "COMMENT", "REVIEW"],
     item1: [
       { text: "Battle.Net" },
       { text: "Game Mobile" },
@@ -188,10 +244,53 @@ export default {
     ],
     icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
   }),
-  mounted() {
-    
+  methods: {
+    getRating(rating) {
+      this.rating = rating;
+    },
+
+    addToCart(item) {
+      this.$store.commit("addToCart", item);
+    },
+
+    sendReview() {
+      let productId = this.product.productId;
+      let userId = this.user.id;
+      let review = { starRating: this.rating, content: this.commentContent };
+      api
+        .post(
+          "/product/review?userId=" + userId + "&productId=" + productId,
+          review
+        )
+        .then((response) => {
+          console.log(response);
+          alert("Send Review success");
+          window.location.reload();
+        })
+        .catch((error) => {
+          Promise.reject(error);
+          alert("Send Review fail");
+        });
+    },
+
+    getProductRating(){
+      api.get('/product/review/star?productId=' + this.product.productId)
+        .then((response) => {
+          this.productRating = response.data;
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        })
+
+    },
+
+    getUser() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+    },
   },
-  created() {},
+  mounted() {
+    this.getUser();
+  },
 };
 </script>
 <style scoped>

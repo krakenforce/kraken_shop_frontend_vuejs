@@ -62,6 +62,13 @@
                           tile
                           >Login</v-btn
                         >
+                        <div v-if="loadingCircle" class="text-center">
+                          <v-progress-circular
+                            indeterminate
+                            color="primary"
+                          ></v-progress-circular>
+                        </div>
+
                         <h6 class="text-center grey--text mt-4 mb-3">
                           Or log in using
                         </h6>
@@ -270,6 +277,7 @@ export default {
   name: "Login",
   data() {
     return {
+      loadingCircle: false,
       step: 1,
       username: "",
       password: "",
@@ -280,7 +288,18 @@ export default {
   methods: {
     handleLogin() {
       AuthService.login(this.username, this.password);
-      
+      this.loadingCircle = true;
+      setTimeout(() => {
+        let currentUser = JSON.parse(localStorage.getItem("user"));
+        if (currentUser) {
+          let roleList = currentUser.roles;
+          if (roleList.indexOf("ROLE_ADMIN") !== -1) {
+            this.$router.push("/admin");
+          } else {
+            this.$router.push("/");
+          }
+        }
+      }, 500);
     },
     handleRegister() {
       AuthService.register(this.username, this.email, this.password);

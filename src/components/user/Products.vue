@@ -19,6 +19,7 @@
               >
                 <v-hover v-slot="{ hover }" close-delay="200">
                   <v-card
+                    height="100%"
                     :elevation="hover ? 16 : 5"
                     :class="{ 'on-hover': hover }"
                     class="mx-auto"
@@ -33,11 +34,19 @@
                       width="320px"
                     ></v-img>
 
-                    <v-card-title class="white--text" >
+                    <v-card-title class="white--text">
                       {{ item.name }}</v-card-title
                     >
 
                     <v-divider class="mx-4"></v-divider>
+                    <v-card-text>
+                      <star-rating
+                        star-size="10"
+                        read-only="true"
+                        :rating="item.avgStar"
+                      ></star-rating>
+                    </v-card-text>
+
                     <v-card-actions>
                       <v-container>
                         <v-row>
@@ -49,12 +58,24 @@
                         </v-row>
                         <v-row dense>
                           <v-col cols="12" sm="6">
-                            <v-btn icon class="white--text" color="blue">
-                              <v-icon>add_shopping_cart</v-icon>
-                            </v-btn>
-                            <v-btn icon class="white--text" color="pink">
-                              <v-icon> mdi-heart </v-icon>
-                            </v-btn>
+                            <div v-if="user">
+                              <v-btn
+                                icon
+                                class="white--text"
+                                color="blue"
+                                @click.stop="addToCart(item)"
+                              >
+                                <v-icon>add_shopping_cart</v-icon>
+                              </v-btn>
+                              <v-btn
+                                icon
+                                class="white--text"
+                                color="pink"
+                                @click.stop="addToFavorite"
+                              >
+                                <v-icon> mdi-heart </v-icon>
+                              </v-btn>
+                            </div>
                           </v-col>
                           <v-col cols="12" sm="6">
                             <v-card-text class="yellow--text"
@@ -76,14 +97,32 @@
 </template>
 
 <script>
+import StarRating from "vue-star-rating";
 export default {
   name: "Product",
   props: ["products", "itemNumber", "totalItem", "product"],
+  components: {
+    StarRating,
+  },
 
   data() {
-    return {};
+    return {
+      user: null,
+    };
   },
   methods: {
+    getUser() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+    },
+
+    addToCart(item) {
+      this.$store.commit("addToCart", item);
+    },
+
+    addToFavorite() {
+      alert("add product to favorite");
+    },
+
     seeProductDetail(item) {
       this.$router.push({
         name: "ProductDetail",
@@ -93,7 +132,10 @@ export default {
       });
     },
   },
-  created: {},
+  mounted() {
+    this.getUser();
+  },
+  created() {},
 };
 </script>
 <style lang="sass" scoped>

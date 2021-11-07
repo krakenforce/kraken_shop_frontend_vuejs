@@ -68,10 +68,14 @@
             </v-menu>
           </v-col>
 
-          <v-spacer></v-spacer>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" sm="2">
               <v-btn @click="getReviewByTime" color="green" class="white--text">
                   <v-icon>fas fa-search</v-icon>
+              </v-btn>
+          </v-col>
+          <v-col cols="12" sm="1">
+              <v-btn @click="reloadWindow" color="transparent" x-small>
+                .
               </v-btn>
           </v-col>
         </v-row>
@@ -167,6 +171,10 @@ export default {
     source: String,
   },
   methods: {
+    reloadWindow(){
+      window.location.reload();
+    },
+
     handleClick(value) {
       this.step = 2;
       this.testValue = value;
