@@ -6,7 +6,16 @@
             <v-row>
               <v-col cols="auto">
                 <Carousel :homepageBanners="homepageBanners" :itemNumber="itemNumber" />
-                <Products :products="products" :itemNumber="itemNumber" :totalItems="totalItems"/>
+                <Products :products="products" :itemNumber="itemNumber" :totalItems="totalItems"/>    
+              </v-col>      
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12">
+                <BonusInfoComponent/>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12">
                 <Footer />
               </v-col>
             </v-row>
@@ -22,12 +31,14 @@ import api from "../../services/api"
 import Carousel from "../../components/user/Carousel.vue";
 import Products from "../../components/user/Products.vue";
 import Footer from "../../components/user/Footer.vue";
+import BonusInfoComponent from "../../components/user/BonusInfoComponent.vue"
 export default {
   name: "Homepage",
   components: {
     Carousel,
     Products,
     Footer,
+    BonusInfoComponent,
   },
   data() {
     return {

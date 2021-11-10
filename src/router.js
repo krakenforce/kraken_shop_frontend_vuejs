@@ -30,6 +30,9 @@ import Contact from "./views/user/Contact.vue";
 import ProductList from "./views/user/ProductList.vue";
 import ProductDetail from "./views/user/ProductDetail.vue";
 import UserRoles from "./views/user/UserRoles.vue";
+import CartPage from "./views/user/CartPage.vue";
+import Checkout from "./views/user/Checkout.vue";
+import CheckoutSuccess from './views/CheckoutSuccess.vue';
 
 Vue.use(VueRouter);
 
@@ -61,6 +64,24 @@ const routes = [
         meta: { requiredAuth: true },
       },
       {
+        path: "/cart",
+        name: "CartPage",
+        component: CartPage,
+        meta: { requiredAuth: true },
+      },
+      {
+        path: "/checkout",
+        name: "Checkout",
+        component: Checkout,
+        meta: { requiredAuth: true },
+      },
+      {
+        path: "/checkout-success",
+        name: "CheckoutSuccess",
+        component: CheckoutSuccess,
+        meta: { requiredAuth: true },
+      },
+      {
         path: "/contact",
         name: "Contact",
         component: Contact,
@@ -78,7 +99,7 @@ const routes = [
     component: Login,
   },
   {
-    path: "/forgot-password/:resetToken",
+    path: "/reset_password",
     name: "ForgotPassword",
     component: ForgotPassword,
   },
@@ -93,7 +114,6 @@ const routes = [
     name: "PaymentRedirect",
     component: PaymentRedirect,
   },
-  { path: "*", redirect: "/" },
   {
     path: "/admin/",
     name: "Admin DashBoard",

@@ -14,6 +14,11 @@
                       Log in to your account so you can go with us <br />
                       and enjoy
                     </h6>
+                    <v-card-text v-if="lAlert.type">
+                      <v-alert dense :type="lAlert.type">
+                        {{ lAlert.text }}
+                      </v-alert>
+                    </v-card-text>
                     <v-row align="center" justify="center">
                       <v-col cols="12" sm="8">
                         <v-text-field
@@ -136,6 +141,11 @@
                       <br />
                       your Account
                     </h6>
+                    <v-card-text v-if="rAlert.type">
+                      <v-alert dense :type="rAlert.type">
+                        {{ rAlert.text }}
+                      </v-alert>
+                    </v-card-text>
                     <v-row align="center" justify="center">
                       <v-col cols="12" sm="10">
                         <v-text-field
@@ -147,7 +157,7 @@
                           autocomplete="false"
                           class="mt-16"
                           prepend-icon="fas fa-user"
-                          v-model="username"
+                          v-model="rUsername"
                         />
 
                         <v-text-field
@@ -158,7 +168,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="far fa-envelope"
-                          v-model="email"
+                          v-model="rEmail"
                         />
 
                         <v-text-field
@@ -169,7 +179,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
-                          v-model="password"
+                          v-model="rPassword"
                         />
 
                         <v-text-field
@@ -180,7 +190,7 @@
                           color="blue"
                           autocomplete="false"
                           prepend-icon="fas fa-lock"
-                          v-model="confirmPassword"
+                          v-model="rConfirmPassword"
                         />
                         <v-row>
                           <v-col cols="12" sm="7">
@@ -188,6 +198,7 @@
                               label="I accept website policy"
                               class="mt-n1"
                               color="blue"
+                              v-model="rAcceptPolicy"
                             ></v-checkbox>
                           </v-col>
                           <v-col cols="12" sm="5">
@@ -239,6 +250,11 @@
                       <br />
                       your Account
                     </h6>
+                    <v-card-text v-if="fpAlert.type">
+                      <v-alert dense :type="fpAlert.type">
+                        {{ fpAlert.text }}
+                      </v-alert>
+                    </v-card-text>
                     <v-row align="center" justify="center">
                       <v-col cols="12" sm="10">
                         <v-text-field
@@ -250,10 +266,15 @@
                           autocomplete="false"
                           class="mt-16"
                           prepend-icon="fas fa-user"
-                          v-model="username"
+                          v-model="fpEmail"
                         />
 
-                        <v-btn color="red" dark block tile
+                        <v-btn
+                          color="red"
+                          dark
+                          block
+                          tile
+                          @click="handleForgetPassword"
                           >Reset Your Password</v-btn
                         >
                       </v-col>
@@ -271,6 +292,7 @@
 
 <script>
 import AuthService from "../services/AuthService";
+import api from "../services/api";
 //import router from '../router'
 
 export default {
@@ -283,14 +305,70 @@ export default {
       password: "",
       email: "",
       confirmPassword: "",
+
+      //Login
+      lAlert: {
+        type: "",
+        text: "",
+      },
+
+      //Register
+      rUsername: "",
+      rEmail: "",
+      rPassword: "",
+      rConfirmPassword: "",
+      rAcceptPolicy: "",
+      rAlert: {
+        type: "",
+        text: "",
+      },
+
+      // Forgot Password
+      fpEmail: "",
+      fpAlert: {
+        type: "",
+        text: "",
+      },
     };
   },
   methods: {
+    clearAlert(alert) {
+      setTimeout(() => {
+        alert.type = "";
+        alert.text = "";
+      }, 3000);
+    },
+
+    handleForgetPassword() {
+      if (this.fpEmail == "") {
+        this.fpAlert.type = "error";
+        this.fpAlert.text = "Please enter email address";
+        this.clearAlert(this.fpAlert);
+      } else {
+        let forgetPasswordRequest = { email: "" };
+        forgetPasswordRequest.email = this.fpEmail;
+        api
+          .post("/auth/forgot_password", forgetPasswordRequest)
+          .then((response) => {
+            this.fpAlert.type = "success";
+            this.fpAlert.text = response.data.message;
+            this.clearAlert(this.fpAlert);
+          })
+          .catch((error) => {
+            this.fpAlert.type = "error";
+            this.fpAlert.text = error.response.data.message;
+            this.clearAlert(this.fpAlert);
+          });
+      }
+    },
+
     handleLogin() {
       AuthService.login(this.username, this.password);
-      this.loadingCircle = true;
+      let currentUser;
       setTimeout(() => {
-        let currentUser = JSON.parse(localStorage.getItem("user"));
+        currentUser = JSON.parse(localStorage.getItem("user"));
+      }, 500);
+      setTimeout(() => {
         if (currentUser) {
           let roleList = currentUser.roles;
           if (roleList.indexOf("ROLE_ADMIN") !== -1) {
@@ -301,9 +379,44 @@ export default {
         }
       }, 500);
     },
+
     handleRegister() {
-      AuthService.register(this.username, this.email, this.password);
+      if (
+        this.rUsername == "" ||
+        this.rEmail == "" ||
+        this.rPassword == "" ||
+        this.rConfirmPassword == ""
+      ) {
+        this.rAlert.type = "error";
+        this.rAlert.text = "Please Enter All Field";
+        this.clearAlert(this.rAlert);
+      } else {
+        if (this.rPassword != this.rConfirmPassword) {
+          this.rAlert.type = "error";
+          this.rAlert.text = "Password not matched, try again";
+          this.clearAlert(this.rAlert);
+        } else {
+          let signUpRequest = { username: "", password: "", email: "" };
+          signUpRequest.username = this.rUsername;
+          signUpRequest.password = this.rPassword;
+          signUpRequest.email = this.rEmail;
+          api
+            .post("/auth/signup", signUpRequest)
+            .then((response) => {
+              this.rAlert.type = "success";
+              this.rAlert.text = response.data.message;
+              this.clearAlert(this.rAlert);
+              this.step = 1;
+            })
+            .catch((error) => {
+              this.rAlert.type = "error";
+              this.rAlert.text = error.response.data.message;
+              this.clearAlert(this.rAlert);
+            });
+        }
+      }
     },
+
     goToWindowItem(value) {
       this.step = value;
     },

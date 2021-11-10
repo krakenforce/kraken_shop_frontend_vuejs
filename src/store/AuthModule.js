@@ -14,12 +14,20 @@ const auth = {
         refreshToken(state, accessToken){
             state.status.loggedIn = true;
             state.user = {...state.user, accessToken : accessToken};
+        },
+
+        login(state){
+            state.status.loggedIn = true;
         }
     },
     action:{
         // insert code
         refreshToken({commit}, accessToken){
             commit('refreshToken', accessToken);
+        },
+
+        login({commit}){
+            commit('login');
         }
     },
     

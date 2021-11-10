@@ -50,7 +50,11 @@
             <v-tab-item v-for="n in 3" :key="n">
               <v-container fluid black justify="center">
                 <v-row>
-                  <v-col v-for="item in products" :key="item.productId" cols="auto">
+                  <v-col
+                    v-for="item in products"
+                    :key="item.productId"
+                    cols="auto"
+                  >
                     <v-hover v-slot="{ hover }" close-delay="200">
                       <v-card
                         :elevation="hover ? 16 : 5"
@@ -66,7 +70,6 @@
                             <v-img
                               :src="item.thumbnailImageUrl"
                               height="180px"
-                              
                             ></v-img>
                           </v-col>
 
@@ -76,19 +79,34 @@
                                 <v-row dense>
                                   <v-col cols="12" md="8">
                                     <v-card-title class="yellow--text">
-                                      {{item.name}}</v-card-title
+                                      {{ item.name }}</v-card-title
                                     >
-                                    <v-card-title class="blue--text">
-                                      <strike><strong>{{item.price}} &#36;</strong></strike></v-card-title
+                                    <v-card-subtitle>
+                                      <star-rating
+                                        :star-size="15"
+                                        :read-only="true"
+                                        :rating="item.avgStar"
+                                      ></star-rating>
+                                    </v-card-subtitle>
+                                    <v-card-title class="red--text">
+                                      <strike
+                                        ><strong
+                                          >{{ item.price }} &#36;</strong
+                                        ></strike
+                                      ></v-card-title
                                     >
                                   </v-col>
 
                                   <v-spacer></v-spacer>
                                   <v-col cols="12" md="4">
-                                    <v-card-text class="white--text"
-                                      > <strong>{{item.salePrice}} &#36;</strong> </v-card-text
-                                    >
-                                    <v-btn icon color="blue">
+                                    <v-card-text class="white--text">
+                                      <h2>
+                                        <strong
+                                          >{{ item.salePrice }} &#36;</strong
+                                        >
+                                      </h2>
+                                    </v-card-text>
+                                    <v-btn icon color="blue" @click.stop="addToCart(item)">
                                       <v-icon>add_shopping_cart</v-icon>
                                     </v-btn>
                                   </v-col>
@@ -100,14 +118,14 @@
                       </v-card>
                     </v-hover>
                   </v-col>
-                    <v-pagination
-                      v-model="page"
-                      :length="totalPages"
-                      circle
-                      color="red"
-                      dark
-                      @input="onPageChange"
-                    ></v-pagination>
+                  <v-pagination
+                    v-model="page"
+                    :length="totalPages"
+                    circle
+                    color="red"
+                    dark
+                    @input="onPageChange"
+                  ></v-pagination>
                 </v-row>
               </v-container>
             </v-tab-item>
@@ -119,9 +137,13 @@
 </template>
 
 <script>
+import StarRating from "vue-star-rating";
 export default {
   name: "ProductList",
-  props:["products", "totalItems", "totalPages"],
+  props: ["products", "totalItems", "totalPages"],
+  components: {
+    StarRating,
+  },
 
   data: () => ({
     selectedItem1: 0,
@@ -158,7 +180,7 @@ export default {
     ],
   }),
   methods: {
-    onPageChange(){
+    onPageChange() {
       this.$emit("changePage", this.page);
     },
 
@@ -170,12 +192,16 @@ export default {
         },
       });
     },
-  }
+
+    addToCart(item) {
+      this.$store.commit("addToCart", item);
+    },
+  },
 };
 </script>
 <style lang="sass" scoped>
 .v-card.on-hover.theme--dark
-    background-color: white
+  background-color: white
 >.v-card__text
-    color: white
+  color: white
 </style>

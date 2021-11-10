@@ -15,6 +15,8 @@ class AuthService {
         return response.data;
       })
       .catch((error) => {
+        alert("Cannot login, try again");
+        window.location.reload();
         Promise.reject(error);
       });
   }

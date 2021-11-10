@@ -3,19 +3,6 @@
     <v-app-bar-nav-icon @click="$emit('handleDrawer')"></v-app-bar-nav-icon>
 
     <v-spacer></v-spacer>
-    <!-- <v-row>
-      <v-col sm="9" cols="12">
-        <v-form class="mt-5">
-          <v-text-field rounded outlined dense placeholder="Search Here" />
-        </v-form>
-      </v-col>
-      <v-col sm="2" cols="12">
-        <v-btn color="blue" class="mt-5" icon outlined>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row> -->
-
     <v-spacer></v-spacer>
 
     <!--Notification-->
@@ -55,7 +42,7 @@
                 <img src="https://i.ibb.co/J5MnNBg/icon.png" alt="" />
               </v-avatar>
             </v-badge>
-            <span class="ml-4">Username</span>
+            <span class="ml-4">{{user.username}}</span>
           </v-chip>
         </span>
       </template>
@@ -66,16 +53,25 @@
             <img src="https://i.ibb.co/J5MnNBg/icon.png" alt="" />
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>Username </v-list-item-title>
+            <v-list-item-title>{{user.username}} </v-list-item-title>
             <v-list-item-subtitle> Logged In </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="logout" v-for="(menu, index) in menus" :key="index" link >
+        <v-list-item link @click="logout">
           <v-list-item-avatar>
-            <v-icon> {{ menu.icon }}</v-icon>
+            <v-icon>mdi-key</v-icon>
           </v-list-item-avatar>
           <v-list-item-title>
-            {{ menu.title }}
+            Change Password
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-list-item @click="logout" link >
+          <v-list-item-avatar>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-title>
+            Logout
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -87,12 +83,12 @@
 
 export default {
   name: "Header",
+  props: ["user"],
   data() {
     return {
       currentUser: null,
       selectedItem: 1,
       menus: [
-        { title: "Profile", icon: "mdi-account" },
         { title: "Change Password", icon: "mdi-key" },
         { title: "Logout", icon: "mdi-logout"},
       ],
@@ -102,10 +98,7 @@ export default {
     logout(){
       localStorage.removeItem("user");
       this.$router.push("/login");
-    }
-  },
-  mounted() {
-    this.currentUser = JSON.parse(localStorage.getItem("user"));
+    },
   },
 };
 </script>

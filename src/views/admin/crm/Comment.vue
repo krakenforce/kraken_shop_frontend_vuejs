@@ -21,7 +21,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="computedDateFormatted"
+                  v-model="startTime"
                   label="Start Date"
                   hint="MM/DD/YYYY format"
                   persistent-hint
@@ -32,7 +32,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="startTime"
                 no-title
                 @input="menu2 = false"
               ></v-date-picker>
@@ -50,7 +50,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="computedDateFormatted"
+                  v-model="endTime"
                   label="End Date"
                   hint="MM/DD/YYYY format"
                   persistent-hint
@@ -61,7 +61,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="endTime"
                 no-title
                 @input="menu2 = false"
               ></v-date-picker>
@@ -70,7 +70,7 @@
 
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
-            <v-btn color="green" class="white--text">
+            <v-btn color="green" class="white--text" @click="getCommentByTime">
               <v-icon>fas fa-search</v-icon>
             </v-btn>
           </v-col>
@@ -79,11 +79,25 @@
         <v-row class="mt-4">
           <v-col cols="12" sm="12">
             <v-data-table
+              :page="1"
+              :pageCount="totalPages"
               :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              @click:row="handleClick"
-            ></v-data-table>
+              :items="comments"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :loading="loading"
+              class="elevation-1"
+              ref="dataTable"
+            >
+              <template v-slot:item.action="{ item }">
+                <v-btn color="blue" @click="replyComment(item)">
+                  <v-icon>fas fa-reply</v-icon>
+                </v-btn>
+                <v-btn color="red" @click="deleteFeedback(item)">
+                  <v-icon>fas fa-trash</v-icon>
+                </v-btn>
+              </template>
+              ></v-data-table>
           </v-col>
         </v-row>
       </v-window-item>
@@ -123,6 +137,9 @@
 </template>
 
 <script>
+import api from "../../../services/api"
+import moment from "moment";
+
 export default {
   name: "Comment",
   components: {},
@@ -130,113 +147,90 @@ export default {
     return {
       testValue: "",
       step: 1,
-      items: ["ADMIN", "USER"],
+      startTime: null,
+      endTime: null,
+
+       //table
+      page: 0,
+      totalItems: 0,
+      totalPages: 0,
+      comments: [],
+      loading: true,
+      options: {},
       headers: [
-        {
-          text: "Dessert (100g serving)",
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: "Calories", value: "calories" },
-        { text: "Fat (g)", value: "fat" },
-        { text: "Carbs (g)", value: "carbs" },
-        { text: "Protein (g)", value: "protein" },
-        { text: "Iron (%)", value: "iron" },
+        { text: "Id", value: "id" },
+        { text: "User", value: "username" },
+        { text: "Product", value: "productName" },
+        { text: "Content", value: "content" },
+        { text: "Time", value: "commentTime" },
         { text: "Action", value: "action" },
       ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%",
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: "1%",
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          iron: "7%",
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          iron: "8%",
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-          iron: "16%",
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: "0%",
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-          iron: "2%",
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-          iron: "45%",
-        },
-        {
-          name: "Donut",
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-          iron: "22%",
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-          iron: "6%",
-        },
-      ],
+      
     };
   },
   props: {
     source: String,
   },
+  watch: {
+    options: {
+      handler() {
+        this.getAllComment();
+      },
+      deep: true,
+    },
+  },
   methods: {
-    handleClick(value) {
+    replyComment(value) {
       this.step = 2;
       this.testValue = value;
     },
+
+    getAllComment(){
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get("/product/comment?pageNo=" + pageNumber + "&pageSize=" + itemsPerPage)
+        .then((response) => {
+          this.loading = false;
+          this.comments = response.data.comments;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+     getCommentByTime() {
+      var startTime = new Date(this.startTime);
+      var endTime = new Date(this.endTime);
+      let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
+
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/product/comment/time?startTime=" +
+            start +
+            "&endTime=" +
+            end +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.comments = response.data.comments;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+  },
+   mounted() {
+    this.getAllComment();
   },
 };
 </script>

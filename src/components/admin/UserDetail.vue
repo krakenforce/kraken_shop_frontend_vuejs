@@ -80,22 +80,31 @@
 
       <v-col cols="12" sm="4">
         <v-row class="ml-4">
-          <v-card elevation="12">
-            <v-card-title>Wallet</v-card-title>
-            <v-card-subtitle>Balance:</v-card-subtitle>
-            <v-card-text class="blue--text">
-              <b>{{ user.walletBalance }} &#36;</b>
-            </v-card-text>
-          </v-card>
+          <v-col cols="12" sm="12">
+            <v-card elevation="12">
+              <v-card-title>Wallet</v-card-title>
+              <v-card-subtitle>Balance:</v-card-subtitle>
+              <v-card-text class="blue--text">
+                <b>{{ user.walletBalance }} &#36;</b>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="blue" @click.stop="dialog = true">
+                  <v-icon>fas fa-plus</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
         </v-row>
 
         <v-row class="ma-4">
           <v-card elevation="12">
             <v-card-title>Favorite Product</v-card-title>
 
-            <v-data-table class="elevation-1" 
-            :headers="headers"
-            :items-per-page="5">
+            <v-data-table
+              class="elevation-1"
+              :headers="headers"
+              :items-per-page="5"
+            >
               <template>
                 <thead>
                   <tr>
@@ -115,6 +124,28 @@
         </v-row>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="dialog" max-width="400px">
+      <v-card>
+        <v-card-title class="text-h5">
+          Recharge for users: {{user.username}}
+        </v-card-title>
+
+        <v-card-text>
+          <v-text-field type="number" dense label="Amount" v-model="amount">
+
+          </v-text-field>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="topUpUser">
+            TOP UP
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -128,35 +159,54 @@ export default {
   },
   data() {
     return {
+      dialog: false,
+      amount: '',
       genderGroup: [
-        {text: "Male", value: "MALE"},
-        {text: "Female", value: "FEMALE"},
-        {text: "Other", value: "OTHER"}
+        { text: "Male", value: "MALE" },
+        { text: "Female", value: "FEMALE" },
+        { text: "Other", value: "OTHER" },
       ],
-      marriageStatusGroup:[
-        {text: "Married", value: true},
-        {text: "Single", value: false},
+      marriageStatusGroup: [
+        { text: "Married", value: true },
+        { text: "Single", value: false },
       ],
 
       //favorite product
       products: [],
       headers: [
-        {text: "Product Id", value: "productId"},
-        {text: "Product Name", value: "name"},
-      ]
+        { text: "Product Id", value: "productId" },
+        { text: "Product Name", value: "name" },
+      ],
     };
   },
   methods: {
+
+    topUpUser(){
+      this.dialog = false;
+      let walletId = this.user.walletId;
+      let amount  = this.amount;
+
+      api.put('/wallet/top_up_user?walletId=' + walletId + '&amount=' + amount)
+        .then((response) => {
+          alert(response.data.message);
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        })
+    },
+
     getFavoriteProduct() {
       let userId = this.user.userId;
-      api.get("/favorite/" + userId)
-      .then((response) =>{
-        this.product = response.data;
-        console.log(response.data);
-      })
-      .catch((error) =>{
-        Promise.reject(error);
-      })
+      api
+        .get("/favorite/" + userId)
+        .then((response) => {
+          this.product = response.data;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
     },
   },
 };

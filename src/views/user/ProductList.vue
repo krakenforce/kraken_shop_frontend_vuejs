@@ -10,7 +10,7 @@
                 :products="products"
                 :totalItems="totalItems"
                 :totalPages="totalPages"
-                @changePage="getAllProduct"
+                @changePage="searchProductByType"
               />
               <Footer />
             </v-col>
@@ -51,7 +51,7 @@ export default {
       this.type = this.$route.params.type;
     },
 
-    getAllProduct(value) {
+    searchProductByType(value){
       this.loading = true;
       let pageNumber;
       if(value != null){
@@ -60,10 +60,54 @@ export default {
       }else{
         pageNumber = this.page - 1;
       }
-      
 
+      if(this.typeName == "all" && this.type == "product"){
+        this.getAllProduct(pageNumber);
+      }else if(this.typeName == "genre"){
+        this.getProductByTag(pageNumber);
+      }else if(this.typeName == "category"){
+        this.getProductByCategory(pageNumber);
+      }else if(this.typeName == "product"){
+        this.getProductByName(pageNumber);
+      }
+    },
+
+    getAllProduct(pageNumber) {
       api
-        .get("/product?pageNo=" + pageNumber  + "&pageSize=" + 8)
+        .get("/product?pageNo=" + pageNumber  + "&pageSize=" + 10)
+        .then((response) => {
+          this.loading = false;
+          this.products = response.data.products;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+    getProductByName(pageNumber){
+      api
+        .get("/product/search/name?productName=" + this.type + "&pageNo=" + pageNumber  + "&pageSize=" + 10)
+        .then((response) => {
+          this.loading = false;
+          this.products = response.data.products;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+    getProductByTag(pageNumber){
+      api
+        .get("/product/tag/search?tagName=" + this.type + "&pageNo=" + pageNumber  + "&pageSize=" + 10)
+        .then((response) => {
+          this.loading = false;
+          this.products = response.data.products;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+    },
+
+    getProductByCategory(pageNumber){
+      api
+        .get("/product/category/search?categoryName=" + this.type + "&pageNo=" + pageNumber  + "&pageSize=" + 10)
         .then((response) => {
           this.loading = false;
           this.products = response.data.products;
@@ -83,12 +127,12 @@ export default {
   },
   mounted() {
     this.getType();
-    this.getAllProduct();
+    this.searchProductByType();
     this.getAllBanner();
   },
-  created() {
-      
-  }
+  beforeMount() {
+    this.searchProductByType();
+  },
 };
 </script>
 

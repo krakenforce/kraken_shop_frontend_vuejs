@@ -18,10 +18,12 @@
               <div class="content">
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="/search/genre/action">Action</a></li>
-                    <li><a href="#">Adventure</a></li>
-                    <li><a href="#">Casual</a></li>
-                    <li><a href="#">Early Access</a></li>
+                    <li><a href="/search/genre/Action">Action</a></li>
+                    <li><a href="/search/genre/Adventure">Adventure</a></li>
+                    <li><a href="/search/genre/Casual">Casual</a></li>
+                    <li>
+                      <a href="/search/genre/EarlyAccess">Early Access</a>
+                    </li>
                     <li><a href="#">Indie</a></li>
                   </ul>
                 </div>
@@ -53,7 +55,9 @@
               <div class="content">
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="#">Battle.Net</a></li>
+                    <li>
+                      <a href="/search/category/Battle.net">Battle.Net</a>
+                    </li>
                     <li><a href="#">Game Mobile</a></li>
                     <li><a href="#">Game Origin</a></li>
                     <li><a href="#">Game Steam</a></li>
@@ -63,7 +67,7 @@
                 </div>
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="#">Khác</a></li>
+                    <li><a href="#">Other</a></li>
                     <li><a href="#">Microsoft-Xbox</a></li>
                     <li><a href="#">Package Steam</a></li>
                     <li><a href="#">PlayStation</a></li>
@@ -104,18 +108,45 @@
                         v-for="item in $store.state.shoppingCart.cart"
                         :key="item.productId"
                       >
-                        <v-list-item-title>{{ item.name }} x {{ item.quantity }} - ${{ item.totalPrice }}</v-list-item-title>
-                        <v-list-item-action>
-                          <v-btn color="red" @click.prevent="removeFromCart(item)">
-                            <v-icon>mdi-delete</v-icon>
-                          </v-btn>
-                        </v-list-item-action>
-
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr
+                                v-for="item in $store.state.shoppingCart.cart"
+                                :key="item.productId"
+                              >
+                                <td class="text-center">{{ item.name }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-center">
+                                  {{ item.totalPrice }} $
+                                </td>
+                                <td class="text-center">
+                                  <v-btn
+                                    color="red"
+                                    @click.prevent="removeFromCart(item)"
+                                  >
+                                    <v-icon>mdi-delete</v-icon>
+                                  </v-btn>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
                       </v-list-item>
                       <v-divider></v-divider>
-                      <h2>Total: $ {{totalPrice}}</h2>
+                      <h2>Total: $ {{ totalPrice }}</h2>
                       <v-divider></v-divider>
-                      <v-btn @click.prevent="checkWalletBalance" class="mt-3" color="blue">Checkout</v-btn>
+                      <v-btn @click.prevent="goToCart" class="mt-3" color="blue"
+                        >Go to cart</v-btn
+                      >
                     </v-list>
                   </div>
                   <div v-else>
@@ -147,7 +178,7 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>
-                            <span>WALLET: {{ user.walletBalance }} $</span>
+                            <span><strong> WALLET:</strong> {{ user.walletBalance }} $</span>
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
@@ -173,33 +204,28 @@
             <a href="/login" class="blue--text">LOGIN/SIGNUP</a>
           </li>
           <li>
-            <v-dialog transition="dialog-top-transition" max-width="600">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon class="ml-10" v-bind="attrs" v-on="on">
-                  <v-icon>mdi-magnify</v-icon>
-                </v-btn>
-              </template>
-              <template v-slot:default="dialog">
-                <v-card class="pa-10">
-                  <v-card-text>
-                    <v-text-field
-                      dense
-                      placeholder="ENTER PRODUCT NAME TO SEARCH"
-                      label="PRODUCT NAME"
-                      v-model="searchKeyword"
-                    >
-                    </v-text-field>
-                  </v-card-text>
-                  <v-card-actions class="justify-end">
-                    <v-btn text color="blue"  @click="searchProduct">
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-btn>
-                    <v-btn text color="red" @click="dialog.value = false"
-                      >Close</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </template>
+            <v-btn icon class="ml-10" @click="dialog = true">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            <v-dialog v-model="dialog" persistent max-width="500">
+              <v-card>
+                <v-card-title class="text-h5"> -- SEARCH -- </v-card-title>
+                <v-card-text>
+                  <v-text-field
+                    v-model="searchKeyword"
+                    placeholder="Keyword"
+                  ></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn icon class="ml-10" color="blue" @click="searchProduct">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn color="red" text @click="dialog = false">
+                    CLOSE
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
             </v-dialog>
           </li>
         </ul>
@@ -219,36 +245,29 @@ export default {
 
   data() {
     return {
-      searchKeyword: '',
+      dialog: false,
+      searchKeyword: "",
       user: null,
       items: [{ text: "Log Out", action: this.logout }],
     };
   },
-  computed:{
-    totalPrice(){
+  computed: {
+    totalPrice() {
       let total = 0;
-      for(let item of this.$store.state.shoppingCart.cart){
+      for (let item of this.$store.state.shoppingCart.cart) {
         total += item.totalPrice;
-      } 
+      }
 
       return total;
-    }
+    },
   },
   methods: {
-
-    checkWalletBalance(){
-      let total = this.totalPrice;
-      let walletBalance = this.user.walletBalance;
-      console.log(walletBalance);
-      console.log(total);
-      if(walletBalance < total){
-        alert("số dư không đủ, nạp thêm tiền");
-        this.$router.push("/userInfo");
-      }
+    goToCart() {
+      this.$router.push("/cart");
     },
 
-    removeFromCart(item){
-      this.$store.commit('removeFromCart', item);
+    removeFromCart(item) {
+      this.$store.commit("removeFromCart", item);
     },
 
     goToUserDetail() {
@@ -268,7 +287,10 @@ export default {
     },
 
     searchProduct() {
-      this.$router.push("/search/keyword/" + this.searchKeyword);
+      this.dialog = false;
+      let keyword = this.searchKeyword;
+      let url = "/search/product/" + keyword;
+      this.$router.push(url);
     },
 
     getUser() {
@@ -277,12 +299,13 @@ export default {
 
     logout() {
       localStorage.removeItem("user");
+      this.$store.state.auth.user = null;
       this.$router.push("/login");
     },
   },
   mounted() {
     this.getUser();
-  }
+  },
 };
 </script>
 <style scoped>

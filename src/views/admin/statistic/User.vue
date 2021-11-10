@@ -72,11 +72,12 @@
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
           <v-subheader :inset="inset"> --- User Spend chart --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+          <BarChart
+            v-if="userLoaded"
+            :chartData="userAmount"
+            :chartLabels="userChartLabel"
+            :coloR="userChartColor"
+          />
         </v-card>
       </v-col>
     </v-row>
@@ -85,12 +86,34 @@
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
           <v-subheader :inset="inset"> --- User Spend Detail --- </v-subheader>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th>User Id</th>
+                <th>Username</th>
+                <th>Total Spend</th>
+                <th>Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in userPaginatedData" :key="user">
+                <td>{{ user.userId }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.total }}</td>
+                <td>
+                  <v-btn color="blue" @click="getDetail(user)">
+                    <v-icon>fas fa-info</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-pagination
+            :length="userPageCount"
+            v-model="userPageNumber"
+            circle
+            @input="userNextPage"
+          ></v-pagination>
           <v-btn class="white--text ma-4" color="blue">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
@@ -98,120 +121,194 @@
       </v-col>
     </v-row>
 
-    
+    <!-- DIALOG -->
+    <v-dialog v-model="dialog">
+      <v-card class="pa-5">
+        <v-row>
+          <v-col cols="12" sm="7">
+            <v-card elevation="12" class="pa-10">
+              <v-subheader :inset="inset">
+                --- User Spend chart ---
+              </v-subheader>
+              <BarChart
+                v-if="productLoaded"
+                :chartData="productAmount"
+                :chartLabels="productChartLabel"
+                :coloR="productChartColor"
+              />
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="5">
+            <v-card elevation="12" class="pa-10">
+              <v-subheader :inset="inset">
+                --- User Spend Detail ---
+              </v-subheader>
+              <v-simple-table>
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="product in productPaginatedData" :key="product">
+                    <td>{{ product.productName }}</td>
+                    <td>{{ product.amount }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+              <v-pagination
+                :length="productPageCount"
+                v-model="productPageNumber"
+                circle
+                @input="productNextPage"
+              ></v-pagination>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
+import BarChart from "../../../components/admin/BarChart.vue";
+import api from "../../../services/api";
+
 export default {
   name: "Sale",
+  components: { BarChart },
   data: () => ({
-    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
     menu: false,
     modal: false,
     menu2: false,
-    headers: [
-      {
-        text: "Dessert (100g serving)",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
-      { text: "Iron (%)", value: "iron" },
-    ],
-    desserts: [
-      {
-        name: "Frozen Yogurt",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
-      },
-      {
-        name: "Ice cream sandwich",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
-    ],
+    dialog: false,
+
+    //user stat table
+    userPageNumber: 1,
+    userPageSize: 5,
+    userStats: [],
+
+    //user stat chart
+    userLoaded: false,
+    userAmount: [],
+    userChartLabel: [],
+    userChartColor: [],
+
+    /**/ //////////////////////////////////////// */
+
+    //product stat table
+    productPageNumber: 1,
+    productPageSize: 5,
+    productStats: [],
+
+    //product stat chart
+    productLoaded: false,
+    productAmount: [],
+    productChartLabel: [],
+    productChartColor: [],
   }),
-  computed: {
-    dateRangeText() {
-      return this.dates.join(" ~ ");
+  methods: {
+    getDetail(item) {
+      this.dialog = true;
+      this.productLoaded = false;
+      this.productAmount = [],
+      this.productChartLabel= [],
+      this.productChartColor= [],
+
+      this.getProductStat(item.userId);
     },
+
+    mappingUserChart() {
+      this.userAmount = this.userStats.map((user) => user.total);
+      this.userChartLabel = this.userStats.map((user) => user.username);
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.userChartLabel) {
+        console.log(i);
+        this.userChartColor.push(dynamicColors());
+      }
+      this.userLoaded = true;
+    },
+
+    userNextPage(page) {
+      this.userPageNumber = page;
+    },
+
+    getAllUserStat() {
+      api.get("/statistics/user").then((response) => {
+        this.userStats = response.data;
+        this.mappingUserChart();
+      });
+    },
+
+    mappingProductChart() {
+      this.productAmount = this.productStats.map((product) => product.amount);
+      this.productChartLabel = this.productStats.map(
+        (product) => product.productName
+      );
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.productChartLabel) {
+        console.log(i);
+        this.productChartColor.push(dynamicColors());
+      }
+      this.productLoaded = true;
+    },
+
+    productNextPage(page) {
+      this.productPageNumber = page;
+    },
+
+    getProductStat(userId) {
+      api
+        .get("/statistics/product/user_id?userId=" + userId)
+        .then((response) => {
+          this.productStats = response.data;
+          this.mappingProductChart();
+        });
+    },
+  },
+  computed: {
+    userPageCount() {
+      let userStatsLength = this.userStats.length;
+      let s = this.userPageSize;
+      return Math.ceil(userStatsLength / s);
+    },
+
+    userPaginatedData() {
+      const start = this.userPageNumber * this.userPageSize - this.userPageSize;
+      const end = start + this.userPageSize;
+      return this.userStats.slice(start, end);
+    },
+
+    productPageCount() {
+      let productStatsLength = this.productStats.length;
+      let s = this.productPageSize;
+      return Math.ceil(productStatsLength / s);
+    },
+
+    productPaginatedData() {
+      const start =
+        this.productPageNumber * this.productPageSize - this.productPageSize;
+      const end = start + this.productPageSize;
+      return this.productStats.slice(start, end);
+    },
+  },
+  mounted() {
+    this.getAllUserStat();
   },
 };
 </script>

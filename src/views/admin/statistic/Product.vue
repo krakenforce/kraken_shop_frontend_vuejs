@@ -3,93 +3,117 @@
     <h1>Product Statistics</h1>
     <span>Show statistic detail of Sales</span>
     <v-spacer></v-spacer>
+
     <v-row>
       <!-- FIRST DATE PICKER -->
       <v-col cols="12" sm="4">
         <v-menu
-          ref="menu"
-          v-model="menu"
+          v-model="menu1"
           :close-on-content-click="false"
-          :return-value.sync="date"
           transition="scale-transition"
           offset-y
+          max-width="290px"
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date"
-              label="Start date"
+              v-model="startTime"
+              label="Start Date"
+              hint="MM/DD/YYYY format"
+              persistent-hint
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">
-              OK
-            </v-btn>
-          </v-date-picker>
+          <v-date-picker
+            v-model="startTime"
+            no-title
+            @input="menu1 = false"
+          ></v-date-picker>
         </v-menu>
       </v-col>
 
       <!-- SECOND DATE PICKER -->
       <v-col cols="12" sm="4">
         <v-menu
-          ref="menu"
-          v-model="menu"
+          v-model="menu2"
           :close-on-content-click="false"
-          :return-value.sync="date"
           transition="scale-transition"
           offset-y
+          max-width="290px"
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date"
-              label="End date"
+              v-model="endTime"
+              label="End Date"
+              hint="MM/DD/YYYY format"
+              persistent-hint
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">
-              OK
-            </v-btn>
-          </v-date-picker>
+          <v-date-picker
+            v-model="endTime"
+            no-title
+            @input="menu2 = false"
+          ></v-date-picker>
         </v-menu>
+      </v-col>
+      <v-col cols="12" sm="2">
+        <v-btn @click="testFunction" color="green" class="white--text">
+          <v-icon>fas fa-search</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="12" sm="1">
+        <v-btn color="transparent" x-small="true" @click="reloadWindow()"
+          >.
+        </v-btn>
       </v-col>
     </v-row>
 
     <!-- PRODUCT SALE  -->
     <v-row>
-      <v-col cols="12" sm="5">
-        <v-card elevation="12" class="pa-10">
+      <v-col cols="12" sm="7">
+        <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset"> --- Product Sales --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+          <BarChart
+            v-if="productLoaded"
+            :chartData="productAmount"
+            :chartLabels="productChartLabel"
+            :coloR="productChartColor"
+          />
         </v-card>
       </v-col>
-      <v-col cols="12" sm="7">
-        <v-card elevation="12">
+      <v-col cols="12" sm="5">
+        <v-card elevation="12" height="100%">
           <v-subheader :inset="inset"
             >--- Number of Product Sale by day ---
           </v-subheader>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="product in productPaginatedData" :key="product">
+                <td>{{ product.productName }}</td>
+                <td>{{ product.amount }}</td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-pagination
+            :length="productPageCount"
+            v-model="productPageNumber"
+            circle
+            @input="productNextPage"
+          ></v-pagination>
           <v-btn class="white--text ma-4" color="blue">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
@@ -100,29 +124,44 @@
     <!-- CATEGORY SALE -->
     <v-row>
       <v-col cols="12" sm="7">
-        <v-card elevation="12">
+        <v-card elevation="12" height="100%">
           <v-subheader :inset="inset"
-            >--- Number of Product Sale by day ---
+            >--- Number of Category Sale by day ---
           </v-subheader>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th>Category Name</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="category in categoryPaginatedData" :key="category">
+                <td>{{ category.categoryName }}</td>
+                <td>{{ category.amount }}</td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-pagination
+            :length="categoryPageCount"
+            v-model="categoryPageNumber"
+            circle
+            @input="categoryNextPage"
+          ></v-pagination>
           <v-btn class="white--text ma-4" color="blue">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
         </v-card>
       </v-col>
       <v-col cols="12" sm="5">
-        <v-card elevation="12" class="pa-10">
+        <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset"> --- Category Sales --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+          <BarChart
+            v-if="categoryLoaded"
+            :chartData="categoryAmount"
+            :chartLabels="categoryChartLabel"
+            :coloR="categoryChartColor"
+          />
         </v-card>
       </v-col>
     </v-row>
@@ -130,26 +169,41 @@
     <!-- TAG SALE  -->
     <v-row>
       <v-col cols="12" sm="5">
-        <v-card elevation="12" class="pa-10">
+        <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset"> --- Tag Sales --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+          <BarChart
+            v-if="tagLoaded"
+            :chartData="tagAmount"
+            :chartLabels="tagChartLabel"
+            :coloR="tagChartColor"
+          />
         </v-card>
       </v-col>
       <v-col cols="12" sm="7">
-        <v-card elevation="12">
+        <v-card elevation="12" height="100%">
           <v-subheader :inset="inset"
             >--- Number of Product Sale by day ---
           </v-subheader>
-          <v-data-table
-            :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
-            class="elevation-1"
-          ></v-data-table>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th>Tag Name</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="tag in tagPaginatedData" :key="tag">
+                <td>{{ tag.tagName }}</td>
+                <td>{{ tag.amount }}</td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+          <v-pagination
+            :length="tagPageCount"
+            v-model="tagPageNumber"
+            circle
+            @input="tagNextPage"
+          ></v-pagination>
           <v-btn class="white--text ma-4" color="blue">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
@@ -160,115 +214,196 @@
 </template>
 
 <script>
+import api from "../../../services/api";
+import BarChart from "../../../components/admin/BarChart.vue";
 export default {
   name: "Product",
+  components: {
+    BarChart,
+  },
   data: () => ({
-    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
+    startTime: "",
+    endTime: "",
+
     menu: false,
     modal: false,
     menu2: false,
-    headers: [
-      {
-        text: "Dessert (100g serving)",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
-      { text: "Iron (%)", value: "iron" },
-    ],
-    desserts: [
-      {
-        name: "Frozen Yogurt",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
-      },
-      {
-        name: "Ice cream sandwich",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
-    ],
+
+    //product stat table
+    productPageNumber: 1,
+    productPageSize: 5,
+    productStats: [],
+
+    //product stat chart
+    productLoaded: false,
+    productAmount: [],
+    productChartLabel: [],
+    productChartColor: [],
+
+    /** ////////////////////////////////////////////////////////// */
+
+    //category stat table
+    categoryPageNumber: 1,
+    categoryPageSize: 5,
+    categoryStats: [],
+
+    //category stat chart
+    categoryLoaded: false,
+    categoryAmount: [],
+    categoryChartLabel: [],
+    categoryChartColor: [],
+
+    /** ////////////////////////////////////////////////////////// */
+
+    //tag stat table
+    tagPageNumber: 1,
+    tagPageSize: 5,
+    tagStats: [],
+
+    //tag stat chart
+    tagLoaded: false,
+    tagAmount: [],
+    tagChartLabel: [],
+    tagChartColor: [],
   }),
-  computed: {
-    dateRangeText() {
-      return this.dates.join(" ~ ");
+  methods: {
+    mappingProductChart() {
+      this.productAmount = this.productStats.map((product) => product.amount);
+      this.productChartLabel = this.productStats.map(
+        (product) => product.productName
+      );
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.productChartLabel) {
+        console.log(i);
+        this.productChartColor.push(dynamicColors());
+      }
+      this.productLoaded = true;
     },
+
+    mappingCategoryChart() {
+      this.categoryAmount = this.categoryStats.map((category) => category.amount);
+      this.categoryChartLabel = this.categoryStats.map(
+        (category) => category.categoryName
+      );
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.categoryChartLabel) {
+        console.log(i);
+        this.categoryChartColor.push(dynamicColors());
+      }
+      this.categoryLoaded = true;
+    },
+
+    mappingTagChart() {
+      this.tagAmount = this.tagStats.map((tag) => tag.amount);
+      this.tagChartLabel = this.tagStats.map(
+        (tag) => tag.tagName
+      );
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.tagChartLabel) {
+        console.log(i);
+        this.tagChartColor.push(dynamicColors());
+      }
+      this.tagLoaded = true;
+    },
+
+    productNextPage(page) {
+      this.productPageNumber = page;
+    },
+
+    categoryNextPage(page) {
+      this.categoryPageNumber = page;
+    },
+
+    tagNextPage(page) {
+      this.tagPageNumber = page;
+    },
+
+    getAllProductStat() {
+      api.get("/statistics/product").then((response) => {
+        this.productStats = response.data;
+        this.mappingProductChart();
+      });
+    },
+
+
+    getAllCategoryStat() {
+      api.get("/statistics/category").then((response) => {
+        this.categoryStats = response.data;
+        this.mappingCategoryChart();
+      });
+    },
+
+    getAllTagStat() {
+      api.get("/statistics/tag").then((response) => {
+        this.tagStats = response.data;
+        this.mappingTagChart();
+      });
+    },
+  },
+  computed: {
+    productPageCount() {
+      let productStatsLength = this.productStats.length;
+      let s = this.productPageSize;
+      return Math.ceil(productStatsLength / s);
+    },
+
+    productPaginatedData() {
+      const start =
+        this.productPageNumber * this.productPageSize - this.productPageSize;
+      const end = start + this.productPageSize;
+      return this.productStats.slice(start, end);
+    },
+
+    categoryPageCount() {
+      let categoryStatsLength = this.categoryStats.length;
+      let s = this.categoryPageSize;
+      return Math.ceil(categoryStatsLength / s);
+    },
+
+    categoryPaginatedData() {
+      const start =
+        this.categoryPageNumber * this.categoryPageSize - this.categoryPageSize;
+      const end = start + this.categoryPageSize;
+      return this.categoryStats.slice(start, end);
+    },
+
+    tagPageCount() {
+      let tagStatsLength = this.tagStats.length;
+      let s = this.tagPageSize;
+      return Math.ceil(tagStatsLength / s);
+    },
+
+    tagPaginatedData() {
+      const start = this.tagPageNumber * this.tagPageSize - this.tagPageSize;
+      const end = start + this.tagPageSize;
+      return this.tagStats.slice(start, end);
+    },
+  },
+  mounted() {
+    this.getAllProductStat();
+    this.getAllCategoryStat();
+    this.getAllTagStat();
   },
 };
 </script>

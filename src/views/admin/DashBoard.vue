@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <Header @handleDrawer="drawer = !drawer" />
+    <Header @handleDrawer="drawer = !drawer" :user="user" />
     <Sidebar :drawer="drawer" />
     <v-main>
       <!-- <v-container class="py-8 px-6" fluid> -->
@@ -23,6 +23,15 @@ export default {
   data: () => ({
     cards: ["Today", "Yesterday"],
     drawer: true,
+    user: null,
   }),
+  methods: {
+    getUser(){
+      this.user = JSON.parse(localStorage.getItem("user"));
+    }
+  },
+  mounted() {
+    this.getUser();
+  }
 };
 </script>
