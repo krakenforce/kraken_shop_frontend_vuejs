@@ -1,38 +1,29 @@
 <template>
-  <v-container id="abc">  
-    <v-main >
-      <div>
-          <router-view></router-view>    
-      </div>  
-    </v-main>
-  </v-container>
+  <v-app id="abc">
+    <header>
+      <Menu />
+    </header>
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
-
+import Menu from "../../components/user/Menu.vue";
 export default {
   name: "Home",
   components: {
-    
+    Menu,
   },
   data() {
     return {
       currentUser: null,
-    }
+    };
   },
-  methods: {
-    handleClick(){
-      this.$store.test.dispatch('increment')
-    }
-
+  methods: {},
+  computed: {},
+  created() {
+    this.currentUser = localStorage.getItem("user");
   },
-  computed: {
-    count(){
-      console.log(this.$store.test.state.count)
-      return this.$store.test.state.count
-    }
-  }
-
 };
 </script>
 

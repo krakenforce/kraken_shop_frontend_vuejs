@@ -1,112 +1,192 @@
 <template>
-  <nav>
-    <div class="wrapper">
-      <div class="logo"><a href="#">Draken Shop</a></div>
-      <input type="radio" name="slider" id="menu-btn" />
-      <input type="radio" name="slider" id="close-btn" />
+  <v-app-bar app>
+    <nav>
+      <div class="wrapper">
+        <div class="logo"><a href="/">Kraken Shop</a></div>
+        <input type="radio" name="slider" id="menu-btn" />
+        <input type="radio" name="slider" id="close-btn" />
 
-      <ul class="nav-links">
-        <label for="close-btn" class="btn close-btn"
-          ><i class="fas fa-times"></i
-        ></label>
-        <li>
-          <a href="#" class="desktop-item">THỂ LOẠI</a>
-          <input type="checkbox" id="showMega1" />
-          <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
-          <div class="mega-box">
-            <div class="content">
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Adventure</a></li>
-                  <li><a href="#">Casual</a></li>
-                  <li><a href="#">Early Access</a></li>
-                  <li><a href="#">Indie</a></li>
-                </ul>
-              </div>
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Massively Multiplayer</a></li>
-                  <li><a href="#">Racing</a></li>
-                  <li><a href="#">RPG</a></li>
-                  <li><a href="#">Sexual Content</a></li>
-                  <li><a href="#">Simulation</a></li>
-                </ul>
-              </div>
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Sports</a></li>
-                  <li><a href="#">Strategy</a></li>
-                  <li><a href="#">Utilities</a></li>
-                  <li><a href="#">Violent</a></li>
-                </ul>
+        <ul class="nav-links">
+          <label for="close-btn" class="btn close-btn"
+            ><v-icon>mdi-dots-vertical-circle</v-icon>
+          </label>
+          <li>
+            <a href="#" class="desktop-item">GENRE</a>
+            <input type="checkbox" id="showMega1" />
+            <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
+            <div class="mega-box">
+              <div class="content">
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="/search/genre/Action">Action</a></li>
+                    <li><a href="/search/genre/Adventure">Adventure</a></li>
+                    <li><a href="/search/genre/Casual">Casual</a></li>
+                    <li>
+                      <a href="/search/genre/EarlyAccess">Early Access</a>
+                    </li>
+                    <li><a href="#">Indie</a></li>
+                  </ul>
+                </div>
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Massively Multiplayer</a></li>
+                    <li><a href="#">Racing</a></li>
+                    <li><a href="#">RPG</a></li>
+                    <li><a href="#">Sexual Content</a></li>
+                    <li><a href="#">Simulation</a></li>
+                  </ul>
+                </div>
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Strategy</a></li>
+                    <li><a href="#">Utilities</a></li>
+                    <li><a href="#">Violent</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <a href="#" class="desktop-item">DANH MỤC</a>
-          <input type="checkbox" id="showMega2" />
-          <label for="showMega2" class="mobile-item">DANH MỤC</label>
-          <div class="mega-box">
-            <div class="content">
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Battle.Net</a></li>
-                  <li><a href="#">Game Mobile</a></li>
-                  <li><a href="#">Game Origin</a></li>
-                  <li><a href="#">Game Steam</a></li>
-                  <li><a href="#">Game Uplay</a></li>
-                  <li><a href="#">Genshin Impact</a></li>
-                </ul>
-              </div>
-              <div class="row">
-                <ul class="mega-links">
-                  <li><a href="#">Khác</a></li>
-                  <li><a href="#">Microsoft-Xbox</a></li>
-                  <li><a href="#">Package Steam</a></li>
-                  <li><a href="#">PlayStation</a></li>
-                  <li><a href="#">Wallet Code</a></li>
-                </ul>
+          </li>
+          <li>
+            <a href="#" class="desktop-item">CATEGORY</a>
+            <input type="checkbox" id="showMega2" />
+            <label for="showMega2" class="mobile-item">DANH MỤC</label>
+            <div class="mega-box">
+              <div class="content">
+                <div class="row">
+                  <ul class="mega-links">
+                    <li>
+                      <a href="/search/category/Battle.net">Battle.Net</a>
+                    </li>
+                    <li><a href="#">Game Mobile</a></li>
+                    <li><a href="#">Game Origin</a></li>
+                    <li><a href="#">Game Steam</a></li>
+                    <li><a href="#">Game Uplay</a></li>
+                    <li><a href="#">Genshin Impact</a></li>
+                  </ul>
+                </div>
+                <div class="row">
+                  <ul class="mega-links">
+                    <li><a href="#">Other</a></li>
+                    <li><a href="#">Microsoft-Xbox</a></li>
+                    <li><a href="#">Package Steam</a></li>
+                    <li><a href="#">PlayStation</a></li>
+                    <li><a href="#">Wallet Code</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <a href="#" class="desktop-item">THÔNG TIN</a>
-          <input type="checkbox" id="showDrop" />
-          <label for="showDrop" class="mobile-item">THÔNG TIN</label>
-          <ul class="drop-menu">
-            <li><a href="#">HƯỚNG DẪN</a></li>
-            <li><a href="#">TIN TỨC</a></li>
-          </ul>
-        </li>
+          </li>
+          <li>
+            <a href="#" class="desktop-item">INFOMATION</a>
+            <input type="checkbox" id="showDrop" />
+            <label for="showDrop" class="mobile-item">THÔNG TIN</label>
+            <ul class="drop-menu">
+              <li><a href="#">HƯỚNG DẪN</a></li>
+              <li><a href="#">TIN TỨC</a></li>
+            </ul>
+          </li>
 
-        <li><a href="#">LIÊN HỆ</a></li>
-        <li v-if="test">
+          <li><a href="/contact">CONTACT</a></li>
+          <li v-if="user">
             <v-row>
-              <v-col cols="12" sm="3">
-                <v-btn icon color="blue" >
-                  <v-badge color="green" content="6">
-                    <v-icon>add_shopping_cart</v-icon>
-                  </v-badge>
-                </v-btn>
+              <v-col cols="12" sm="4">
+                <v-menu open-on-hover top offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-badge bordered color="green" overlap>
+                      <span slot="badge">{{
+                        $store.state.shoppingCart.cartCount
+                      }}</span>
+                      <v-btn icon color="primary" dark v-bind="attrs" v-on="on">
+                        <v-icon>mdi-cart</v-icon>
+                      </v-btn>
+                    </v-badge>
+                  </template>
+                  <div v-if="$store.state.shoppingCart.cart.length > 0">
+                    <v-list class="pa-5">
+                      <v-list-item
+                        v-for="item in $store.state.shoppingCart.cart"
+                        :key="item.productId"
+                      >
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                              <tr>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr
+                                v-for="item in $store.state.shoppingCart.cart"
+                                :key="item.productId"
+                              >
+                                <td class="text-center">{{ item.name }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-center">
+                                  {{ item.totalPrice }} $
+                                </td>
+                                <td class="text-center">
+                                  <v-btn
+                                    color="red"
+                                    @click.prevent="removeFromCart(item)"
+                                  >
+                                    <v-icon>mdi-delete</v-icon>
+                                  </v-btn>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <h2>Total: $ {{ totalPrice }}</h2>
+                      <v-divider></v-divider>
+                      <v-btn @click.prevent="goToCart" class="mt-3" color="blue"
+                        >Go to cart</v-btn
+                      >
+                    </v-list>
+                  </div>
+                  <div v-else>
+                    <v-list class="pa-5">
+                      <h2>Cart is empty</h2>
+                    </v-list>
+                  </div>
+                </v-menu>
               </v-col>
-
-              <v-col cols="12" sm="9">
+              <v-col cols="12" sm="8">
                 <v-menu open-on-hover bottom offset-y>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn  v-bind="attrs" v-on="on">
+                    <v-btn v-bind="attrs" v-on="on" @click="goToUserDetail">
                       <v-avatar color="blue">
-                        <v-icon dark> mdi-account-circle </v-icon>
+                        <v-icon v-if="user.avatarImageUrl == null" dark>
+                          mdi-account-circle
+                        </v-icon>
+                        <v-img
+                          v-if="user.avatarImageUrl != null"
+                          :src="user.avatarImageUrl"
+                        ></v-img>
                       </v-avatar>
-                     <span class="ml-2"> username</span>
+                      <span class="ml-2">{{ user.username }}</span>
                     </v-btn>
                   </template>
 
-                  <v-list rounded dense class="black">
+                  <v-list dense class="black pa-5">
                     <v-list-item-group color="primary">
-                      <v-list-item v-for="(item, i) in items" :key="i">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            <span><strong> WALLET:</strong> {{ user.walletBalance }} $</span>
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item
+                        v-for="(item, i) in items"
+                        :key="i"
+                        @click="item.action"
+                      >
                         <v-list-item-content>
                           <v-list-item-title
                             v-text="item.text"
@@ -119,40 +199,112 @@
                 </v-menu>
               </v-col>
             </v-row>
-        </li>
-        <li v-if="!test">         
-            <a class="blue--text">LOGIN/SIGNUP</a>
-        </li>
-        <li>
-          <v-btn icon color="white" class="ml-10">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-        </li>
-      </ul>
-      <label for="menu-btn" class="btn menu-btn"
-        ><i class="fas fa-bars"></i
-      ></label>
-    </div>
-  </nav>
+          </li>
+          <li v-if="!user">
+            <a href="/login" class="blue--text">LOGIN/SIGNUP</a>
+          </li>
+          <li>
+            <v-btn icon class="ml-10" @click="dialog = true">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+            <v-dialog v-model="dialog" persistent max-width="500">
+              <v-card>
+                <v-card-title class="text-h5"> -- SEARCH -- </v-card-title>
+                <v-card-text>
+                  <v-text-field
+                    v-model="searchKeyword"
+                    placeholder="Keyword"
+                  ></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn icon class="ml-10" color="blue" @click="searchProduct">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-btn>
+                  <v-btn color="red" text @click="dialog = false">
+                    CLOSE
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </li>
+        </ul>
+        <label for="menu-btn" class="btn menu-btn"
+          ><v-icon>mdi-dots-horizontal-circle</v-icon>
+        </label>
+      </div>
+    </nav>
+  </v-app-bar>
 </template>
 
 <script>
+import api from "../../services/api";
+
 export default {
   name: "Menu",
 
   data() {
     return {
-      test: false,
-      items: [
-        { text: "Wallet: 12$" },
-        { text: "Activity" },
-        { text: "Information" },
-        { text: "Key Bunker" },
-        { text: "Recharge" },
-        { text: "Transaction History" },
-        { text: "Log Out" },
-      ],
+      dialog: false,
+      searchKeyword: "",
+      user: null,
+      items: [{ text: "Log Out", action: this.logout }],
     };
+  },
+  computed: {
+    totalPrice() {
+      let total = 0;
+      for (let item of this.$store.state.shoppingCart.cart) {
+        total += item.totalPrice;
+      }
+
+      return total;
+    },
+  },
+  methods: {
+    goToCart() {
+      this.$router.push("/cart");
+    },
+
+    removeFromCart(item) {
+      this.$store.commit("removeFromCart", item);
+    },
+
+    goToUserDetail() {
+      this.$router.push("/userInfo");
+    },
+
+    getShoppingCart() {
+      let userId = this.user.id;
+      api
+        .get("/cart/user/" + userId)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
+    },
+
+    searchProduct() {
+      this.dialog = false;
+      let keyword = this.searchKeyword;
+      let url = "/search/product/" + keyword;
+      this.$router.push(url);
+    },
+
+    getUser() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+    },
+
+    logout() {
+      localStorage.removeItem("user");
+      this.$store.state.auth.user = null;
+      this.$router.push("/login");
+    },
+  },
+  mounted() {
+    this.getUser();
   },
 };
 </script>

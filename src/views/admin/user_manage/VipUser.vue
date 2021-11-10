@@ -9,7 +9,7 @@
         >
 
         <v-row class="mt-4">
-          <v-col cols="12" sm="3">
+          <!-- <v-col cols="12" sm="3">
             <v-text-field label="User Search" />
           </v-col>
           <v-col cols="12" sm="3">
@@ -19,7 +19,7 @@
               dense
               :items="vipClasses"
             ></v-combobox>
-          </v-col>
+          </v-col> -->
 
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">

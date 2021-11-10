@@ -25,6 +25,14 @@ import SaleStatistics from "./views/admin/statistic/Sale.vue";
 import ProductStatistics from "./views/admin/statistic/Product.vue";
 import UserStatistics from "./views/admin/statistic/User.vue";
 import Dash from "./views/admin/dash/Dash.vue";
+import Homepage from "./views/user/Homepage.vue";
+import Contact from "./views/user/Contact.vue";
+import ProductList from "./views/user/ProductList.vue";
+import ProductDetail from "./views/user/ProductDetail.vue";
+import UserRoles from "./views/user/UserRoles.vue";
+import CartPage from "./views/user/CartPage.vue";
+import Checkout from "./views/user/Checkout.vue";
+import CheckoutSuccess from './views/CheckoutSuccess.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +42,50 @@ const routes = [
     name: "Home",
     component: Home,
     children: [
+      {
+        path: "/",
+        name: "Homepage",
+        component: Homepage,
+      },
+      {
+        path: "/search/:typeName/:type",
+        name: "ProductList",
+        component: ProductList,
+      },
+      {
+        path: "/product/:productId",
+        name: "ProductDetail",
+        component: ProductDetail,
+      },
+      {
+        path: "/userInfo",
+        name: "UserRoles",
+        component: UserRoles,
+        meta: { requiredAuth: true },
+      },
+      {
+        path: "/cart",
+        name: "CartPage",
+        component: CartPage,
+        meta: { requiredAuth: true },
+      },
+      {
+        path: "/checkout",
+        name: "Checkout",
+        component: Checkout,
+        meta: { requiredAuth: true },
+      },
+      {
+        path: "/checkout-success",
+        name: "CheckoutSuccess",
+        component: CheckoutSuccess,
+        meta: { requiredAuth: true },
+      },
+      {
+        path: "/contact",
+        name: "Contact",
+        component: Contact,
+      },
       {
         path: "/about",
         name: "About",
@@ -47,7 +99,7 @@ const routes = [
     component: Login,
   },
   {
-    path: "/forgot-password/:resetToken",
+    path: "/reset_password",
     name: "ForgotPassword",
     component: ForgotPassword,
   },
@@ -62,14 +114,12 @@ const routes = [
     name: "PaymentRedirect",
     component: PaymentRedirect,
   },
-  { path: "*", redirect: "/" },
   {
     path: "/admin/",
     name: "Admin DashBoard",
     component: DashBoard,
     meta: {
       requiredAuth: true,
-      requiredRoles: ["ROLE_ADMIN", "ROLE_MODERATOR"],
     },
     children: [
       {
@@ -156,16 +206,23 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   next();
+  window.scrollTo(0, 0);
   const loggedIn = localStorage.getItem("user");
 
   if (to.matched.some((record) => record.meta.requiredAuth)) {
-    console.log(loggedIn);
-    // if (loggedIn) {
-    //   console.log("logged in")
-    // } else {
-    //   console.log("chua dang nhap, chuyen ve login");
-    //   return next("/login");
-    // }
+    if (loggedIn) {
+      let user = JSON.parse(loggedIn);
+      let adminRole = "ROLE_ADMIN";
+      let roleList = user.roles;
+      if (roleList.indexOf(adminRole) !== -1) {
+        return next();
+      } else {
+        console.log("người dùng bth ko thể vào admin");
+        return next();
+      }
+    } else {
+      return next("/login");
+    }
   } else {
     return next();
   }

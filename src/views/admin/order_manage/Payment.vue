@@ -143,7 +143,7 @@ export default {
     return {
       testValue: "",
       step: 1,
-      items: ["PAYPAL", "BANK"],
+      items: ["PAYPAL", "BANK", "PURCHASE", "ADMINTOPUP"],
       startTime: null,
       endTime: null,
 

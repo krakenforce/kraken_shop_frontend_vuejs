@@ -2,7 +2,7 @@
   <v-card class="overflow-hidden black" justify="center">
     <v-container justify="center" fluid black>
       <v-row class="mb-1">
-        <v-col cols="12" md="12">
+        <v-col cols="12" sm="12">
           <v-card>
             <v-img
               src="../../assets/user/img-product.png"
@@ -14,20 +14,20 @@
       </v-row>
 
       <v-row no-gutters>
-        <v-col cols="12" md="9">
+        <v-col cols="12" sm="9">
           <v-card>
             <v-tabs color="red accent-4" centered background-color="black">
-              <v-tab class="white--text">Activity</v-tab>
+              <!-- <v-tab class="white--text">Activity</v-tab> -->
               <v-tab class="white--text">Information</v-tab>
-              <v-tab class="white--text">Transaction history</v-tab>
+              <v-tab class="white--text">history</v-tab>
               <v-tab class="white--text">Recharge</v-tab>
               <v-tab class="white--text">Key bunker</v-tab>
 
-              <v-tab-item>
+              <!-- <v-tab-item>
                 <Activity />
-              </v-tab-item>
+              </v-tab-item> -->
               <v-tab-item>
-                <Information />
+                <Information :user="user" />
               </v-tab-item>
               <v-tab-item>
                 <TransactionHistory />
@@ -73,24 +73,25 @@
 </template>
 
 <script>
-import Activity from "../user/user-roles/Activity.vue";
+//import Activity from "../user/user-roles/Activity.vue";
 import Information from "../user/user-roles/Information.vue";
 import TransactionHistory from "../user/user-roles/TransactionHistory.vue";
 import Recharge from "../user/user-roles/Recharge.vue";
 import KeyBunker from "../user/user-roles/KeyBunker.vue";
 
+
 export default {
   name: "UserRolesComponent",
   components: {
-    Activity,
     Information,
     TransactionHistory,
     Recharge,
     KeyBunker,
   },
+  props: ["user"],
 
   data: () => ({
-
+    tabHeaders: ["ACTIVITY", "INFOMATION", "TRANSACTION HISTORY", "RECHART", "KEY BUNKER"]
   }),
 };
 </script>

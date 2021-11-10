@@ -1,76 +1,64 @@
 <template>
-<<<<<<< HEAD
-  <v-footer v-bind="localAttrs" padless="padless">
-    <v-card flat tile width="100%" class="black lighten-1 text-center">
-      <v-card-text>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
-          <v-icon color="red" size="30px">
-            {{ icon }}
-          </v-icon>
-        </v-btn>
-      </v-card-text>
-
-      <v-divider color="white"></v-divider>
-
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Draken Shop</strong>
-      </v-card-text>
-    </v-card>
-=======
-  <v-footer
-    color="primary lighten-1"
-    padless
-  >
-    <v-row
-      justify="center"
-      no-gutters
-    >
-      <v-btn
-        v-for="link in links"
-        :key="link"
-        color="white"
-        text
-        rounded
-        class="my-2"
-      >
-        {{ link }}
-      </v-btn>
-      <v-col
-        class="primary lighten-2 py-4 text-center white--text"
-        cols="12"
-      >
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-      </v-col>
-    </v-row>
->>>>>>> dev
-  </v-footer>
+  <v-parallax src="@/assets/user/wp4983330.jpg">
+    <v-footer padless="padless" color="transparent">
+      <v-row justify="center">
+        <v-col cols="12" sm="3" v-for="item in bonusInfos" :key="item">
+          <v-hover v-slot="{ hover }">
+            <v-card
+              :color="hover ? '#4a4343' : 'dark'"
+              class="pa-5"
+              max-height="150px"
+              max-width="150px"
+              link
+              :to="item.link"
+            >
+              <v-card-title class="justify-center">
+                <v-icon size="30">{{ item.icon }}</v-icon>
+              </v-card-title>
+              <v-card-text class="text-center">
+                <strong>{{ item.content }}</strong>
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </v-col>
+      </v-row>
+      <v-card width="100%" color="dark" class="ma-10 text-center">
+        <v-card-text class="white--text">
+          {{ new Date().getFullYear() }} —
+          <strong>Kraken Shop - KrakenForce Team &copy;</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+  </v-parallax>
 </template>
 
 <script>
-<<<<<<< HEAD
 export default {
   name: "Footer",
 
   data: () => ({
     icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
+
+    bonusInfos: [
+      {
+        icon: "fab fa-discord",
+        title: "",
+        content: "DISCORD",
+      },
+      {
+        icon: "fab fa-youtube",
+        title: "",
+        content: "YOUTUBE",
+        link: "/search/genre/HighLight",
+      },
+      {
+        icon: "fab fa-facebook-square",
+        title: "",
+        content: "FACEBOOK",
+      },
+    ],
   }),
 };
 </script>
 <style scoped>
 </style>
-=======
-  export default {
-      name: 'Footer',
-    data: () => ({
-      links: [
-        'Home',
-        'About Us',
-        'Team',
-        'Services',
-        'Blog',
-        'Contact Us',
-      ],
-    }),
-  }
-</script>
->>>>>>> dev

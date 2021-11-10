@@ -3,8 +3,8 @@
     <v-container justify="center" class="black lighten-5 mb-6">
       <v-row no-gutters style="height: 100px"> </v-row>
       <v-row no-gutters style="max-height: 200px">
-        <v-col cols="12" sm="4" md="4">
-          <h1 class="yellow--text">LIÊN HỆ DRAKEN SHOP</h1>
+        <v-col cols="12" sm="12">
+          <h1 class="yellow--text">LIÊN HỆ KRAKEN SHOP</h1>
         </v-col>
       </v-row>
       <v-row no-gutters style="max-height: 200px">
@@ -16,7 +16,7 @@
         </v-col>
       </v-row>
       <v-row no-gutters style="max-height: 200px" justify="center">
-        <v-col cols="12" sm="10" md="10">
+        <v-col cols="12" sm="12" md="12">
           <h2>
             Nguyễn Đình Chiểu: 214 Nguyễn Đình Chiểu, Phường 6, Quận 3, Thành
             phố Hồ Chí Minh, Việt Nam

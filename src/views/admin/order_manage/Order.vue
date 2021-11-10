@@ -67,11 +67,13 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
-
-          <v-spacer></v-spacer>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" sm="2">
             <v-btn @click="getOrderByTime" color="green" class="white--text">
               <v-icon>fas fa-search</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col cols="12" sm="1">
+            <v-btn color="transparent" x-small="true" @click="reloadWindow()">.
             </v-btn>
           </v-col>
         </v-row>
@@ -188,6 +190,11 @@ export default {
     source: String,
   },
   methods: {
+
+    reloadWindow() {
+      window.location.reload();
+    },
+    
     showOrderDetail(item) {
       this.orderModel = item;
       this.step = 2;
