@@ -3,7 +3,7 @@
     <h1>Sale Statistics</h1>
     <span>Show statistic detail of Sales</span>
     <v-spacer></v-spacer>
-    
+
     <v-row>
       <!-- FIRST DATE PICKER -->
       <v-col cols="12" sm="4">
@@ -77,8 +77,8 @@
     </v-row>
 
     <v-row>
-      <v-col cols="12" sm="5">
-        <v-card elevation="12" class="pa-10">
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset"> --- Total Revenue --- </v-subheader>
           <v-text>
             <h1 class="green--text">
@@ -87,14 +87,33 @@
           </v-text>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="5">
-        <v-card elevation="12" class="pa-10">
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader :inset="inset"> --- Revenue This Month --- </v-subheader>
+          <v-text>
+            <h1 class="blue--text">
+              <strong> {{ revenueThisMonth }} $ </strong>
+            </h1>
+            <div v-if="revenueByTime != 0">
+              <p v-if="inOrde" class="green--text">
+                Difference: {{ chenhlech }} <i class="mdi mdi-arrow-up"></i>
+              </p>
+              <p v-if="!inOrde" class="red--text">
+                Difference: {{ chenhlech }} <i class="mdi mdi-arrow-down"></i>
+              </p>
+            </div>
+          </v-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset">--- Revenue By Time --- </v-subheader>
           <v-text>
-            <h1 class="green--text">
-              <strong v-if="revenueByTime != 0"> {{ revenueByTime }} $ </strong>
-              <strong v-else> Select Time To see revenue </strong>
-            </h1>
+            <div v-if="revenueByTime != 0">
+              <h1 class="yellow--text">
+                <strong> {{ revenueByTime }} $ </strong>
+              </h1>
+            </div>
           </v-text>
         </v-card>
       </v-col>
@@ -130,7 +149,7 @@
         </v-card>
       </v-col>
     </v-row>
-    
+
     <v-dialog v-model="dialog">
       <v-card color="primary" class="pa-5">
         <v-card-title>
@@ -154,7 +173,7 @@ import api from "../../../services/api";
 //import LineChart from "../../../components/admin/chartjs.vue";
 
 export default {
-  components: {  },
+  components: {},
   name: "Sale",
   data: () => ({
     ///////////////////////////////////////////////////////
@@ -175,7 +194,7 @@ export default {
     //   responsive: true,
     //   maintainAspectRatio: false
     // },
-    
+
     // barchartData:[],
     /////////////////////////////////////////////////////
 
@@ -214,8 +233,30 @@ export default {
 
     totalRevenue: 0,
     revenueByTime: 0,
+    revenueThisMonth: 0,
+    chenhlech: 0,
+    inOrde: "",
   }),
   methods: {
+    getRevenueThisMonth() {
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      let start = moment(firstDay).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(lastDay).format("YYYY-MM-DD HH:MM:SS");
+
+      api
+        .get(
+          "statistics/total_revenue_time?startTime=" + start + "&endTime=" + end
+        )
+        .then((response) => {
+          this.revenueThisMonth = response.data;
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
+    },
+
     reloadWindow() {
       this.loaded = false;
       window.location.reload();
@@ -250,6 +291,12 @@ export default {
         .get("/statistics/revenue_time?startTime=" + start + "&endTime=" + end)
         .then((response) => {
           this.revenueByTime = response.data;
+          this.chenhlech = this.revenueThisMonth - this.revenueByTime;
+          if (this.revenueThisMonth >= this.revenueByTime) {
+            this.inOrde = true;
+          } else {
+            this.inOrde = false;
+          }
         })
         .catch((err) => {
           Promise.reject(err);
@@ -287,8 +334,6 @@ export default {
           Promise.reject(err);
         });
     },
-
-
 
     getOrderByTime(page) {
       var startTime = new Date(this.startTime);
@@ -333,18 +378,19 @@ export default {
       this.getOrderDetail(item);
     },
 
-    createChart(){
+    createChart() {
       this.getRevenueByFirstRange();
       this.getRevenueBySecondRange();
       this.barchartData.push(this.revenueByRange1);
       this.barchartData.push(this.revenueByRange1);
       alert(this.barchartData);
       this.loaded = true;
-    }
+    },
   },
   computed: {},
   mounted() {
     this.getTotalRevenue();
+    this.getRevenueThisMonth();
   },
 };
 </script>

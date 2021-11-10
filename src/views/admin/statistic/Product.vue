@@ -65,7 +65,7 @@
         </v-menu>
       </v-col>
       <v-col cols="12" sm="2">
-        <v-btn @click="testFunction" color="green" class="white--text">
+        <v-btn @click="getStatByTime" color="green" class="white--text">
           <v-icon>fas fa-search</v-icon>
         </v-btn>
       </v-col>
@@ -123,7 +123,7 @@
 
     <!-- CATEGORY SALE -->
     <v-row>
-      <v-col cols="12" sm="7">
+      <v-col cols="12" sm="5">
         <v-card elevation="12" height="100%">
           <v-subheader :inset="inset"
             >--- Number of Category Sale by day ---
@@ -153,7 +153,7 @@
           </v-btn>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="7">
         <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset"> --- Category Sales --- </v-subheader>
           <BarChart
@@ -168,7 +168,7 @@
 
     <!-- TAG SALE  -->
     <v-row>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="7">
         <v-card elevation="12" class="pa-10" height="100%">
           <v-subheader :inset="inset"> --- Tag Sales --- </v-subheader>
           <BarChart
@@ -179,7 +179,7 @@
           />
         </v-card>
       </v-col>
-      <v-col cols="12" sm="7">
+      <v-col cols="12" sm="5">
         <v-card elevation="12" height="100%">
           <v-subheader :inset="inset"
             >--- Number of Product Sale by day ---
@@ -216,6 +216,8 @@
 <script>
 import api from "../../../services/api";
 import BarChart from "../../../components/admin/BarChart.vue";
+import moment from "moment";
+
 export default {
   name: "Product",
   components: {
@@ -266,7 +268,24 @@ export default {
     tagChartLabel: [],
     tagChartColor: [],
   }),
+  watch: {
+    
+  },
   methods: {
+    reloadWindow() {
+      window.location.reload();
+    },
+
+    getStatByTime() {
+      var startTime = new Date(this.startTime);
+      var endTime = new Date(this.endTime);
+      let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
+      this.getProductStatByTime(start, end);
+      this.getCategoryStatByTime(start, end);
+      this.getTagStatByTime(start, end);
+    },
+
     mappingProductChart() {
       this.productAmount = this.productStats.map((product) => product.amount);
       this.productChartLabel = this.productStats.map(
@@ -288,7 +307,9 @@ export default {
     },
 
     mappingCategoryChart() {
-      this.categoryAmount = this.categoryStats.map((category) => category.amount);
+      this.categoryAmount = this.categoryStats.map(
+        (category) => category.amount
+      );
       this.categoryChartLabel = this.categoryStats.map(
         (category) => category.categoryName
       );
@@ -309,9 +330,7 @@ export default {
 
     mappingTagChart() {
       this.tagAmount = this.tagStats.map((tag) => tag.amount);
-      this.tagChartLabel = this.tagStats.map(
-        (tag) => tag.tagName
-      );
+      this.tagChartLabel = this.tagStats.map((tag) => tag.tagName);
 
       var dynamicColors = function () {
         var r = Math.floor(Math.random() * 255);
@@ -346,6 +365,14 @@ export default {
       });
     },
 
+    getProductStatByTime(start, end) {
+      api
+        .get("/statistics/product_time?startTime=" + start + "&endTime=" + end)
+        .then((response) => {
+          this.productStats = response.data;
+          this.mappingProductChart();
+        });
+    },
 
     getAllCategoryStat() {
       api.get("/statistics/category").then((response) => {
@@ -354,11 +381,29 @@ export default {
       });
     },
 
+    getCategoryStatByTime(start, end) {
+      api
+        .get("/statistics/category_time?startTime=" + start + "&endTime=" + end)
+        .then((response) => {
+          this.categoryStats = response.data;
+          this.mappingCategoryChart();
+        });
+    },
+
     getAllTagStat() {
       api.get("/statistics/tag").then((response) => {
         this.tagStats = response.data;
         this.mappingTagChart();
       });
+    },
+
+    getTagStatByTime(start, end) {
+      api
+        .get("/statistics/tag_time?startTime=" + start + "&endTime=" + end)
+        .then((response) => {
+          this.tagStats = response.data;
+          this.mappingTagChart();
+        });
     },
   },
   computed: {

@@ -7,33 +7,67 @@
     <!-- USER SPEND  -->
     <v-row>
       <v-col cols="12" sm="4">
-        <v-card elevation="12" class="pa-10">
-          <v-subheader > --- Total Renue --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader> --- Total Renue --- </v-subheader>
+          <v-text>
+            <h1 class="green--text">
+              <strong> {{ totalRevenue }} $ </strong>
+            </h1>
+          </v-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader> --- This Month Revenue --- </v-subheader>
+          <v-text>
+            <h1 class="yellow--text">
+              <strong> {{ revenueByTime }} $ </strong>
+            </h1>
+          </v-text>
         </v-card>
       </v-col>
       <v-col cols="12" sm="4">
         <v-card elevation="12" class="pa-10">
-          <v-subheader > --- This Month Revenue --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+          <v-subheader> -- Total Order This Month -- </v-subheader>
+          <v-text>
+            <h1 class="blue--text">
+              <strong> {{ totalItems }} </strong>
+            </h1>
+          </v-text>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="4">
-        <v-card elevation="12" class="pa-10">
-          <v-subheader > --- Total Order --- </v-subheader>
-          <v-img
-            height="100px"
-            width="100px"
-            src="https://i.ibb.co/J5MnNBg/icon.png"
-          ></v-img>
+    </v-row>
+
+    <!-- CATEGORY CHART -->
+    <v-row>
+      <v-col cols="12" sm="12">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader :inset="inset">
+            --- Category Sales This Month ---
+          </v-subheader>
+          <BarChart
+            v-if="categoryLoaded"
+            :chartData="categoryAmount"
+            :chartLabels="categoryChartLabel"
+            :coloR="categoryChartColor"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- TAG CHART -->
+    <v-row>
+      <v-col cols="12" sm="12">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader :inset="inset">
+            --- Tag Sales This Month ---
+          </v-subheader>
+          <BarChart
+            v-if="tagLoaded"
+            :chartData="tagAmount"
+            :chartLabels="tagChartLabel"
+            :coloR="tagChartColor"
+          />
         </v-card>
       </v-col>
     </v-row>
@@ -41,134 +75,210 @@
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
-          <v-subheader > --- User Spend Detail --- </v-subheader>
+          <v-subheader> --- User Spend Detail --- </v-subheader>
           <v-data-table
+            :page="1"
+            :pageCount="totalPages"
             :headers="headers"
-            :items="desserts"
-            :items-per-page="5"
+            :items="orders"
+            :options.sync="options"
+            :server-items-length="totalItems"
+            :loading="loading"
             class="elevation-1"
-          ></v-data-table>
+            ref="dataTable"
+          >
+            ></v-data-table
+          >
           <v-btn class="white--text ma-4" color="blue">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
         </v-card>
       </v-col>
     </v-row>
-
-    
   </v-container>
 </template>
 
 <script>
+import api from "../../../services/api";
+import moment from "moment";
+import BarChart from "../../../components/admin/BarChart.vue";
+
 export default {
   name: "Dash",
+  components: {
+    BarChart,
+  },
   data: () => ({
-    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
-    menu: false,
-    modal: false,
-    menu2: false,
+    totalRevenue: 0,
+    revenueByTime: 0,
+
+    //table
+    page: 0,
+    totalItems: 0,
+    totalPages: 0,
+    orders: [],
+    orderDetails: [],
+    loading: true,
+    options: {},
     headers: [
-      {
-        text: "Dessert (100g serving)",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
-      { text: "Calories", value: "calories" },
-      { text: "Fat (g)", value: "fat" },
-      { text: "Carbs (g)", value: "carbs" },
-      { text: "Protein (g)", value: "protein" },
-      { text: "Iron (%)", value: "iron" },
+      { text: "Id", value: "id" },
+      { text: "Datetime", value: "orderDateTime" },
+      { text: "Username", value: "username" },
+      { text: "Quantity", value: "quantity" },
+      { text: "Total", value: "total" },
     ],
-    desserts: [
-      {
-        name: "Frozen Yogurt",
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: "1%",
-      },
-      {
-        name: "Ice cream sandwich",
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: "1%",
-      },
-      {
-        name: "Eclair",
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: "7%",
-      },
-      {
-        name: "Cupcake",
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: "8%",
-      },
-      {
-        name: "Gingerbread",
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: "16%",
-      },
-      {
-        name: "Jelly bean",
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: "0%",
-      },
-      {
-        name: "Lollipop",
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: "2%",
-      },
-      {
-        name: "Honeycomb",
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: "45%",
-      },
-      {
-        name: "Donut",
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: "22%",
-      },
-      {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%",
-      },
-    ],
+
+    //category stat chart
+    categoryLoaded: false,
+    categoryAmount: [],
+    categoryChartLabel: [],
+    categoryChartColor: [],
+
+    //tag stat chart
+    tagLoaded: false,
+    tagAmount: [],
+    tagChartLabel: [],
+    tagChartColor: [],
   }),
-  computed: {
-    dateRangeText() {
-      return this.dates.join(" ~ ");
+  computed: {},
+  methods: {
+  
+    getOrderByTime() {
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      let start = moment(firstDay).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(lastDay).format("YYYY-MM-DD HH:MM:SS");
+
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+
+      api
+        .get(
+          "/order/search?startTime=" +
+            start +
+            "&endTime=" +
+            end +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.orders = response.data.orders;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
     },
+
+    getTotalRevenue() {
+      api
+        .get("statistics/total_revenue")
+        .then((response) => {
+          this.totalRevenue = response.data;
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
+    },
+
+    getRevenueThisMonth() {
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      let start = moment(firstDay).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(lastDay).format("YYYY-MM-DD HH:MM:SS");
+
+      api
+        .get(
+          "statistics/total_revenue_time?startTime=" + start + "&endTime=" + end
+        )
+        .then((response) => {
+          this.revenueByTime = response.data;
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        });
+    },
+
+    mappingCategoryChart() {
+      this.categoryAmount = this.categoryStats.map(
+        (category) => category.amount
+      );
+      this.categoryChartLabel = this.categoryStats.map(
+        (category) => category.categoryName
+      );
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.categoryChartLabel) {
+        console.log(i);
+        this.categoryChartColor.push(dynamicColors());
+      }
+      this.categoryLoaded = true;
+    },
+
+    mappingTagChart() {
+      this.tagAmount = this.tagStats.map((tag) => tag.amount);
+      this.tagChartLabel = this.tagStats.map((tag) => tag.tagName);
+
+      var dynamicColors = function () {
+        var r = Math.floor(Math.random() * 255);
+        var g = Math.floor(Math.random() * 255);
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      };
+
+      for (var i in this.tagChartLabel) {
+        console.log(i);
+        this.tagChartColor.push(dynamicColors());
+      }
+      this.tagLoaded = true;
+    },
+
+    getThisMonthCategoryStat() {
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      let start = moment(firstDay).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(lastDay).format("YYYY-MM-DD HH:MM:SS");
+
+      api
+        .get("/statistics/category_time?startTime=" + start + "&endTime=" + end)
+        .then((response) => {
+          this.categoryStats = response.data;
+          this.mappingCategoryChart();
+        });
+    },
+
+    getThisMonthTagStat() {
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      let start = moment(firstDay).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(lastDay).format("YYYY-MM-DD HH:MM:SS");
+
+      api
+        .get("/statistics/tag_time?startTime=" + start + "&endTime=" + end)
+        .then((response) => {
+          this.tagStats = response.data;
+          this.mappingTagChart();
+        });
+    },
+  },
+  mounted() {
+    this.getTotalRevenue();
+    this.getOrderByTime();
+    this.getRevenueThisMonth();
+    this.getThisMonthCategoryStat();
+    this.getThisMonthTagStat();
   },
 };
 </script>

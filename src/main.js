@@ -8,6 +8,7 @@ import moment from 'moment'
 import setupInterceptors from './services/setupInterceptors';
 import store from "./store/index";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 
 Vue.prototype.moment = moment;
 Vue.config.productionTip = false
@@ -17,6 +18,7 @@ Vue.use(CKEditor);
 setupInterceptors(store);
 
 new Vue({
+  VueDOMPurifyHTML,
   store,
   router,
   vuetify,

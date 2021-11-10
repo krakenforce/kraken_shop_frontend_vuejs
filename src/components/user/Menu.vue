@@ -11,7 +11,7 @@
             ><v-icon>mdi-dots-vertical-circle</v-icon>
           </label>
           <li>
-            <a href="#" class="desktop-item">GENRE</a>
+            <a href="#" class="desktop-item">GENRE<i class="mdi mdi-chevron-down"></i></a>
             <input type="checkbox" id="showMega1" />
             <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
             <div class="mega-box">
@@ -48,7 +48,7 @@
             </div>
           </li>
           <li>
-            <a href="#" class="desktop-item">CATEGORY</a>
+            <a href="#" class="desktop-item">CATEGORY<i class="mdi mdi-chevron-down"></i></a>
             <input type="checkbox" id="showMega2" />
             <label for="showMega2" class="mobile-item">DANH MỤC</label>
             <div class="mega-box">
@@ -78,12 +78,12 @@
             </div>
           </li>
           <li>
-            <a href="#" class="desktop-item">INFOMATION</a>
+            <a href="#" class="desktop-item">INFOMATION<i class="mdi mdi-chevron-down"></i></a>
             <input type="checkbox" id="showDrop" />
             <label for="showDrop" class="mobile-item">THÔNG TIN</label>
             <ul class="drop-menu">
-              <li><a href="#">HƯỚNG DẪN</a></li>
-              <li><a href="#">TIN TỨC</a></li>
+              <li><a href="#">INSTRUCTION</a></li>
+              <li><a href="#">NEWS</a></li>
             </ul>
           </li>
 
@@ -159,7 +159,7 @@
               <v-col cols="12" sm="8">
                 <v-menu open-on-hover bottom offset-y>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" @click="goToUserDetail">
+                    <v-btn v-bind="attrs" v-on="on" @click="goToUserDetail" elevation="0">
                       <v-avatar color="blue">
                         <v-icon v-if="user.avatarImageUrl == null" dark>
                           mdi-account-circle

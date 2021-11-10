@@ -7,63 +7,71 @@
       <!-- FIRST DATE PICKER -->
       <v-col cols="12" sm="4">
         <v-menu
-          ref="menu"
-          v-model="menu"
+          v-model="menu1"
           :close-on-content-click="false"
-          :return-value.sync="date"
           transition="scale-transition"
           offset-y
+          max-width="290px"
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date"
-              label="Start date"
+              v-model="startTime"
+              label="Start Date"
+              hint="MM/DD/YYYY format"
+              persistent-hint
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">
-              OK
-            </v-btn>
-          </v-date-picker>
+          <v-date-picker
+            v-model="startTime"
+            no-title
+            @input="menu1 = false"
+          ></v-date-picker>
         </v-menu>
       </v-col>
 
       <!-- SECOND DATE PICKER -->
       <v-col cols="12" sm="4">
         <v-menu
-          ref="menu"
-          v-model="menu"
+          v-model="menu2"
           :close-on-content-click="false"
-          :return-value.sync="date"
           transition="scale-transition"
           offset-y
+          max-width="290px"
           min-width="auto"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="date"
-              label="End date"
+              v-model="endTime"
+              label="End Date"
+              hint="MM/DD/YYYY format"
+              persistent-hint
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)">
-              OK
-            </v-btn>
-          </v-date-picker>
+          <v-date-picker
+            v-model="endTime"
+            no-title
+            @input="menu2 = false"
+          ></v-date-picker>
         </v-menu>
+      </v-col>
+      <v-col cols="12" sm="2">
+        <v-btn @click="getStatByTime" color="green" class="white--text">
+          <v-icon>fas fa-search</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="12" sm="1">
+        <v-btn color="transparent" x-small="true" @click="reloadWindow()"
+          >.
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -179,6 +187,9 @@ export default {
   name: "Sale",
   components: { BarChart },
   data: () => ({
+    startTime: "",
+    endTime: "",
+
     menu: false,
     modal: false,
     menu2: false,
@@ -209,14 +220,18 @@ export default {
     productChartColor: [],
   }),
   methods: {
+
+    reloadWindow() {
+      window.location.reload();
+    },
+
     getDetail(item) {
       this.dialog = true;
       this.productLoaded = false;
-      this.productAmount = [],
-      this.productChartLabel= [],
-      this.productChartColor= [],
-
-      this.getProductStat(item.userId);
+      (this.productAmount = []),
+        (this.productChartLabel = []),
+        (this.productChartColor = []),
+        this.getProductStat(item.userId);
     },
 
     mappingUserChart() {
