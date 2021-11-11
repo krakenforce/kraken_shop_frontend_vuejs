@@ -114,22 +114,26 @@
         <h1>Feedback Detail</h1>
         <v-row>
           <v-col cols="12" sm="12">
-            <v-card elevation="12" color="grey" class="pa-4">
+            <v-card elevation="12" color="dark" class="pa-4">
               <v-card-title>Reply Feedback</v-card-title>
-              <v-text-field
-                label="Content"
-                type="text"
-                prepend-icon="fas fa-users"
-              />
               <v-text-field
                 label="Email"
                 type="text"
+                v-model="userEmail"
+                readonly
+                prepend-icon="fas fa-envelope"
+              />
+              <v-text-field
+                label="Content"
+                type="text"
+                v-model="content"
+                clearable
                 prepend-icon="fas fa-users"
               />
               <v-checkbox label="Replied"/>
               <v-row>
                   <v-col cols="12" sm="3">
-                      <v-btn color="green" class="white--text">Send</v-btn>
+                      <v-btn color="green" class="white--text" @click="sendFeedbackReply">Send</v-btn>
                   </v-col>
               </v-row>
             </v-card>
@@ -149,10 +153,13 @@ export default {
   components: {},
   data() {
     return {
+      userEmail: '',
       testValue: "",
       step: 1,
       startTime: null,
       endTime: null,
+      content: '',
+
 
        //table
       page: 0,
@@ -191,7 +198,17 @@ export default {
 
     replyFeedback(value) {
       this.step = 2;
-      this.testValue = value;
+      this.userEmail = value.email;
+    },
+
+    sendFeedbackReply(){
+      api.post("/user/feedback/reply?detail=" + this.content + "&recipientEmail=" + this.userEmail)
+        .then((response) => {
+          alert(response.data.message);
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        })
     },
 
     getAllFeedback(){

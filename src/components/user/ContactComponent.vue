@@ -10,8 +10,8 @@
       <v-row no-gutters style="max-height: 200px">
         <v-col>
           <h2 class="yellow--text">
-            Direct deposit locations you can go and recharge. (Note: you
-            must call 30 minutes in advance)
+            Direct deposit locations you can go and recharge. (Note: you must
+            call 30 minutes in advance)
           </h2>
         </v-col>
       </v-row>
@@ -65,21 +65,23 @@
               outlined
               dense
               :items="items"
-              @change="searchByProvider"
+              v-model="selectedType"
+              @change="getFeedbackType"
             ></v-combobox>
           </v-col>
           <v-col cols="12" sm="6">
             <v-text-field
               label="Detail"
               placeholder="Enter Detail"
+              v-model="detail"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="3">
-            <v-btn color="primary"> SEND </v-btn>
+            <v-btn @click="addFeedback" color="primary"> SEND </v-btn>
           </v-col>
         </v-row>
       </div>
-      <div v-else >
+      <div v-else>
         <v-row class="text-center">
           <v-col cols="12" sm="12">
             <h2>Please login to send feedback</h2>
@@ -96,12 +98,36 @@
 </template>
 
 <script>
+import api from "../../services/api"
 export default {
   name: "News",
 
   data: () => ({
     items: ["Issue", "Request", "Complaint"],
+    selectedType: "",
+    detail: "",
   }),
+
+  methods: {
+    addFeedback() {
+      if (this.detail == "" || this.selectedType == "") {
+        alert("Please enter content");
+      } else {
+        let feedback = { detail: "" };
+        let userId = this.$store.state.auth.user.id;
+        feedback.detail = this.detail;
+
+        api.post("/user/feedback?feedbackType=" + this.selectedType + "&userId=" + userId, feedback)
+          .then(() => {
+            alert("send feedback succesfully");
+          })
+          .catch((error) => {
+            Promise.reject(error);
+            alert("send feedback fail");
+          })
+      }
+    },
+  },
 };
 </script>
 <style scoped>

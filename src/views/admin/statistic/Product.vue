@@ -268,22 +268,41 @@ export default {
     tagChartLabel: [],
     tagChartColor: [],
   }),
-  watch: {
-    
-  },
+  watch: {},
   methods: {
     reloadWindow() {
       window.location.reload();
     },
 
+    resetChart() {
+      this.productLoaded = false;
+      this.productAmount = [];
+      this.productChartLabel = [];
+      this.productChartColor = [];
+
+      this.categoryLoaded = false;
+      this.categoryAmount = [];
+      this.categoryChartLabel = [];
+      this.categoryChartColor = [];
+
+      this.tagLoaded = false;
+      this.tagAmount = [];
+      this.tagChartLabel = [];
+      this.tagChartColor = [];
+    },
+
     getStatByTime() {
-      var startTime = new Date(this.startTime);
-      var endTime = new Date(this.endTime);
-      let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
-      let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
-      this.getProductStatByTime(start, end);
-      this.getCategoryStatByTime(start, end);
-      this.getTagStatByTime(start, end);
+      this.resetChart();
+
+      setTimeout(() => {
+        var startTime = new Date(this.startTime);
+        var endTime = new Date(this.endTime);
+        let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
+        let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
+        this.getProductStatByTime(start, end);
+        this.getCategoryStatByTime(start, end);
+        this.getTagStatByTime(start, end);
+      }, 1000);
     },
 
     mappingProductChart() {

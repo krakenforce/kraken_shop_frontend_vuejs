@@ -37,7 +37,17 @@
                         :src="item.thumbnailImageUrl"
                         height="180px"
                         width="320px"
-                      ></v-img>
+                        justify="left"
+                      >
+                      <div class="ma-1 text-left">
+                        <v-chip label color="red" small>
+                          <strong>
+                            -{{ calculatePercent(item.price, item.salePrice) }}
+                            %
+                          </strong>
+                        </v-chip>
+                      </div>
+                      </v-img>
 
                       <v-card-title class="white--text">
                         {{ item.name }}</v-card-title
@@ -51,17 +61,24 @@
                           :rating="item.avgStar"
                         ></star-rating>
                       </v-card-text>
+                      
 
                       <v-card-actions>
                         <v-container>
                           <v-row>
-                            <v-col cols="12" sm="5">
-                              <strike>
+                            <v-col cols="12" sm="6">
+                              <strike class="red--text">
                                 {{ item.price }} <strong>&#36;</strong>
                               </strike>
                             </v-col>
                           </v-row>
+
                           <v-row dense>
+                            <v-col cols="12" sm="6">
+                              <h3 class="yellow--text">
+                                {{ item.salePrice }} <strong> &#36;</strong>
+                              </h3>
+                            </v-col>
                             <v-col cols="12" sm="6">
                               <div v-if="user">
                                 <v-btn
@@ -72,20 +89,15 @@
                                 >
                                   <v-icon>add_shopping_cart</v-icon>
                                 </v-btn>
-                                <v-btn
+                                <!-- <v-btn
                                   icon
                                   class="white--text"
                                   color="pink"
                                   @click.stop="addToFavorite"
                                 >
                                   <v-icon> mdi-heart </v-icon>
-                                </v-btn>
+                                </v-btn> -->
                               </div>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-card-text class="yellow--text"
-                                >{{ item.salePrice }} <strong>&#36;</strong>
-                              </v-card-text>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -124,7 +136,16 @@
                         :src="item.thumbnailImageUrl"
                         height="180px"
                         width="320px"
-                      ></v-img>
+                      >
+                      <div class="ma-1 text-left">
+                        <v-chip label color="red" small>
+                          <strong>
+                            -{{ calculatePercent(item.price, item.salePrice) }}
+                            %
+                          </strong>
+                        </v-chip>
+                      </div>
+                      </v-img>
 
                       <v-card-title class="white--text">
                         {{ item.name }}</v-card-title
@@ -142,13 +163,18 @@
                       <v-card-actions>
                         <v-container>
                           <v-row>
-                            <v-col cols="12" sm="5">
-                              <strike>
+                            <v-col cols="12" sm="6">
+                              <strike class="red--text">
                                 {{ item.price }} <strong>&#36;</strong>
                               </strike>
                             </v-col>
                           </v-row>
                           <v-row dense>
+                            <v-col cols="12" sm="6">
+                              <h2 class="yellow--text">
+                                {{ item.salePrice }} <strong>&#36;</strong>
+                              </h2>
+                            </v-col>
                             <v-col cols="12" sm="6">
                               <div v-if="user">
                                 <v-btn
@@ -168,11 +194,6 @@
                                   <v-icon> mdi-heart </v-icon>
                                 </v-btn>
                               </div>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-card-text class="yellow--text">
-                                <h1>{{ item.salePrice }} <strong>&#36;</strong></h1>
-                              </v-card-text>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -211,7 +232,16 @@
                         :src="item.thumbnailImageUrl"
                         height="180px"
                         width="320px"
-                      ></v-img>
+                      >
+                      <div class="ma-1 text-left">
+                        <v-chip label color="red" small>
+                          <strong>
+                            -{{ calculatePercent(item.price, item.salePrice) }}
+                            %
+                          </strong>
+                        </v-chip>
+                      </div>
+                      </v-img>
 
                       <v-card-title class="white--text">
                         {{ item.name }}</v-card-title
@@ -229,19 +259,17 @@
                       <v-card-actions>
                         <v-container>
                           <v-row>
-                            <v-col cols="12" sm="5">
-                              <strike>
+                            <v-col cols="12" sm="6">
+                              <strike class="red--text">
                                 {{ item.price }} <strong>&#36;</strong>
                               </strike>
                             </v-col>
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" sm="6">
-                              <v-card-text class="yellow--text">
-                                <h1>
-                                  {{ item.salePrice }}<strong>&#36;</strong>
-                                </h1>
-                              </v-card-text>
+                              <h2 class="yellow--text">
+                                {{ item.salePrice }} <strong>&#36;</strong>
+                              </h2>
                             </v-col>
                             <v-col cols="12" sm="6">
                               <div v-if="user">
@@ -300,6 +328,12 @@ export default {
     };
   },
   methods: {
+    calculatePercent(price, salePrice) {
+      let test = (100 * salePrice) / price;
+      let result = 100 - test;
+      return Math.round(result);
+    },
+
     changeTab(index) {
       if (index == 0) {
         this.currentTab = 0;

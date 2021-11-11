@@ -87,6 +87,10 @@ export default {
     };
   },
   methods: {
+    goToHomePage(){
+      this.$router.push("/")
+    },
+
     goToLogin: function () {
       this.$router.push("/login");
     },

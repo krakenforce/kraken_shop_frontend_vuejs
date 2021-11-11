@@ -70,7 +70,7 @@
         </v-btn>
       </v-col>
       <v-col cols="12" sm="1">
-        <v-btn color="transparent" x-small="true" @click="reloadWindow()"
+        <v-btn color="transparent" x-small="true" @click="reloadWindow"
           >.
         </v-btn>
       </v-col>
@@ -122,6 +122,7 @@
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
+          <v-card-title><span class="green--text">FROM: </span>  {{displayStartTime}} --- <span class="green--text">TO: </span> {{displayEndTime}}</v-card-title>
           <v-subheader :inset="inset"
             >--- Number of orders by day --- :
             <h1 v-if="numberOfOrder != 0">{{ numberOfOrder }}</h1>
@@ -170,41 +171,18 @@
 <script>
 import moment from "moment";
 import api from "../../../services/api";
-//import LineChart from "../../../components/admin/chartjs.vue";
 
 export default {
   components: {},
   name: "Sale",
   data: () => ({
-    ///////////////////////////////////////////////////////
-    // loaded: false,
-    // chartdata: {
-    //   label: ["First Range", "Second Range"],
-    //   datasets: [
-    //     {
-    //       label: "My First Chart",
-    //       data: this.barchartData,
-
-    //     }
-    //   ]
-    // },
-    // revenueByRange1: '',
-    // revenueByRange2: '',
-    // options: {
-    //   responsive: true,
-    //   maintainAspectRatio: false
-    // },
-
-    // barchartData:[],
-    /////////////////////////////////////////////////////
 
     dialog: false,
     startTime: "",
     endTime: "",
-    // stime1: "",
-    // etime1: "",
-    // stime2: "",
-    // etime2: "",
+
+    displayStartTime: "",
+    displayEndTime: "",
     numberOfOrder: 0,
 
     //order table
@@ -238,6 +216,37 @@ export default {
     inOrde: "",
   }),
   methods: {
+
+    getOrderThisMonth(page) {
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      let start = moment(firstDay).format("YYYY-MM-DD HH:MM:SS");
+      let end = moment(lastDay).format("YYYY-MM-DD HH:MM:SS");
+
+      let pageNumber = page - 1;
+      this.displayStartTime = start;
+      this.displayEndTime = end;
+
+      api
+        .get(
+          "/order/search?startTime=" +
+            start +
+            "&endTime=" +
+            end +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            10
+        )
+        .then((response) => {
+          this.loading = false;
+          this.orders = response.data.orders;
+          this.orderTotalPages = response.data.totalPages;
+          this.numberOfOrder = response.data.totalItems;
+        });
+    },
+
     getRevenueThisMonth() {
       var date = new Date();
       var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -342,6 +351,8 @@ export default {
       let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
 
       let pageNumber = page - 1;
+      this.displayStartTime = start;
+      this.displayEndTime = end;
 
       api
         .get(
@@ -389,8 +400,10 @@ export default {
   },
   computed: {},
   mounted() {
+    
     this.getTotalRevenue();
     this.getRevenueThisMonth();
+    this.getOrderThisMonth(1);
   },
 };
 </script>

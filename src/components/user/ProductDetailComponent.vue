@@ -35,6 +35,16 @@
               <v-card color="#343434" class="mx-auto" outlined>
                 <v-card-title>
                   <h3>{{ product.name }}</h3>
+                  <div class="ma-1 text-left">
+                    <v-chip label color="red" small>
+                      <strong>
+                        -{{
+                          calculatePercent(product.price, product.salePrice)
+                        }}
+                        %
+                      </strong>
+                    </v-chip>
+                  </div>
                 </v-card-title>
                 <v-card-text>
                   <!-- RATING -->
@@ -54,7 +64,7 @@
                               ><strong>{{ product.price }} &#36; </strong>
                             </strike>
                           </h3>
-                          <h1 class="yellow-text">
+                          <h1 class="yellow--text">
                             <strong>{{ product.salePrice }} &#36; </strong>
                           </h1>
                         </div>
@@ -62,12 +72,12 @@
                       <v-col cols="12" sm="6">
                         <v-btn
                           @click="addToCart(product)"
-                          outlined
-                          color="red"
+                          color="blue"
                           class="white--text"
                           rounded
                         >
                           ADD TO CART
+                          <v-icon>fas fa-shopping-cart</v-icon>
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -123,10 +133,16 @@
               <v-tabs-items v-model="tab">
                 <v-card flat>
                   <div v-show="currentTab === 0">
-                    <div class="text-left pa-5" v-html="product.productDetail"></div>
+                    <div
+                      class="text-left pa-5"
+                      v-html="product.productDetail"
+                    ></div>
                   </div>
                   <div v-show="currentTab === 1">
-                    <div class="text-left pa-5" v-html="product.productWarranty"></div>
+                    <div
+                      class="text-left pa-5"
+                      v-html="product.productWarranty"
+                    ></div>
                   </div>
                   <!-- COMMENT -->
                   <div v-show="currentTab === 2">
@@ -318,7 +334,6 @@
 import StarRating from "vue-star-rating";
 import api from "../../services/api";
 
-
 export default {
   name: "ProductDetail",
   props: ["product"],
@@ -391,6 +406,12 @@ export default {
         this.currentTab = 3;
         this.getProductReview(1);
       }
+    },
+
+    calculatePercent(price, salePrice) {
+      let test = (100 * salePrice) / price;
+      let result = 100 - test;
+      return Math.round(result);
     },
 
     chipClick(type, value) {

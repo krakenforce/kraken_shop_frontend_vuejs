@@ -5,6 +5,7 @@
           <v-container class="text-center" black justify="center" fill-height>
             <v-row>
               <v-col cols="auto">
+                <SalePromoteComponent :salePromote="salePromote" /> 
                 <Carousel :homepageBanners="homepageBanners" :itemNumber="itemNumber" />
                 <Products :products="products" :itemNumber="itemNumber" :totalItems="totalItems"/>    
               </v-col>      
@@ -32,6 +33,8 @@ import Carousel from "../../components/user/Carousel.vue";
 import Products from "../../components/user/Products.vue";
 import Footer from "../../components/user/Footer.vue";
 import BonusInfoComponent from "../../components/user/BonusInfoComponent.vue"
+import SalePromoteComponent from "../../components/user/SalePromoteComponent.vue"
+
 export default {
   name: "Homepage",
   components: {
@@ -39,6 +42,7 @@ export default {
     Products,
     Footer,
     BonusInfoComponent,
+    SalePromoteComponent
   },
   data() {
     return {
@@ -46,6 +50,7 @@ export default {
       products: [],
       itemNumber: 8,
       totalItems: '',
+      salePromote: [],
     }
   },
   methods: {
@@ -68,12 +73,20 @@ export default {
           this.totalItems = response.data.totalItems;
           this.totalPages = response.data.totalPages;
         });
-    }
+    },
+
+    getAllSalePromote(){
+      api.get("/banner/sale_promote")
+        .then((response) => {
+          this.salePromote = response.data.salePromotes;
+        })
+    },
 
   },
   mounted() {
     this.getAllProduct();
     this.getAllBanner();
+    this.getAllSalePromote();
   },
   created() {
     
