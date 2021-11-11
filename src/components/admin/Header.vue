@@ -39,7 +39,7 @@
           <v-chip link>
             <v-badge dot bottom offset-y="10" offset-x="10" color="green">
               <v-avatar size="40">
-                <img src="https://i.ibb.co/J5MnNBg/icon.png" alt="" />
+                <v-img :src="user.avatarImageUrl" alt=""></v-img>
               </v-avatar>
             </v-badge>
             <span class="ml-4">{{user.username}}</span>
@@ -50,7 +50,7 @@
       <v-list width="250" class="py-0" flat>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://i.ibb.co/J5MnNBg/icon.png" alt="" />
+            <v-img :src="user.avatarImageUrl" alt=""></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{user.username}} </v-list-item-title>

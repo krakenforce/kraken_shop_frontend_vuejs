@@ -35,8 +35,8 @@
                     >
                       <v-img
                         :src="item.thumbnailImageUrl"
-                        height="180px"
-                        width="320px"
+                        height="135px"
+                        width="240px"
                         justify="left"
                       >
                       <div class="ma-1 text-left">
@@ -49,8 +49,8 @@
                       </div>
                       </v-img>
 
-                      <v-card-title class="white--text">
-                        {{ item.name }}</v-card-title
+                      <v-card-subtitle class="white--text">
+                        {{ item.name }}</v-card-subtitle
                       >
 
                       <v-divider class="mx-4"></v-divider>
@@ -134,8 +134,8 @@
                     >
                       <v-img
                         :src="item.thumbnailImageUrl"
-                        height="180px"
-                        width="320px"
+                        height="135px"
+                        width="240px"
                       >
                       <div class="ma-1 text-left">
                         <v-chip label color="red" small>
@@ -147,8 +147,8 @@
                       </div>
                       </v-img>
 
-                      <v-card-title class="white--text">
-                        {{ item.name }}</v-card-title
+                      <v-card-subtitle class="white--text">
+                        {{ item.name }}</v-card-subtitle
                       >
 
                       <v-divider class="mx-4"></v-divider>
@@ -171,9 +171,9 @@
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" sm="6">
-                              <h2 class="yellow--text">
+                              <h3 class="yellow--text">
                                 {{ item.salePrice }} <strong>&#36;</strong>
-                              </h2>
+                              </h3>
                             </v-col>
                             <v-col cols="12" sm="6">
                               <div v-if="user">
@@ -185,14 +185,14 @@
                                 >
                                   <v-icon>add_shopping_cart</v-icon>
                                 </v-btn>
-                                <v-btn
+                                <!-- <v-btn
                                   icon
                                   class="white--text"
                                   color="pink"
                                   @click.stop="addToFavorite"
                                 >
                                   <v-icon> mdi-heart </v-icon>
-                                </v-btn>
+                                </v-btn> -->
                               </div>
                             </v-col>
                           </v-row>
@@ -230,8 +230,8 @@
                     >
                       <v-img
                         :src="item.thumbnailImageUrl"
-                        height="180px"
-                        width="320px"
+                        height="135px"
+                        width="240px"
                       >
                       <div class="ma-1 text-left">
                         <v-chip label color="red" small>
@@ -243,8 +243,8 @@
                       </div>
                       </v-img>
 
-                      <v-card-title class="white--text">
-                        {{ item.name }}</v-card-title
+                      <v-card-subtitle class="white--text">
+                        {{ item.name }}</v-card-subtitle
                       >
 
                       <v-divider class="mx-4"></v-divider>
@@ -267,9 +267,9 @@
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" sm="6">
-                              <h2 class="yellow--text">
+                              <h3 class="yellow--text">
                                 {{ item.salePrice }} <strong>&#36;</strong>
-                              </h2>
+                              </h3>
                             </v-col>
                             <v-col cols="12" sm="6">
                               <div v-if="user">
@@ -281,14 +281,14 @@
                                 >
                                   <v-icon>add_shopping_cart</v-icon>
                                 </v-btn>
-                                <v-btn
+                                <!-- <v-btn
                                   icon
                                   class="white--text"
                                   color="pink"
                                   @click.stop="addToFavorite"
                                 >
                                   <v-icon> mdi-heart </v-icon>
-                                </v-btn>
+                                </v-btn> -->
                               </div>
                             </v-col>
                           </v-row>
@@ -362,7 +362,7 @@ export default {
     },
 
     getAllProduct() {
-      api.get("/product?pageNo=" + 0 + "&pageSize=" + 8).then((response) => {
+      api.get("/product?pageNo=" + 0 + "&pageSize=" + 12).then((response) => {
         this.loading = false;
         this.products = response.data.products;
         this.totalItems = response.data.totalItems;

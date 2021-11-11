@@ -7,8 +7,11 @@
             v-for="item in homepageBanners"
             :key="item.id"
             :src="item.imageUrl"
+            link
+            :to="item.apiQueryUrl"
             reverse-transition="fade-transition"
             transition="fade-transition"
+            
           >
           </v-carousel-item>
         </v-carousel>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">kraken-shop-frontend</string>
+    <string name="title_activity_main">kraken-shop-frontend</string>
+    <string name="package_name">com.krakenforce.krakenshopvue</string>
+    <string name="custom_url_scheme">com.krakenforce.krakenshopvue</string>
+</resources>

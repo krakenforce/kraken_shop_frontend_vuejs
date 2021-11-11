@@ -295,9 +295,13 @@
         <v-col cols="12" sm="2">
           <v-card class="mx-auto mb-8" max-width="300" tile>
             <v-list shaped color="rgb(90, 90, 90)">
-              <v-subheader class="yellow--text">DANH MỤC</v-subheader>
+              <v-subheader class="yellow--text">CATEGORY</v-subheader>
               <v-list-item-group v-model="selectedItem1" color="red">
-                <v-list-item v-for="(item, i) in item1" :key="i">
+                <v-list-item
+                  v-for="(item, i) in item1"
+                  :key="i"
+                  :to="item.link"
+                >
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="item.text"
@@ -311,9 +315,13 @@
 
           <v-card class="mx-auto mb-8" max-width="300" tile>
             <v-list shaped color="rgb(90, 90, 90)">
-              <v-subheader class="yellow--text">THỂ LOẠI</v-subheader>
+              <v-subheader class="yellow--text">GENRE</v-subheader>
               <v-list-item-group v-model="selectedItem2" color="blue">
-                <v-list-item v-for="(item, i) in item2" :key="i">
+                <v-list-item
+                  v-for="(item, i) in item2"
+                  :key="i"
+                  :to="item.link"
+                >
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="item.text"
@@ -363,33 +371,33 @@ export default {
     tab: null,
     items: ["INTRODUCTION", "WARRANTY", "COMMENT", "REVIEW"],
     item1: [
-      { text: "Battle.Net" },
-      { text: "Game Mobile" },
-      { text: "Game Origin" },
-      { text: "Game Steam" },
-      { text: "Game Uplay" },
-      { text: "Genshin Impact" },
-      { text: "Khác" },
-      { text: "Microsoft - Xbox" },
-      { text: "Package Steam" },
-      { text: "PlayStation" },
-      { text: "Wallet Code" },
+      { text: "Battle.Net", link: "/search/category/Battle.net" },
+      { text: "Game Mobile", link: "/search/category/Mobile" },
+      { text: "Game Origin", link: "/search/category/Origin" },
+      { text: "Game Steam", link: "/search/category/Steam" },
+      { text: "Game Uplay", link: "/search/category/Uplay" },
+      { text: "Genshin Impact", link: "/search/category/GenshinImpact" },
+      { text: "Others", link: "/search/all/product" },
+      { text: "Microsoft - Xbox", link: "/search/category/Microsoft" },
+      { text: "Package Steam", link: "/search/category/PackSteam" },
+      { text: "PlayStation", link: "/search/category/Playstation" },
+      { text: "Wallet Code", link: "/search/category/WalletCode" },
     ],
     item2: [
-      { text: "Action" },
-      { text: "Adventure" },
-      { text: "Casual" },
-      { text: "Early Access" },
-      { text: "Indie" },
-      { text: "Massively Multiplayer" },
-      { text: "Racing" },
-      { text: "RPG" },
-      { text: "Sexual Content" },
-      { text: "Simulation" },
-      { text: "Sports" },
-      { text: "Strategy" },
-      { text: "Utilities" },
-      { text: "Violent" },
+      { text: "Action", link: "/search/genre/Action" },
+      { text: "Adventure", link: "/search/genre/Adventure" },
+      { text: "Casual", link: "/search/genre/Casual" },
+      { text: "Early Access", link: "/search/genre/EarlyAccess" },
+      { text: "Indie", link: "/search/genre/Indie" },
+      { text: "Massively Multiplayer", link: "/search/genre/Mmo" },
+      { text: "Racing", link: "/search/genre/Racing" },
+      { text: "RPG", link: "/search/genre/RPG" },
+      { text: "Sexual Content", link: "/search/genre/Sexual" },
+      { text: "Simulation", link: "/search/genre/Simulation" },
+      { text: "Sports", link: "/search/genre/Sports" },
+      { text: "Strategy", link: "/search/genre/Strategy" },
+      { text: "Utilities", link: "/search/genre/Utilities" },
+      { text: "Violent", link: "/search/genre/Violent" },
     ],
     icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
   }),

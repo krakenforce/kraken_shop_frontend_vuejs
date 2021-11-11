@@ -1,0 +1,6 @@
+{
+	"appId": "com.krakenforce.krakenshopvue",
+	"appName": "kraken-shop-frontend",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

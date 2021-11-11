@@ -48,7 +48,7 @@ export default {
     return {
       homepageBanners: [],
       products: [],
-      itemNumber: 8,
+      itemNumber: 12,
       totalItems: '',
       salePromote: [],
     }

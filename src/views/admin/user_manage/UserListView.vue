@@ -129,7 +129,7 @@
               />
               <v-select
                 prepend-icon="fas fa-user"
-                v-model="e6"
+                v-model="userAddRequest.role"
                 :items="roleList"
                 :menu-props="{ maxHeight: '400' }"
                 label="Select Role for User"
@@ -196,6 +196,7 @@ export default {
         username: "",
         email: "",
         password: "",
+        role: [],
       },
 
       //user list to table
@@ -272,11 +273,13 @@ export default {
     },
 
     createUser() {
+
       api
         .post("/auth/signup", {
           username: this.userAddRequest.username,
           email: this.userAddRequest.email,
           password: this.userAddRequest.password,
+          role: this.userAddRequest.role,
         })
         .then((response) => {
           this.alertMessage.content = response.data.message;

@@ -474,8 +474,6 @@ export default {
     },
 
     getGameCodeByProduct(product) {
-      //const { gcPage, itemsPerPage } = this.gcOptions;
-      //let pageNumber = gcPage - 1;
 
       api
         .get(
@@ -692,7 +690,6 @@ export default {
         })
       );
       formData.append("thumbnailImage", this.thumbnailImage);
-      console.log(this.productRequest);
       api
         .post("/product", formData, {
           headers: { "Content-Type": "multipart/form-data" },

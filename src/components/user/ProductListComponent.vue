@@ -46,9 +46,9 @@
       <v-col cols="12" md="10">
         <v-card>
           <v-tabs color="red accent-4" left background-color="black">
-            <v-tab class="white--text">Mới nhất</v-tab>
-            <v-tab class="white--text">Thấp đến cao</v-tab>
-            <v-tab class="white--text">Cao đến thấp</v-tab>
+            <v-tab class="white--text">Lastest</v-tab>
+            <v-tab class="white--text">Low To High</v-tab>
+            <v-tab class="white--text">High To Low</v-tab>
 
             <v-tab-item v-for="n in 3" :key="n">
               <v-container fluid black justify="center">
