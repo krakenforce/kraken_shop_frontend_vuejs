@@ -46,6 +46,10 @@ export default {
     };
   },
   methods: {
+    reloadWindow() {
+      window.location.reload();
+    },
+
     getType() {
       this.typeName = this.$route.params.typeName;
       this.type = this.$route.params.type;
@@ -126,12 +130,13 @@ export default {
     },
   },
   mounted() {
+    
     this.getType();
     this.searchProductByType();
     this.getAllBanner();
   },
-  beforeMount() {
-    this.searchProductByType();
+  updated() {
+    //this.reloadWindow();
   },
 };
 </script>

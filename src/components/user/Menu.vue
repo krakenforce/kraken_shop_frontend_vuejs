@@ -29,19 +29,19 @@
                 </div>
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="#">Massively Multiplayer</a></li>
-                    <li><a href="#">Racing</a></li>
-                    <li><a href="#">RPG</a></li>
-                    <li><a href="#">Sexual Content</a></li>
-                    <li><a href="#">Simulation</a></li>
+                    <li><a href="/search/genre/Mmo">Massively Multiplayer</a></li>
+                    <li><a href="/search/genre/Racing">Racing</a></li>
+                    <li><a href="/search/genre/RPG">RPG</a></li>
+                    <li><a href="/search/genre/Sexual">Sexual Content</a></li>
+                    <li><a href="/search/genre/Simulation">Simulation</a></li>
                   </ul>
                 </div>
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="#">Sports</a></li>
-                    <li><a href="#">Strategy</a></li>
-                    <li><a href="#">Utilities</a></li>
-                    <li><a href="#">Violent</a></li>
+                    <li><a href="/search/genre/Sport">Sports</a></li>
+                    <li><a href="/search/genre/Strategy">Strategy</a></li>
+                    <li><a href="/search/genre/Utilities">Utilities</a></li>
+                    <li><a href="/search/genre/Violent">Violent</a></li>
                   </ul>
                 </div>
               </div>
@@ -58,20 +58,20 @@
                     <li>
                       <a href="/search/category/Battle.net">Battle.Net</a>
                     </li>
-                    <li><a href="#">Game Mobile</a></li>
-                    <li><a href="#">Game Origin</a></li>
-                    <li><a href="#">Game Steam</a></li>
-                    <li><a href="#">Game Uplay</a></li>
-                    <li><a href="#">Genshin Impact</a></li>
+                    <li><a href="/search/category/Mobile">Game Mobile</a></li>
+                    <li><a href="/search/category/Origin">Game Origin</a></li>
+                    <li><a href="/search/category/Steam">Game Steam</a></li>
+                    <li><a href="/search/category/Uplay">Game Uplay</a></li>
+                    <li><a href="/search/category/GenshinImpact">Genshin Impact</a></li>
                   </ul>
                 </div>
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="#">Other</a></li>
-                    <li><a href="#">Microsoft-Xbox</a></li>
-                    <li><a href="#">Package Steam</a></li>
-                    <li><a href="#">PlayStation</a></li>
-                    <li><a href="#">Wallet Code</a></li>
+                    <li><a href="/search/all/product">Other</a></li>
+                    <li><a href="/search/category/Microsoft">Microsoft-Xbox</a></li>
+                    <li><a href="/search/category/PackSteam">Package Steam</a></li>
+                    <li><a href="/search/category/Playstation">PlayStation</a></li>
+                    <li><a href="/search/category/WalletCode">Wallet Code</a></li>
                   </ul>
                 </div>
               </div>
@@ -82,7 +82,7 @@
             <input type="checkbox" id="showDrop" />
             <label for="showDrop" class="mobile-item">THÔNG TIN</label>
             <ul class="drop-menu">
-              <li><a href="#">INSTRUCTION</a></li>
+              <li><a href="/instruction">SUPPORT</a></li>
               <li><a href="#">NEWS</a></li>
             </ul>
           </li>

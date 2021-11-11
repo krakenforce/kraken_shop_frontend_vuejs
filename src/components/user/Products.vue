@@ -170,8 +170,8 @@
                               </div>
                             </v-col>
                             <v-col cols="12" sm="6">
-                              <v-card-text class="yellow--text"
-                                >{{ item.salePrice }} <strong>&#36;</strong>
+                              <v-card-text class="yellow--text">
+                                <h1>{{ item.salePrice }} <strong>&#36;</strong></h1>
                               </v-card-text>
                             </v-col>
                           </v-row>
@@ -237,6 +237,13 @@
                           </v-row>
                           <v-row dense>
                             <v-col cols="12" sm="6">
+                              <v-card-text class="yellow--text">
+                                <h1>
+                                  {{ item.salePrice }}<strong>&#36;</strong>
+                                </h1>
+                              </v-card-text>
+                            </v-col>
+                            <v-col cols="12" sm="6">
                               <div v-if="user">
                                 <v-btn
                                   icon
@@ -255,11 +262,6 @@
                                   <v-icon> mdi-heart </v-icon>
                                 </v-btn>
                               </div>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                              <v-card-text class="yellow--text"
-                                >{{ item.salePrice }} <strong>&#36;</strong>
-                              </v-card-text>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -281,7 +283,7 @@
 
 <script>
 import StarRating from "vue-star-rating";
-import api from "../../services/api"
+import api from "../../services/api";
 export default {
   name: "Product",
   props: ["products", "itemNumber", "totalItem", "product"],
@@ -304,10 +306,10 @@ export default {
         this.getAllProduct();
       } else if (index == 1) {
         this.currentTab = 1;
-        this.getProductByTag('HighLight');
+        this.getProductByTag("HighLight");
       } else if (index == 2) {
         this.currentTab = 2;
-        this.getProductByTag('New');
+        this.getProductByTag("New");
       }
     },
 
@@ -316,30 +318,34 @@ export default {
     },
 
     moreProduct(index) {
-      if(index == 0){
+      if (index == 0) {
         window.location.href = "search/all/product";
-      }else if(index == 1){
+      } else if (index == 1) {
         window.location.href = "search/genre/HighLight";
-      }else if(index == 2){
+      } else if (index == 2) {
         window.location.href = "search/genre/New";
       }
-      
     },
 
     getAllProduct() {
-      api
-        .get("/product?pageNo=" + 0  + "&pageSize=" + 8)
-        .then((response) => {
-          this.loading = false;
-          this.products = response.data.products;
-          this.totalItems = response.data.totalItems;
-          this.totalPages = response.data.totalPages;
-        });
+      api.get("/product?pageNo=" + 0 + "&pageSize=" + 8).then((response) => {
+        this.loading = false;
+        this.products = response.data.products;
+        this.totalItems = response.data.totalItems;
+        this.totalPages = response.data.totalPages;
+      });
     },
 
-    getProductByTag(name){
+    getProductByTag(name) {
       api
-        .get("/product/tag/search?tagName=" + name + "&pageNo=" + 0  + "&pageSize=" + 8)
+        .get(
+          "/product/tag/search?tagName=" +
+            name +
+            "&pageNo=" +
+            0 +
+            "&pageSize=" +
+            8
+        )
         .then((response) => {
           this.loading = false;
           this.products = response.data.products;

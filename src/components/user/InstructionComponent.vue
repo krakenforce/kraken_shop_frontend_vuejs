@@ -1,7 +1,7 @@
 <template>
   <v-container justify="center" class="black lighten-5 mb-6">
     <v-row no-gutters style="height: 500px">
-      <v-col>
+      <v-col cols="12" sm="12">
         <v-card class="mx-auto" max-width="344" outlined>
           <v-list-item three-line>
             <v-list-item-content>

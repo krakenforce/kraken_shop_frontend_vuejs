@@ -33,6 +33,7 @@ import UserRoles from "./views/user/UserRoles.vue";
 import CartPage from "./views/user/CartPage.vue";
 import Checkout from "./views/user/Checkout.vue";
 import CheckoutSuccess from './views/CheckoutSuccess.vue';
+import Instruction from './views/user/Instruction.vue';
 
 Vue.use(VueRouter);
 
@@ -91,6 +92,11 @@ const routes = [
         name: "About",
         component: About,
       },
+      {
+        path: "/instruction",
+        name: "Instruction",
+        component: Instruction
+      }
     ],
   },
   {

@@ -4,22 +4,22 @@
       <v-row no-gutters style="height: 100px"> </v-row>
       <v-row no-gutters style="max-height: 200px">
         <v-col cols="12" sm="12">
-          <h1 class="yellow--text">LIÊN HỆ KRAKEN SHOP</h1>
+          <h1 class="yellow--text">CONTACT KRAKEN SHOP</h1>
         </v-col>
       </v-row>
       <v-row no-gutters style="max-height: 200px">
         <v-col>
           <h2 class="yellow--text">
-            Các địa điểm nạp tiền trực tiếp bạn có thể đến và nạp. ( Lưu ý phải
-            gọi trước 30p )
+            Direct deposit locations you can go and recharge. (Note: you
+            must call 30 minutes in advance)
           </h2>
         </v-col>
       </v-row>
       <v-row no-gutters style="max-height: 200px" justify="center">
         <v-col cols="12" sm="12" md="12">
           <h2>
-            Nguyễn Đình Chiểu: 214 Nguyễn Đình Chiểu, Phường 6, Quận 3, Thành
-            phố Hồ Chí Minh, Việt Nam
+            Nguyen Dinh Chieu: 214 Nguyen Dinh Chieu, Ward 6, District 3, Ho Chi
+            Minh City, Vietnam
           </h2>
         </v-col>
       </v-row>
@@ -37,7 +37,7 @@
       </v-row>
       <v-row no-gutters style="max-height: 200px" justify="center">
         <v-col cols="12" sm="10">
-          <h2>Đội Cấn: 285 Đội Cấn, Q. Ba Đình, Hà Nội</h2>
+          <h2>Doi Can: 285 Doi Can, Ba Dinh District, Hanoi</h2>
         </v-col>
       </v-row>
       <v-row no-gutters style="height: 500px" justify="center">
@@ -52,6 +52,45 @@
           ></iframe>
         </v-col>
       </v-row>
+      <v-row no-gutters style="max-height: 200px">
+        <v-col cols="12" sm="12">
+          <h1 class="yellow--text">SEND FEEBACK</h1>
+        </v-col>
+      </v-row>
+      <div v-if="this.$store.state.auth.user">
+        <v-row>
+          <v-col cols="12" sm="3">
+            <v-combobox
+              placeholder="Select Type to Search"
+              outlined
+              dense
+              :items="items"
+              @change="searchByProvider"
+            ></v-combobox>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              label="Detail"
+              placeholder="Enter Detail"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" sm="3">
+            <v-btn color="primary"> SEND </v-btn>
+          </v-col>
+        </v-row>
+      </div>
+      <div v-else >
+        <v-row class="text-center">
+          <v-col cols="12" sm="12">
+            <h2>Please login to send feedback</h2>
+          </v-col>
+        </v-row>
+        <v-row class="text-center">
+          <v-col cols="12" sm="12">
+            <router-link to="/login">Login</router-link>
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
   </v-card>
 </template>
@@ -60,7 +99,9 @@
 export default {
   name: "News",
 
-  data: () => ({}),
+  data: () => ({
+    items: ["Issue", "Request", "Complaint"],
+  }),
 };
 </script>
 <style scoped>
