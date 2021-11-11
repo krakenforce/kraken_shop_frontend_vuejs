@@ -10,7 +10,7 @@
               max-height="150px"
               max-width="150px"
               link
-              :to="item.link"
+              @click="goToWebsite(item.link)"
             >
               <v-card-title class="justify-center">
                 <v-icon size="30">{{ item.icon }}</v-icon>
@@ -45,22 +45,30 @@ export default {
         icon: "fab fa-discord",
         title: "",
         content: "DISCORD",
+        link: "https://discord.com/"
       },
       {
         id: 2,
         icon: "fab fa-youtube",
         title: "",
         content: "YOUTUBE",
-        link: "/search/genre/HighLight",
+        link: "https://www.youtube.com/",
       },
       {
         id: 3,
         icon: "fab fa-facebook-square",
         title: "",
         content: "FACEBOOK",
+        link: "https://www.facebook.com/KrakenShop-112017934612589"
       },
     ],
   }),
+
+  methods: {
+    goToWebsite(link){
+      window.location.href = link;
+    }
+  }
 };
 </script>
 <style scoped>
