@@ -6,9 +6,9 @@
         <span>You can see detail of Comment</span>
 
         <v-row class="mt-4">
-          <v-col cols="12" sm="3">
+          <!-- <v-col cols="12" sm="3">
             <v-text-field label="Comment Product Search"> </v-text-field>
-          </v-col>
+          </v-col> -->
 
           <v-col cols="12" sm="3">
             <v-menu
@@ -67,12 +67,15 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
-
-          <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
             <v-btn color="green" class="white--text" @click="getCommentByTime">
               <v-icon>fas fa-search</v-icon>
             </v-btn>
+          </v-col>
+          <v-col cols="12" sm="1">
+              <v-btn @click="reloadWindow" color="transparent" x-small>
+                .
+              </v-btn>
           </v-col>
         </v-row>
 
@@ -180,6 +183,11 @@ export default {
     },
   },
   methods: {
+
+    reloadWindow(){
+      window.location.reload();
+    },
+
     replyComment(value) {
       this.step = 2;
       this.testValue = value;

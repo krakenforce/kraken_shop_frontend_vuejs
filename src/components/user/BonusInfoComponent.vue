@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" sm="3" v-for="item in bonusInfos" :key="item">
+      <v-col cols="12" sm="3" v-for="item in bonusInfos" :key="item.title">
         <v-hover v-slot="{ hover }">
           <v-card class="pa-5" height="100%" link :to="item.link" :color="hover ? '#4a4343' : 'dark'">
             <v-card-title class="justify-center">

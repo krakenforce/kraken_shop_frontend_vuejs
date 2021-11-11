@@ -123,10 +123,10 @@
               <v-tabs-items v-model="tab">
                 <v-card flat>
                   <div v-show="currentTab === 0">
-                    <v-card-text>{{ product.productDetail }}</v-card-text>
+                    <div class="text-left pa-5" v-html="product.productDetail"></div>
                   </div>
                   <div v-show="currentTab === 1">
-                    <v-card-text>{{ product.productWarranty }}</v-card-text>
+                    <div class="text-left pa-5" v-html="product.productWarranty"></div>
                   </div>
                   <!-- COMMENT -->
                   <div v-show="currentTab === 2">
@@ -317,6 +317,7 @@
 <script>
 import StarRating from "vue-star-rating";
 import api from "../../services/api";
+
 
 export default {
   name: "ProductDetail",

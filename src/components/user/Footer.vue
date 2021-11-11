@@ -2,7 +2,7 @@
   <v-parallax src="@/assets/user/wp4983330.jpg">
     <v-footer padless="padless" color="transparent">
       <v-row justify="center">
-        <v-col cols="12" sm="3" v-for="item in bonusInfos" :key="item">
+        <v-col cols="12" sm="3" v-for="item in bonusInfos" :key="item.id">
           <v-hover v-slot="{ hover }">
             <v-card
               :color="hover ? '#4a4343' : 'dark'"
@@ -41,17 +41,20 @@ export default {
 
     bonusInfos: [
       {
+        id: 1,
         icon: "fab fa-discord",
         title: "",
         content: "DISCORD",
       },
       {
+        id: 2,
         icon: "fab fa-youtube",
         title: "",
         content: "YOUTUBE",
         link: "/search/genre/HighLight",
       },
       {
+        id: 3,
         icon: "fab fa-facebook-square",
         title: "",
         content: "FACEBOOK",

@@ -6,9 +6,9 @@
         <span>You can see detail of Review</span>
 
         <v-row class="mt-4">
-          <v-col cols="12" sm="3">
+          <!-- <v-col cols="12" sm="3">
             <v-text-field label="Review Search"> </v-text-field>
-          </v-col>
+          </v-col> -->
 
           <v-col cols="12" sm="3">
             <v-menu

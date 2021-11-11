@@ -1,13 +1,17 @@
 <template>
   <v-container justify="center">
     <v-row justify="center" no-gutters>
-      <v-col cols="12" md="10">
+      <v-col cols="12" sm="12">
         <div class="ma-5 pa-5">
           <v-container class="text-center" black justify="center" fill-height>
             <v-row>
               <v-col cols="auto">
                 <Carousel />
                 <InstructionComponent />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="12">
                 <Footer />
               </v-col>
             </v-row>
