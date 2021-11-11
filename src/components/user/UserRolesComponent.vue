@@ -45,24 +45,18 @@
         <v-col cols="12" md="3">
           <v-card color="black lighten-4" flat height="1535px" tile>
             <v-toolbar dense outlined color="#333333">
-              <v-toolbar-title class="yellow--text text-h7">Quyền lợi Member VIP</v-toolbar-title>
+              <v-toolbar-title class="yellow--text text-h7">Member VIP benefits</v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
             <v-card-text class="text-h7 font-weight-bold grey white--text">
-              - VIP BRONZE: Được tặng 1 điểm WONGPOINT cho mỗi 100k trong đơn
-              hàng.<hr/>
-              - VIP SILVER: Được tặng 2 điểm WONGPOINT cho mỗi 100k trong đơn
-              hàng.<hr/>
-              - VIP GOLD: Được tặng 2 điểm WONGPOINT cho mỗi 100k trong đơn
-              hàng.<hr/>
-              +Được ưu tiên xử lý đơn và nạp tiền.<hr/>
-              - VIP DIAMOND : Được tặng 3 điểm WONGPOINT cho mỗi 100k trong đơn
-              hàng.<hr/>
-              +Được ưu tiên hỗ trợ xử lý, sửa lỗi game với bộ phận kỹ thuật
-              riêng.<hr/>
-              +Được ưu tiên xử lý đơn và nạp tiền. ( Hệ thống điểm WONGPOINT
-              không áp dụng với sản phẩm steam wallet code )<hr/>
-              Và nhiều ưu đãi hấp dẫn khác. Xem chi tiết tại đây<hr/>
+              - VIP BRONZE: 1% discount of total bill value.<hr/>
+              - VIP SILVER: 2% discount of total bill value.<hr/>
+              - VIP GOLD: 3% discount of total bill value.<hr/>
+              +Priority order processing and top-up.<hr/>
+              - VIP PLATINUM : 5% discount of total bill value.<hr/>
+              +Priority is given to support in handling and fixing game errors with their own technical department..<hr/>
+              +Priority order processing and top-up.<hr/>
+              And many other attractive offers. See details here
             </v-card-text>
           </v-card>
 

@@ -64,7 +64,7 @@
         </v-menu>
       </v-col>
       <v-col cols="12" sm="2">
-        <v-btn @click="getStatByTime" color="green" class="white--text">
+        <v-btn @click="getUserStatByTime" color="green" class="white--text">
           <v-icon>fas fa-search</v-icon>
         </v-btn>
       </v-col>
@@ -182,6 +182,7 @@
 <script>
 import BarChart from "../../../components/admin/BarChart.vue";
 import api from "../../../services/api";
+import moment from "moment";
 
 export default {
   name: "Sale",
@@ -220,7 +221,6 @@ export default {
     productChartColor: [],
   }),
   methods: {
-
     reloadWindow() {
       window.location.reload();
     },
@@ -294,6 +294,31 @@ export default {
           this.productStats = response.data;
           this.mappingProductChart();
         });
+    },
+
+    resetChart() {
+      this.userLoaded = false;
+      this.userAmount = [];
+      this.userChartLabel = [];
+      this.userChartColor = [];
+    },
+
+    getUserStatByTime() {
+      this.resetChart();
+
+      setTimeout(() => {
+        var startTime = new Date(this.startTime);
+        var endTime = new Date(this.endTime);
+        let start = moment(startTime).format("YYYY-MM-DD HH:MM:SS");
+        let end = moment(endTime).format("YYYY-MM-DD HH:MM:SS");
+
+        api
+          .get("/statistics/user_time?startTime=" + start + "&endTime=" + end)
+          .then((response) => {
+            this.userStats = response.data;
+            this.mappingUserChart();
+          });
+      },1000)
     },
   },
   computed: {

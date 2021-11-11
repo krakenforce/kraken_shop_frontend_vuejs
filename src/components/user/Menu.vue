@@ -2,7 +2,9 @@
   <v-app-bar app>
     <nav>
       <div class="wrapper">
-        <div class="logo"><a href="/">Kraken Shop</a></div>
+        <div class="logo"><a href="/">
+          <v-img height="90px" width="160px" src="@/assets/user/KrakenShop.png"></v-img>
+        </a></div>
         <input type="radio" name="slider" id="menu-btn" />
         <input type="radio" name="slider" id="close-btn" />
 
@@ -82,7 +84,7 @@
             <input type="checkbox" id="showDrop" />
             <label for="showDrop" class="mobile-item">THÔNG TIN</label>
             <ul class="drop-menu">
-              <li><a href="/instruction">SUPPORT</a></li>
+              <li><a href="/support">SUPPORT</a></li>
               <li><a href="#">NEWS</a></li>
             </ul>
           </li>

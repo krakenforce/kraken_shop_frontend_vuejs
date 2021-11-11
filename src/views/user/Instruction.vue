@@ -6,7 +6,6 @@
           <v-container class="text-center" black justify="center" fill-height>
             <v-row>
               <v-col cols="auto">
-                <Carousel />
                 <InstructionComponent />
               </v-col>
             </v-row>
@@ -23,13 +22,12 @@
 </template>
 
 <script>
-import Carousel from "../../components/user/Carousel.vue";
 import InstructionComponent from "../../components/user/InstructionComponent.vue";
 import Footer from "../../components/user/Footer.vue";
 export default {
   name: "Instruction",
   components: {
-    Carousel,
+  
     InstructionComponent,
     Footer,
   },

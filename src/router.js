@@ -93,7 +93,7 @@ const routes = [
         component: About,
       },
       {
-        path: "/instruction",
+        path: "/support",
         name: "Instruction",
         component: Instruction
       }
@@ -219,6 +219,7 @@ router.beforeEach((to, from, next) => {
     if (loggedIn) {
       let user = JSON.parse(loggedIn);
       let adminRole = "ROLE_ADMIN";
+      //let userRole = "ROLE_USER";
       let roleList = user.roles;
       if (roleList.indexOf(adminRole) !== -1) {
         return next();

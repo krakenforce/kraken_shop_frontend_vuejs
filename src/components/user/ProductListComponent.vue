@@ -1,7 +1,7 @@
 <template>
   <v-container justify="center">
     <v-row no-gutters justify="left">
-      <h2 class="yellow--text">Search Result: {{this.$route.params.type}}</h2>
+      <h2 class="yellow--text">Search Result: {{ this.$route.params.type }}</h2>
     </v-row>
     <v-row no-gutters>
       <v-col cols="12" md="2">
@@ -70,10 +70,21 @@
                       >
                         <v-row no-gutters>
                           <v-col cols="12" md="3">
-                            <v-img
-                              :src="item.thumbnailImageUrl"
-                              height="180px"
-                            ></v-img>
+                            <v-img :src="item.thumbnailImageUrl" height="180px">
+                              <div class="ma-1 text-left">
+                                <v-chip label color="red" small>
+                                  <strong>
+                                    -{{
+                                      calculatePercent(
+                                        item.price,
+                                        item.salePrice
+                                      )
+                                    }}
+                                    %
+                                  </strong>
+                                </v-chip>
+                              </div>
+                            </v-img>
                           </v-col>
 
                           <v-col cols="12" md="9">
@@ -109,7 +120,11 @@
                                         >
                                       </h2>
                                     </v-card-text>
-                                    <v-btn icon color="blue" @click.stop="addToCart(item)">
+                                    <v-btn
+                                      icon
+                                      color="blue"
+                                      @click.stop="addToCart(item)"
+                                    >
                                       <v-icon>add_shopping_cart</v-icon>
                                     </v-btn>
                                   </v-col>
@@ -154,7 +169,7 @@ export default {
     page: 1,
     item1: [
       { text: "Battle.Net", link: "/search/category/Battle.net" },
-      { text: "Game Mobile", link: "/search/category/Mobile"},
+      { text: "Game Mobile", link: "/search/category/Mobile" },
       { text: "Game Origin", link: "/search/category/Origin" },
       { text: "Game Steam", link: "/search/category/Steam" },
       { text: "Game Uplay", link: "/search/category/Uplay" },
@@ -166,23 +181,29 @@ export default {
       { text: "Wallet Code", link: "/search/category/WalletCode" },
     ],
     item2: [
-      { text: "Action", link: "/search/genre/Action"},
-      { text: "Adventure", link: "/search/genre/Adventure"},
-      { text: "Casual", link: "/search/genre/Casual"},
-      { text: "Early Access",link: "/search/genre/EarlyAccess"},
-      { text: "Indie",link: "/search/genre/Indie"},
-      { text: "Massively Multiplayer", link: "/search/genre/Mmo"},
-      { text: "Racing", link: "/search/genre/Racing"},
-      { text: "RPG",link: "/search/genre/RPG"},
-      { text: "Sexual Content", link: "/search/genre/Sexual"},
-      { text: "Simulation", link: "/search/genre/Simulation"},
-      { text: "Sports", link: "/search/genre/Sports"},
-      { text: "Strategy", link: "/search/genre/Strategy"},
-      { text: "Utilities", link: "/search/genre/Utilities"},
-      { text: "Violent",link: "/search/genre/Violent"},
+      { text: "Action", link: "/search/genre/Action" },
+      { text: "Adventure", link: "/search/genre/Adventure" },
+      { text: "Casual", link: "/search/genre/Casual" },
+      { text: "Early Access", link: "/search/genre/EarlyAccess" },
+      { text: "Indie", link: "/search/genre/Indie" },
+      { text: "Massively Multiplayer", link: "/search/genre/Mmo" },
+      { text: "Racing", link: "/search/genre/Racing" },
+      { text: "RPG", link: "/search/genre/RPG" },
+      { text: "Sexual Content", link: "/search/genre/Sexual" },
+      { text: "Simulation", link: "/search/genre/Simulation" },
+      { text: "Sports", link: "/search/genre/Sports" },
+      { text: "Strategy", link: "/search/genre/Strategy" },
+      { text: "Utilities", link: "/search/genre/Utilities" },
+      { text: "Violent", link: "/search/genre/Violent" },
     ],
   }),
   methods: {
+    calculatePercent(price, salePrice) {
+      let test = (100 * salePrice) / price;
+      let result = 100 - test;
+      return Math.round(result);
+    },
+
     onPageChange() {
       this.$emit("changePage", this.page);
     },

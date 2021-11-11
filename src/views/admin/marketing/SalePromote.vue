@@ -189,6 +189,7 @@ export default {
             this.alertMessage.content = "Save Sale Promote Fail";
           });
       }
+      this.salePromote = [];
     },
     deleteSalePromote(item) {
       api
@@ -206,6 +207,7 @@ export default {
     updateSalePromote(item) {
       this.salePromote = item;
       this.step = 2;
+
     },
 
     getAllSalePromote() {

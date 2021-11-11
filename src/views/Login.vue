@@ -43,15 +43,15 @@
                           prepend-icon="fas fa-lock"
                           v-model="password"
                         />
-                        <v-row>
-                          <v-col cols="12" sm="7">
-                            <v-checkbox
-                              label="Remember me"
-                              class="mt-n1"
-                              color="blue"
-                            ></v-checkbox>
+                        <v-row class="text-center">
+                          <v-col cols="12" sm="6">
+                            <span
+                              class="caption blue--text"
+                              @click="goToHomePage"
+                              >Homepage</span
+                            >
                           </v-col>
-                          <v-col cols="12" sm="5">
+                          <v-col cols="12" sm="6">
                             <span
                               class="caption blue--text"
                               @click="goToWindowItem(3)"
@@ -65,6 +65,7 @@
                           dark
                           block
                           tile
+                          class="mt-2"
                           >Login</v-btn
                         >
                         <div v-if="loadingCircle" class="text-center">
@@ -332,6 +333,10 @@ export default {
     };
   },
   methods: {
+    goToHomePage(){
+      this.$router.push("/")
+    },
+
     clearAlert(alert) {
       setTimeout(() => {
         alert.type = "";
