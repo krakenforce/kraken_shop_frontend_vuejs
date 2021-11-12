@@ -21,9 +21,10 @@
             </v-col>
             <v-col cols="12" sm="4">
               <h3>Status:</h3>
-              <span>còn hàng ✔️ </span>
+              <span>Stocking ✔️ </span>
             </v-col>
             <v-col cols="12" sm="4">
+              <h3>Original Link:</h3>
               <a :href="product.originalProductLink" class="h3"
                 >Original link</a
               >

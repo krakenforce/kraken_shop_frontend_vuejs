@@ -533,8 +533,8 @@ export default {
     },
     handleSearchTag(item) {
       this.loading = true;
-      const { gcPage, itemsPerPage } = this.options;
-      let pageNumber = gcPage - 1;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
       //let categoryId = item.categoryId;
 
       api
@@ -660,6 +660,7 @@ export default {
       this.productRequest.product.productDetail = item.productDetail;
       this.productRequest.product.productWarranty = item.productWarranty;
       this.thumbImageUrl = item.thumbnailImageUrl;
+      this.productRequest.product.thumbnailImageUrl = item.thumbnailImageUrl
 
       this.productRequest.categories = item.categoryChilds;
       this.productRequest.tags = item.tagChilds;
@@ -705,12 +706,14 @@ export default {
         });
     },
   },
-  mounted() {},
-  created() {
+  mounted() {
     this.getAllServicePack();
     this.getAllTag();
     this.getAllCategory();
     this.getAllProduct();
+  },
+  created() {
+    
   },
 };
 </script>
