@@ -91,30 +91,37 @@
       </v-col>
       <v-col cols="12" sm="5">
         <v-card elevation="12" height="100%">
-          <v-subheader :inset="inset"
-            >--- Number of Product Sale by day ---
-          </v-subheader>
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th>Product Name</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="product in productPaginatedData" :key="product">
-                <td>{{ product.productName }}</td>
-                <td>{{ product.amount }}</td>
-              </tr>
-            </tbody>
-          </v-simple-table>
+          <div id="printMe1">
+            <v-subheader :inset="inset"
+              >--- Number of Product Sale in Timerange ---
+            </v-subheader>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="product in productPaginatedData" :key="product">
+                  <td>{{ product.productName }}</td>
+                  <td>{{ product.amount }}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+
           <v-pagination
             :length="productPageCount"
             v-model="productPageNumber"
             circle
             @input="productNextPage"
           ></v-pagination>
-          <v-btn class="white--text ma-4" color="blue">
+          <v-btn
+            class="white--text ma-4"
+            color="blue"
+            @click="print('printMe1')"
+          >
             <v-icon> fas fa-print </v-icon>
           </v-btn>
         </v-card>
@@ -125,30 +132,37 @@
     <v-row>
       <v-col cols="12" sm="5">
         <v-card elevation="12" height="100%">
-          <v-subheader :inset="inset"
-            >--- Number of Category Sale by day ---
-          </v-subheader>
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th>Category Name</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="category in categoryPaginatedData" :key="category">
-                <td>{{ category.categoryName }}</td>
-                <td>{{ category.amount }}</td>
-              </tr>
-            </tbody>
-          </v-simple-table>
+          <div id="printMe2">
+            <v-subheader :inset="inset"
+              >--- Number of Category Sale in Timerange ---
+            </v-subheader>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th>Category Name</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="category in categoryPaginatedData" :key="category">
+                  <td>{{ category.categoryName }}</td>
+                  <td>{{ category.amount }}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+
           <v-pagination
             :length="categoryPageCount"
             v-model="categoryPageNumber"
             circle
             @input="categoryNextPage"
           ></v-pagination>
-          <v-btn class="white--text ma-4" color="blue">
+          <v-btn
+            class="white--text ma-4"
+            color="blue"
+            @click="print('printMe2')"
+          >
             <v-icon> fas fa-print </v-icon>
           </v-btn>
         </v-card>
@@ -181,30 +195,32 @@
       </v-col>
       <v-col cols="12" sm="5">
         <v-card elevation="12" height="100%">
-          <v-subheader :inset="inset"
-            >--- Number of Product Sale by day ---
-          </v-subheader>
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th>Tag Name</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="tag in tagPaginatedData" :key="tag">
-                <td>{{ tag.tagName }}</td>
-                <td>{{ tag.amount }}</td>
-              </tr>
-            </tbody>
-          </v-simple-table>
+          <div id="printMe3">
+            <v-subheader :inset="inset"
+              >--- Number of Tag Sale in Timerange ---
+            </v-subheader>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th>Tag Name</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="tag in tagPaginatedData" :key="tag">
+                  <td>{{ tag.tagName }}</td>
+                  <td>{{ tag.amount }}</td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
           <v-pagination
             :length="tagPageCount"
             v-model="tagPageNumber"
             circle
             @input="tagNextPage"
           ></v-pagination>
-          <v-btn class="white--text ma-4" color="blue">
+          <v-btn class="white--text ma-4" color="blue" @click="print('printMe3')">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
         </v-card>
@@ -423,6 +439,11 @@ export default {
           this.tagStats = response.data;
           this.mappingTagChart();
         });
+    },
+
+    print(id) {
+      // Pass the element id here
+      this.$htmlToPaper(id);
     },
   },
   computed: {

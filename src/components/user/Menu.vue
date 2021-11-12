@@ -15,7 +15,7 @@
           <li>
             <a href="#" class="desktop-item">GENRE<i class="mdi mdi-chevron-down"></i></a>
             <input type="checkbox" id="showMega1" />
-            <label for="showMega1" class="mobile-item">THỂ LOẠI</label>
+            <label for="showMega1" class="mobile-item">GENRE</label>
             <div class="mega-box">
               <div class="content">
                 <div class="row">
@@ -52,7 +52,7 @@
           <li>
             <a href="#" class="desktop-item">CATEGORY<i class="mdi mdi-chevron-down"></i></a>
             <input type="checkbox" id="showMega2" />
-            <label for="showMega2" class="mobile-item">DANH MỤC</label>
+            <label for="showMega2" class="mobile-item">CATEGORY</label>
             <div class="mega-box">
               <div class="content">
                 <div class="row">
@@ -82,7 +82,7 @@
           <li>
             <a href="#" class="desktop-item">INFOMATION<i class="mdi mdi-chevron-down"></i></a>
             <input type="checkbox" id="showDrop" />
-            <label for="showDrop" class="mobile-item">THÔNG TIN</label>
+            <label for="showDrop" class="mobile-item">INFOMATION</label>
             <ul class="drop-menu">
               <li><a href="/support">SUPPORT</a></li>
               <li><a href="#">NEWS</a></li>

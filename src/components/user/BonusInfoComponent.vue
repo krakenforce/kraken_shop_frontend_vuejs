@@ -32,6 +32,7 @@ export default {
           icon: "fas fa-credit-card",
           title: "PAYMENT",
           content: "Multiple payment methods for customers",
+          link: "/userInfo"
         },
         {
           icon: "fas fa-gamepad",
@@ -43,11 +44,13 @@ export default {
           icon: "far fa-money-bill-alt",
           title: "PRICE",
           content: "Cheap price and always the best support",
+          link: "/search/all/product"
         },
         {
           icon: "fas fa-users",
           title: "COMMUNITY",
           content: "With KrakenShop community, support you anytime",
+          link: "/contact"
         },
       ],
     };

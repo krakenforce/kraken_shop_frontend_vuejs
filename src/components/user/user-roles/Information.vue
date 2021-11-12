@@ -65,13 +65,8 @@
           ></v-img>
         </div>
         <div v-else>
-          <v-img
-            :src="url"
-            height="200px"
-            width="200px"
-          ></v-img>
+          <v-icon size="200">fas fa-user</v-icon>
         </div>
-        <v-file-input @change="previewImage" v-model="avatarImage" accept="image/*" />
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
@@ -238,9 +233,179 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="7">
-        <v-btn class="ma-2" outlined color="white"> Change </v-btn>
+        <v-btn
+          @click.stop="openUpdateUserInfo"
+          class="ma-2"
+          outlined
+          color="white"
+        >
+          Change
+        </v-btn>
       </v-col>
     </v-row>
+
+    <!-- DIALOG  -->
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card class="pa-5">
+        <v-card-title> Enter info to update </v-card-title>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Avatar:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-img :src="url" height="200px" width="200px"></v-img>
+
+            <v-file-input
+              @change="previewImage"
+              v-model="userUpdateModel.avatar"
+              accept="image/*"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">First name:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.firstName"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Last name:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.lastName"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Email:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.email"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Phone:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.phone"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Identity number:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.identityNumber"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Gender:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-radio-group row v-model="userUpdateModel.gender">
+              <v-radio
+                v-for="gender in genderGroup"
+                :key="gender.text"
+                :label="gender.text"
+                :value="gender.value"
+              ></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Marriage status:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-radio-group row v-model="userUpdateModel.marriage">
+              <v-radio
+                v-for="status in marriageStatusGroup"
+                :key="status.text"
+                :label="status.text"
+                :value="status.value"
+              ></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Address:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.address"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <h2 class="white--text">Job:</h2>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              outlined
+              color="white"
+              v-model="userUpdateModel.job"
+              background-color="rgb(90, 90, 90)"
+            ></v-text-field>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="7">
+            <v-btn
+              @click.stop="updateUserInfo"
+              class="ma-2"
+              outlined
+              color="white"
+            >
+              SAVE
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -251,7 +416,6 @@ export default {
   props: ["user"],
   components: {},
   data: () => ({
-    items: ["Male", "Female", "Other"],
     row: null,
     marriageStatusGroup: [
       { text: "Married", value: true },
@@ -267,7 +431,23 @@ export default {
     confirmPassword: "",
     matched: false,
     avatarImage: null,
-    url: '',
+    url: "",
+
+    dialog: false,
+
+    userUpdateModel: {
+      userId: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      identityNumber: "",
+      gender: "",
+      marriage: "",
+      address: "",
+      job: "",
+      avatar: null,
+    },
   }),
 
   methods: {
@@ -279,8 +459,49 @@ export default {
       }
     },
 
-    previewImage(){
-      this.url = URL.createObjectURL(this.avatarImage)
+    previewImage() {
+      this.url = URL.createObjectURL(this.userUpdateModel.avatar);
+    },
+
+    openUpdateUserInfo() {
+      this.dialog = true;
+      this.userUpdateModel.firstName = this.user.firstName;
+      this.userUpdateModel.lastName = this.user.lastName;
+      this.userUpdateModel.email = this.user.email;
+      this.userUpdateModel.phone = this.user.phone;
+      this.userUpdateModel.identityNumber = this.user.identityNumber;
+      this.userUpdateModel.gender = this.user.gender;
+      this.userUpdateModel.marriage = this.user.marriageStatus;
+      this.userUpdateModel.address = this.user.address;
+      this.userUpdateModel.job = this.user.job;
+
+    },
+
+    updateUserInfo() {
+      this.userUpdateModel.userId = this.user.userId;
+      const formData = new FormData();
+      formData.append(
+        "userUpdateModel",
+        new Blob([JSON.stringify(this.userUpdateModel)], {
+          type: "application/json",
+        })
+      );
+      if(this.userUpdateModel.avatar != null){
+        formData.append("avatar", this.userUpdateModel.avatar);
+      }
+      api
+        .put("/user/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((response) => {
+          console.log(response.data.message);
+          localStorage.removeItem("user");
+          this.$router.push("/login");
+          alert("update info success, please re-log in" );
+        })
+        .catch((error) => {
+          alert(error.response.data.message);
+        });
     },
 
     updatePassword() {

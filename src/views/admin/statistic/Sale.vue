@@ -76,53 +76,61 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col cols="12" sm="4">
-        <v-card elevation="12" class="pa-10" height="100%">
-          <v-subheader :inset="inset"> --- Total Revenue --- </v-subheader>
-          <v-text>
-            <h1 class="green--text">
-              <strong> {{ totalRevenue }} $ </strong>
-            </h1>
-          </v-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-card elevation="12" class="pa-10" height="100%">
-          <v-subheader :inset="inset"> --- Revenue This Month --- </v-subheader>
-          <v-text>
-            <h1 class="blue--text">
-              <strong> {{ revenueThisMonth }} $ </strong>
-            </h1>
-            <div v-if="revenueByTime != 0">
-              <p v-if="inOrde" class="green--text">
-                Difference: {{ chenhlech }} <i class="mdi mdi-arrow-up"></i>
-              </p>
-              <p v-if="!inOrde" class="red--text">
-                Difference: {{ chenhlech }} <i class="mdi mdi-arrow-down"></i>
-              </p>
-            </div>
-          </v-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="4">
-        <v-card elevation="12" class="pa-10" height="100%">
-          <v-subheader :inset="inset">--- Revenue By Time --- </v-subheader>
-          <v-text>
-            <div v-if="revenueByTime != 0">
-              <h1 class="yellow--text">
-                <strong> {{ revenueByTime }} $ </strong>
+    <div id="printMe">
+      <v-row>
+        <v-col cols="12" sm="4">
+          <v-card elevation="12" class="pa-10" height="100%">
+            <v-subheader :inset="inset"> --- Total Revenue --- </v-subheader>
+            <v-text>
+              <h1 class="green--text">
+                <strong> {{ totalRevenue }} $ </strong>
               </h1>
-            </div>
-          </v-text>
-        </v-card>
-      </v-col>
-    </v-row>
+            </v-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4">
+          <v-card elevation="12" class="pa-10" height="100%">
+            <v-subheader :inset="inset">
+              --- Revenue This Month ---
+            </v-subheader>
+            <v-text>
+              <h1 class="blue--text">
+                <strong> {{ revenueThisMonth }} $ </strong>
+              </h1>
+              <div v-if="revenueByTime != 0">
+                <p v-if="inOrde" class="green--text">
+                  Difference: {{ chenhlech }} <i class="mdi mdi-arrow-up"></i>
+                </p>
+                <p v-if="!inOrde" class="red--text">
+                  Difference: {{ chenhlech }} <i class="mdi mdi-arrow-down"></i>
+                </p>
+              </div>
+            </v-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="4">
+          <v-card elevation="12" class="pa-10" height="100%">
+            <v-subheader :inset="inset">--- Revenue By Time --- </v-subheader>
+            <v-text>
+              <div v-if="revenueByTime != 0">
+                <h1 class="yellow--text">
+                  <strong> {{ revenueByTime }} $ </strong>
+                </h1>
+              </div>
+            </v-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
 
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
-          <v-card-title><span class="green--text">FROM: </span>  {{displayStartTime}} --- <span class="green--text">TO: </span> {{displayEndTime}}</v-card-title>
+          <v-card-title
+            ><span class="green--text">FROM: </span> {{ displayStartTime }} ---
+            <span class="green--text">TO: </span>
+            {{ displayEndTime }}</v-card-title
+          >
           <v-subheader :inset="inset"
             >--- Number of orders by day --- :
             <h1 v-if="numberOfOrder != 0">{{ numberOfOrder }}</h1>
@@ -150,6 +158,9 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-btn color="blue" @click="print">
+      <v-icon>fas fa-print</v-icon>
+    </v-btn>
 
     <v-dialog v-model="dialog">
       <v-card color="primary" class="pa-5">
@@ -176,7 +187,6 @@ export default {
   components: {},
   name: "Sale",
   data: () => ({
-
     dialog: false,
     startTime: "",
     endTime: "",
@@ -216,7 +226,6 @@ export default {
     inOrde: "",
   }),
   methods: {
-
     getOrderThisMonth(page) {
       var date = new Date();
       var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -397,10 +406,14 @@ export default {
       alert(this.barchartData);
       this.loaded = true;
     },
+
+    print() {
+      // Pass the element id here
+      this.$htmlToPaper("printMe");
+    },
   },
   computed: {},
   mounted() {
-    
     this.getTotalRevenue();
     this.getRevenueThisMonth();
     this.getOrderThisMonth(1);

@@ -34,6 +34,7 @@ import CartPage from "./views/user/CartPage.vue";
 import Checkout from "./views/user/Checkout.vue";
 import CheckoutSuccess from './views/CheckoutSuccess.vue';
 import Instruction from './views/user/Instruction.vue';
+import StatisticPrint from "./views/admin/StatisticPrint.vue";
 
 Vue.use(VueRouter);
 
@@ -200,6 +201,10 @@ const routes = [
         path: "sale-promote",
         component: SalePromote,
       },
+      {
+        path: "statistic-print",
+        component: StatisticPrint,
+      }
     ],
   },
 ];
