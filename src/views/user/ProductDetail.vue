@@ -5,7 +5,7 @@
           <v-container class="text-center" black justify="center" fill-height>
             <v-row>
               <v-col cols="12" md="12">
-                <ProuductDetailComponent :product="product" />
+                <ProuductDetailComponent :product="product" :productSamePack="productSamePack" />
                 <Footer />
               </v-col>
             </v-row>
@@ -30,6 +30,7 @@ export default {
     return {
       product: null,
       productId: '',
+      productSamePack: [],
     }
   },
   methods: {
@@ -37,11 +38,24 @@ export default {
       api.get("/product/" + this.productId)
       .then((response) => {
         this.product = response.data;
+        this.getProductSamePack();
       })
       .catch((error) => {
         Promise.reject(error);
       })
-    }
+    },
+
+    getProductSamePack(){
+      let packId = this.product.productServicePackId;
+      api.get('/product/search/service_pack?servicePackId=' + packId)
+        .then((response) => {
+          this.productSamePack = response.data.products;
+          console.log(this.productSamePack);
+        })
+        .catch((error) => {
+          Promise.reject(error);
+        })
+    },
   },
   mounted() {
     this.getProductById();

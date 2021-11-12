@@ -26,7 +26,7 @@
             ></v-combobox>
           </v-col>
           <v-col cols="12" sm="1">
-            <v-btn color="transparent" x-small="true" @click="reloadWindow()">
+            <v-btn color="transparent" x-small="true" @click="reloadWindow()">.
             </v-btn>
           </v-col>
 

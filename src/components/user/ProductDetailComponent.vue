@@ -334,6 +334,102 @@
           </v-card>
         </v-col>
       </v-row>
+
+      <!-- SẢN PHẨM TƯƠNG TỰ -->
+      <v-row>
+        <v-col cols="12" sm="12">
+          <v-sheet class="mx-auto" elevation="8">
+            <h3>Related Products:</h3>
+            <v-slide-group v-model="model" class="pa-4" show-arrows>
+              <v-slide-item
+                v-for="item in productSamePack"
+                :key="item.productId"
+                class="ma-2"
+              >
+                <v-hover v-slot="{ hover }" close-delay="200">
+                  <v-card
+                    height="100%"
+                    :elevation="hover ? 16 : 5"
+                    :class="{ 'on-hover': hover }"
+                    class="ma-2"
+                    max-width="344"
+                    color="#343434"
+                    link
+                    @click="seeProductDetail(item)"
+                  >
+                    <v-img
+                      :src="item.thumbnailImageUrl"
+                      height="135px"
+                      width="240px"
+                    >
+                      <div class="ma-1 text-left">
+                        <v-chip label color="red" small>
+                          <strong>
+                            -{{ calculatePercent(item.price, item.salePrice) }}
+                            %
+                          </strong>
+                        </v-chip>
+                      </div>
+                    </v-img>
+
+                    <v-card-subtitle class="white--text">
+                      {{ item.name }}</v-card-subtitle
+                    >
+
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-text>
+                      <star-rating
+                        :star-size="10"
+                        :read-only="true"
+                        :rating="item.avgStar"
+                      ></star-rating>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6">
+                            <strike class="red--text">
+                              {{ item.price }} <strong>&#36;</strong>
+                            </strike>
+                          </v-col>
+                        </v-row>
+                        <v-row dense>
+                          <v-col cols="12" sm="6">
+                            <h3 class="yellow--text">
+                              {{ item.salePrice }} <strong>&#36;</strong>
+                            </h3>
+                          </v-col>
+                          <v-col cols="12" sm="6">
+                            <div v-if="user">
+                              <v-btn
+                                icon
+                                class="white--text"
+                                color="blue"
+                                @click.stop="addToCart(item)"
+                              >
+                                <v-icon>add_shopping_cart</v-icon>
+                              </v-btn>
+                              <!-- <v-btn
+                                  icon
+                                  class="white--text"
+                                  color="pink"
+                                  @click.stop="addToFavorite"
+                                >
+                                  <v-icon> mdi-heart </v-icon>
+                                </v-btn> -->
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-actions>
+                  </v-card>
+                </v-hover>
+              </v-slide-item>
+            </v-slide-group>
+          </v-sheet>
+        </v-col>
+      </v-row>
     </v-container>
   </v-card>
 </template>
@@ -344,7 +440,7 @@ import api from "../../services/api";
 
 export default {
   name: "ProductDetail",
-  props: ["product"],
+  props: ["product", "productSamePack"],
   components: {
     StarRating,
   },
@@ -420,6 +516,15 @@ export default {
       let test = (100 * salePrice) / price;
       let result = 100 - test;
       return Math.round(result);
+    },
+
+    seeProductDetail(item) {
+      this.$router.push({
+        name: "ProductDetail",
+        params: {
+          productId: item.productId,
+        },
+      });
     },
 
     chipClick(type, value) {
@@ -543,5 +648,13 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="sass" scoped>
+.v-card
+  transition: transform .2s,
+.v-card.on-hover.theme--dark
+  background-color: #282C35,
+  transition: transform .2s,
+  transform: scale(1.1),
+  >.v-card__text
+    color: white
 </style>
