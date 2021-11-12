@@ -93,36 +93,41 @@
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
-          <v-subheader :inset="inset"> --- User Spend Detail --- </v-subheader>
-          <v-simple-table>
-            <thead>
-              <tr>
-                <th>User Id</th>
-                <th>Username</th>
-                <th>Total Spend</th>
-                <th>Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in userPaginatedData" :key="user">
-                <td>{{ user.userId }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.total }}</td>
-                <td>
-                  <v-btn color="blue" @click="getDetail(user)">
-                    <v-icon>fas fa-info</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
+          <div id="printMe">
+            <v-subheader :inset="inset">
+              --- User Spend Detail ---
+            </v-subheader>
+            <v-simple-table>
+              <thead>
+                <tr>
+                  <th>User Id</th>
+                  <th>Username</th>
+                  <th>Total Spend</th>
+                  <th>Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in userPaginatedData" :key="user">
+                  <td>{{ user.userId }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.total }}</td>
+                  <td>
+                    <v-btn color="blue" @click="getDetail(user)">
+                      <v-icon>fas fa-info</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+
           <v-pagination
             :length="userPageCount"
             v-model="userPageNumber"
             circle
             @input="userNextPage"
           ></v-pagination>
-          <v-btn class="white--text ma-4" color="blue">
+          <v-btn class="white--text ma-4" color="blue" @click="print">
             <v-icon> fas fa-print </v-icon>
           </v-btn>
         </v-card>
@@ -318,7 +323,11 @@ export default {
             this.userStats = response.data;
             this.mappingUserChart();
           });
-      },1000)
+      }, 1000);
+    },
+    print() {
+      // Pass the element id here
+      this.$htmlToPaper("printMe");
     },
   },
   computed: {
