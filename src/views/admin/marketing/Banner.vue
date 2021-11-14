@@ -117,6 +117,7 @@ export default {
       banner: {
         id: "",
         apiQueryUrl: "",
+        imageUrl: '',
         status: "",
       },
 

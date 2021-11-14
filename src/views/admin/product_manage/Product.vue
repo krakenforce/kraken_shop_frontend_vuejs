@@ -251,7 +251,7 @@
                   <v-spacer></v-spacer>
                   <v-col cols="12" sm="3">
                     <v-btn type="submit" color="green" class="white--text"
-                      >Create Product</v-btn
+                      >SAVE</v-btn
                     >
                   </v-col>
                 </v-row>

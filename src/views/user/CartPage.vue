@@ -65,7 +65,7 @@ export default {
       let total = this.totalPrice;
       let walletBalance = this.$store.state.auth.user.walletBalance;
       if(walletBalance < total){
-        alert("số dư không đủ, nạp thêm tiền");
+        alert("Insufficient balance, please top-up");
         this.$router.push('/userInfo');
       }else{
         alert("Proceed to Check Out")

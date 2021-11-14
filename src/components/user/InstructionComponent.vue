@@ -18,12 +18,55 @@
         </v-row>
         <v-row>
           <v-expansion-panels>
-            <v-expansion-panel v-for="(item, i) in items" :key="i">
+            <v-expansion-panel >
               <v-expansion-panel-header>
-                {{ item.title }}
+                Login
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                {{ item.content }}
+                <v-img src="@/assets/user/login1.png"></v-img>
+                <p>Go to Login page, enter username or password to login</p>
+                <p>If you don't have account, sign up one</p>
+                <v-img src="@/assets/user/login2.png"></v-img>
+                <p>If you forget password, click "forgot password on login page"</p>
+                <p>Enter email go get password</p>
+                <v-img src="@/assets/user/login3.png"></v-img>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+
+          <v-expansion-panels>
+            <v-expansion-panel >
+              <v-expansion-panel-header>
+                Top up
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <p>After login, you can top up your wallet </p>
+                <v-img src="@/assets/user/topup1.png"></v-img>
+                <p>Click on "recharge" tab</p>
+                <v-img src="@/assets/user/topup2.png"></v-img>
+                <p>Click on Paypal or Bank</p>
+                <v-img src="@/assets/user/topup3.png"></v-img>
+                <v-img src="@/assets/user/topup4.png"></v-img>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+
+          <v-expansion-panels>
+            <v-expansion-panel >
+              <v-expansion-panel-header>
+                Checkout
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <p>Add product to cart</p>
+                <v-img src="@/assets/user/buy1.png"></v-img>
+                <p>hover on shopping cart to see item</p>
+                <v-img src="@/assets/user/buy2.png"></v-img>
+                <p>Click on go to cart to see detail and order game</p>
+                <v-img src="@/assets/user/buy3.png"></v-img>
+                <v-img width="700px" height="200px" src="@/assets/user/buy4.png"></v-img>
+                <p>and checkout !!</p>
+                <v-img width="700px" height="200px" src="@/assets/user/buy5.png"></v-img>
+
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -73,10 +116,10 @@ export default {
           "You can buy by click on product card, then add it to cart and checkout",
         image: 'buy.png',
       },
-      { title: "Login", content: "" },
-      { title: "Register", content: "" },
-      { title: "Top up", content: "" },
-      { title: "Checkout", content: "" },
+      { title: "Login", content: "You can go to login page and enter username and password to login" },
+      { title: "Register", content: "Enter username, email and password to register" },
+      { title: "Top up", content: "Go to user info page and select recharge tab to top up by paypal or bank transfer" },
+      { title: "Checkout", content: "Add product to cart and check out" },
     ],
   }),
 };

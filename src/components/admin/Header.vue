@@ -57,6 +57,15 @@
             <v-list-item-subtitle> Logged In </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/">
+          <v-list-item-avatar>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-title>
+            Go Home Page
+          </v-list-item-title>
+        </v-list-item>
+
         <v-list-item link @click="logout">
           <v-list-item-avatar>
             <v-icon>mdi-key</v-icon>

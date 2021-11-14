@@ -2,9 +2,15 @@
   <v-app-bar app>
     <nav>
       <div class="wrapper">
-        <div class="logo"><a href="/">
-          <v-img height="90px" width="160px" src="@/assets/user/KrakenShop.png"></v-img>
-        </a></div>
+        <div class="logo">
+          <a href="/">
+            <v-img
+              height="90px"
+              width="160px"
+              src="@/assets/user/KrakenShop.png"
+            ></v-img>
+          </a>
+        </div>
         <input type="radio" name="slider" id="menu-btn" />
         <input type="radio" name="slider" id="close-btn" />
 
@@ -13,7 +19,9 @@
             ><v-icon>mdi-dots-vertical-circle</v-icon>
           </label>
           <li>
-            <a href="#" class="desktop-item">GENRE<i class="mdi mdi-chevron-down"></i></a>
+            <a href="#" class="desktop-item"
+              >GENRE<i class="mdi mdi-chevron-down"></i
+            ></a>
             <input type="checkbox" id="showMega1" />
             <label for="showMega1" class="mobile-item">GENRE</label>
             <div class="mega-box">
@@ -31,7 +39,9 @@
                 </div>
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="/search/genre/Mmo">Massively Multiplayer</a></li>
+                    <li>
+                      <a href="/search/genre/Mmo">Massively Multiplayer</a>
+                    </li>
                     <li><a href="/search/genre/Racing">Racing</a></li>
                     <li><a href="/search/genre/RPG">RPG</a></li>
                     <li><a href="/search/genre/Sexual">Sexual Content</a></li>
@@ -40,7 +50,7 @@
                 </div>
                 <div class="row">
                   <ul class="mega-links">
-                    <li><a href="/search/genre/Sport">Sports</a></li>
+                    <li><a href="/search/genre/Sports">Sports</a></li>
                     <li><a href="/search/genre/Strategy">Strategy</a></li>
                     <li><a href="/search/genre/Utilities">Utilities</a></li>
                     <li><a href="/search/genre/Violent">Violent</a></li>
@@ -50,7 +60,9 @@
             </div>
           </li>
           <li>
-            <a href="#" class="desktop-item">CATEGORY<i class="mdi mdi-chevron-down"></i></a>
+            <a href="#" class="desktop-item"
+              >CATEGORY<i class="mdi mdi-chevron-down"></i
+            ></a>
             <input type="checkbox" id="showMega2" />
             <label for="showMega2" class="mobile-item">CATEGORY</label>
             <div class="mega-box">
@@ -64,28 +76,42 @@
                     <li><a href="/search/category/Origin">Game Origin</a></li>
                     <li><a href="/search/category/Steam">Game Steam</a></li>
                     <li><a href="/search/category/Uplay">Game Uplay</a></li>
-                    <li><a href="/search/category/GenshinImpact">Genshin Impact</a></li>
+                    <li>
+                      <a href="/search/category/GenshinImpact"
+                        >Genshin Impact</a
+                      >
+                    </li>
                   </ul>
                 </div>
                 <div class="row">
                   <ul class="mega-links">
                     <li><a href="/search/all/product">Other</a></li>
-                    <li><a href="/search/category/Microsoft">Microsoft-Xbox</a></li>
-                    <li><a href="/search/category/PackSteam">Package Steam</a></li>
-                    <li><a href="/search/category/Playstation">PlayStation</a></li>
-                    <li><a href="/search/category/WalletCode">Wallet Code</a></li>
+                    <li>
+                      <a href="/search/category/Microsoft">Microsoft-Xbox</a>
+                    </li>
+                    <li>
+                      <a href="/search/category/PackSteam">Package Steam</a>
+                    </li>
+                    <li>
+                      <a href="/search/category/Playstation">PlayStation</a>
+                    </li>
+                    <li>
+                      <a href="/search/category/WalletCode">Wallet Code</a>
+                    </li>
                   </ul>
                 </div>
               </div>
             </div>
           </li>
           <li>
-            <a href="#" class="desktop-item">INFOMATION<i class="mdi mdi-chevron-down"></i></a>
+            <a href="#" class="desktop-item"
+              >INFOMATION<i class="mdi mdi-chevron-down"></i
+            ></a>
             <input type="checkbox" id="showDrop" />
             <label for="showDrop" class="mobile-item">INFOMATION</label>
             <ul class="drop-menu">
               <li><a href="/support">SUPPORT</a></li>
-              <li><a href="#">NEWS</a></li>
+              <!-- <li><a href="#">NEWS</a></li> -->
             </ul>
           </li>
 
@@ -106,10 +132,7 @@
                   </template>
                   <div v-if="$store.state.shoppingCart.cart.length > 0">
                     <v-list class="pa-5">
-                      <v-list-item
-                        v-for="item in $store.state.shoppingCart.cart"
-                        :key="item.productId"
-                      >
+                      <v-list-item>
                         <v-simple-table>
                           <template v-slot:default>
                             <thead>
@@ -161,7 +184,12 @@
               <v-col cols="12" sm="8">
                 <v-menu open-on-hover bottom offset-y>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" @click="goToUserDetail" elevation="0">
+                    <v-btn
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="goToUserDetail"
+                      elevation="0"
+                    >
                       <v-avatar color="blue">
                         <v-icon v-if="user.avatarImageUrl == null" dark>
                           mdi-account-circle
@@ -177,10 +205,14 @@
 
                   <v-list dense class="black pa-5">
                     <v-list-item-group color="primary">
+
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>
-                            <span><strong> WALLET:</strong> {{ user.walletBalance }} $</span>
+                            <span
+                              ><strong> WALLET:</strong>
+                              {{ user.walletBalance }} $</span
+                            >
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>

@@ -159,6 +159,7 @@ export default {
     changeTab(index) {
       if (index == 0) {
         this.currentTab = 0;
+        this.getOrderByUser(1);
       } else if (index == 1) {
         this.currentTab = 1;
         this.getPaymentByUser(1);

@@ -79,7 +79,7 @@
     <!-- PRODUCT SALE  -->
     <v-row>
       <v-col cols="12" sm="7">
-        <v-card elevation="12" class="pa-10" height="100%">
+        <v-card elevation="12"  height="100%">
           <v-subheader :inset="inset"> --- Product Sales --- </v-subheader>
           <BarChart
             v-if="productLoaded"
@@ -168,7 +168,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" sm="7">
-        <v-card elevation="12" class="pa-10" height="100%">
+        <v-card elevation="12"  height="100%">
           <v-subheader :inset="inset"> --- Category Sales --- </v-subheader>
           <BarChart
             v-if="categoryLoaded"
@@ -183,7 +183,7 @@
     <!-- TAG SALE  -->
     <v-row>
       <v-col cols="12" sm="7">
-        <v-card elevation="12" class="pa-10" height="100%">
+        <v-card elevation="12" height="100%">
           <v-subheader :inset="inset"> --- Tag Sales --- </v-subheader>
           <BarChart
             v-if="tagLoaded"
