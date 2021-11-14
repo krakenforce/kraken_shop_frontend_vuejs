@@ -1,25 +1,51 @@
 <template>
-  <v-app>
-    <Login/>
+  <v-app id="bg">
+    <v-container class="body">
+        <router-view></router-view>   
+    </v-container>
   </v-app>
 </template>
 
 <script>
-import Login from './views/Login.vue';
+import EventBus from "./common/EventBus"
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
-    Login
-  },
-
-  data: () => ({
     
-  }),
+  },
+  data() {
+    return {
+      status: true,
+    }
+  },
+  computed:{},
+
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
+  },
+  mounted() {
+    EventBus.on("logout", () => {
+      this.logOut;
+    });
+  },
+  
 };
 </script>
 
-<style>
-
+<style scoped>
+body {
+  font-family: "montserrat", sans-serif;
+}
+#bg {
+  background: url("./assets/user/background.jpg");
+  position: relative;
+  background-size: cover;
+  background-color: black;
+}
 </style>
+

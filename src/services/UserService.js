@@ -1,13 +1,18 @@
-import api from './api';
+import api from "./api";
 
-class UserService{
-    getPublicContent(){
-        return api.get('/test/all');
-    }
+class UserService {
+  getAllUser() {
+    api.get("/users/")
+    .then((response) => {
+        return response.data;
+    });
+  }
 
-    getUserBoard(){
-        return api.get('/test/user');
-    }
+  getCategory() {
+    return api.get("/product").then((response) => {
+      console.log(response);
+    });
+  }
 }
 
 export default new UserService();

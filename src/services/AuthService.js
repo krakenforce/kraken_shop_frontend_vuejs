@@ -1,39 +1,52 @@
-import api from './api';
-import TokenService from './TokenService';
+import api from "./api";
+import TokenService from "./TokenService";
 
-class AuthService{
-    
-    login({username, password}){
-        return api
-            .post("/auth/login", {
-                username,
-                password
-            })
-            .then((response) => {
-                if(response.data.accessToken){
-                    TokenService.setUser(response.data);
-                }
+class AuthService {
+  login(username, password) {
+    return api
+      .post("/auth/login", {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        if (response.data.accessToken) {
+          TokenService.setUser(response.data);
+        }
+        return response.data;
+      })
+      .catch((error) => {
+        alert("Username or password wrong, try again");
+        window.location.reload();
+        Promise.reject(error);
+      });
+  }
 
-                return response.data
-            });
+  logout() {
+    TokenService.removeUser;
+  }
+
+  register(username, email, password) {
+    return api
+      .post("/auth/signup", {
+        username: username,
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  handleResponse(response) {
+    if (response.status == 401) {
+      this.logout();
+      location.reload(true);
+
+      const error = response.data && response.data.message;
+      return Promise.reject(error);
     }
-
-    logout(){
-        TokenService.removeUser;
-    }
-
-    register({username, email, password}){
-        return api
-            .post("/auth/signup", {
-                username,
-                email,
-                password
-            })
-            .then((response) => {
-                return response.data;
-            });
-    }
-
+    return Promise.resolve(response);
+  }
 }
 
 export default new AuthService();
