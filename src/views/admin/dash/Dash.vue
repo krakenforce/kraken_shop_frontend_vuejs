@@ -75,7 +75,7 @@
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
-          <v-subheader> --- User Spend Detail --- </v-subheader>
+          <v-subheader> --- Order List Detail --- </v-subheader>
           <v-data-table
             :page="1"
             :pageCount="totalPages"
@@ -141,6 +141,14 @@ export default {
     tagChartColor: [],
   }),
   computed: {},
+  watch: {
+    options: {
+      handler() {
+        this.getOrderByTime();
+      }
+    },
+    deep: true,
+  },
   methods: {
   
     getOrderByTime() {
