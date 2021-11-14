@@ -7,7 +7,8 @@
 
         <v-row class="mt-4">
           <v-col cols="12" sm="3">
-            <v-text-field label="Order Search"> </v-text-field>
+            <v-text-field label="Order Search" v-model="searchKeyword" @input="getOrderByUsername">
+            </v-text-field>
           </v-col>
 
           <v-col cols="12" sm="3">
@@ -73,7 +74,8 @@
             </v-btn>
           </v-col>
           <v-col cols="12" sm="1">
-            <v-btn color="transparent" x-small="true" @click="reloadWindow()">.
+            <v-btn color="transparent" x-small="true" @click="reloadWindow()"
+              >.
             </v-btn>
           </v-col>
         </v-row>
@@ -103,7 +105,7 @@
       </v-window-item>
 
       <v-window-item :value="2">
-        <h1>Detail of order : {{orderModel.id}}</h1>
+        <h1>Detail of order : {{ orderModel.id }}</h1>
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="12" sm="3">
@@ -125,7 +127,6 @@
               class="elevation-1"
               ref="dataTable"
             >
-              
               ></v-data-table
             >
           </v-col>
@@ -144,6 +145,7 @@ export default {
   components: {},
   data() {
     return {
+      searchKeyword: "",
       testValue: "",
       step: 1,
       items: ["ADMIN", "USER"],
@@ -190,11 +192,10 @@ export default {
     source: String,
   },
   methods: {
-
     reloadWindow() {
       window.location.reload();
     },
-    
+
     showOrderDetail(item) {
       this.orderModel = item;
       this.step = 2;
@@ -204,7 +205,8 @@ export default {
 
       api
         .get(
-          "/order/order_detail/" + item.id +
+          "/order/order_detail/" +
+            item.id +
             "?pageNo=" +
             pageNumber +
             "&pageSize=" +
@@ -216,6 +218,32 @@ export default {
           this.totalItems = response.data.totalItems;
           this.totalPages = response.data.totalPages;
         });
+    },
+
+    getOrderByUsername() {
+      this.loading = true;
+      const { page, itemsPerPage } = this.options;
+      let pageNumber = page - 1;
+      if(this.searchKeyword == ""){
+        this.getAllOrders()
+      }else{
+        api
+        .get(
+          "/order/search_username?keyword=" +
+            this.searchKeyword +
+            "&pageNo=" +
+            pageNumber +
+            "&pageSize=" +
+            itemsPerPage
+        )
+        .then((response) => {
+          this.loading = false;
+          this.orders = response.data.orders;
+          this.totalItems = response.data.totalItems;
+          this.totalPages = response.data.totalPages;
+        });
+      }
+      
     },
 
     getOrderByTime() {

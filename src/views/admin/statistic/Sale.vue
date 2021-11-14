@@ -76,79 +76,79 @@
       </v-col>
     </v-row>
 
-    <div id="printMe">
-      <v-row>
-        <v-col cols="12" sm="4">
-          <v-card elevation="12" class="pa-10" height="100%">
-            <v-subheader :inset="inset"> --- Total Revenue --- </v-subheader>
-            <v-text>
-              <h1 class="green--text">
-                <strong> {{ totalRevenue }} $ </strong>
+    <v-row>
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader :inset="inset"> --- Total Revenue --- </v-subheader>
+          <v-text>
+            <h1 class="green--text">
+              <strong> {{ totalRevenue }} $ </strong>
+            </h1>
+          </v-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader :inset="inset"> --- Revenue This Month --- </v-subheader>
+          <v-text>
+            <h1 class="blue--text">
+              <strong> {{ revenueThisMonth }} $ </strong>
+            </h1>
+            <div v-if="revenueByTime != 0">
+              <p v-if="inOrde" class="green--text">
+                Difference: {{ chenhlech }} <i class="mdi mdi-arrow-up"></i>
+              </p>
+              <p v-if="!inOrde" class="red--text">
+                Difference: {{ chenhlech }} <i class="mdi mdi-arrow-down"></i>
+              </p>
+            </div>
+          </v-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" sm="4">
+        <v-card elevation="12" class="pa-10" height="100%">
+          <v-subheader :inset="inset">--- Revenue By Time --- </v-subheader>
+          <v-text>
+            <div v-if="revenueByTime != 0">
+              <h1 class="yellow--text">
+                <strong> {{ revenueByTime }} $ </strong>
               </h1>
-            </v-text>
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-card elevation="12" class="pa-10" height="100%">
-            <v-subheader :inset="inset">
-              --- Revenue This Month ---
-            </v-subheader>
-            <v-text>
-              <h1 class="blue--text">
-                <strong> {{ revenueThisMonth }} $ </strong>
-              </h1>
-              <div v-if="revenueByTime != 0">
-                <p v-if="inOrde" class="green--text">
-                  Difference: {{ chenhlech }} <i class="mdi mdi-arrow-up"></i>
-                </p>
-                <p v-if="!inOrde" class="red--text">
-                  Difference: {{ chenhlech }} <i class="mdi mdi-arrow-down"></i>
-                </p>
-              </div>
-            </v-text>
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-card elevation="12" class="pa-10" height="100%">
-            <v-subheader :inset="inset">--- Revenue By Time --- </v-subheader>
-            <v-text>
-              <div v-if="revenueByTime != 0">
-                <h1 class="yellow--text">
-                  <strong> {{ revenueByTime }} $ </strong>
-                </h1>
-              </div>
-            </v-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+            </div>
+          </v-text>
+        </v-card>
+      </v-col>
+    </v-row>
 
     <v-row>
       <v-col cols="12" sm="12">
         <v-card elevation="12" class="pa-10">
-          <v-card-title
-            ><span class="green--text">FROM: </span> {{ displayStartTime }} ---
-            <span class="green--text">TO: </span>
-            {{ displayEndTime }}</v-card-title
-          >
-          <v-subheader :inset="inset"
-            >--- Number of orders by day --- :
-            <h1 v-if="numberOfOrder != 0">{{ numberOfOrder }}</h1>
-            <h1 v-else>0</h1>
-          </v-subheader>
+          <div id="printMe">
+            <v-card-title
+              ><span class="green--text">FROM: </span>
+              {{ displayStartTime }} ---
+              <span class="green--text">TO: </span>
+              {{ displayEndTime }}</v-card-title
+            >
 
-          <v-data-table
-            :headers="orderHeader"
-            :items="orders"
-            :page.sync="orderPage"
-            hide-default-footer=""
-          >
-            <template v-slot:item.action="{ item }">
-              <v-btn color="primary" @click="showOrderDetail(item)">
-                <v-icon>fas fa-info</v-icon>
-              </v-btn>
-            </template>
-          </v-data-table>
+            <v-subheader :inset="inset"
+              >--- Number of orders by day --- :
+              <h1 v-if="numberOfOrder != 0">{{ numberOfOrder }}</h1>
+              <h1 v-else>0</h1>
+            </v-subheader>
+
+            <v-data-table
+              :headers="orderHeader"
+              :items="orders"
+              :page.sync="orderPage"
+              hide-default-footer=""
+            >
+              <template v-slot:item.action="{ item }">
+                <v-btn color="primary" @click="showOrderDetail(item)">
+                  <v-icon>fas fa-info</v-icon>
+                </v-btn>
+              </template>
+            </v-data-table>
+          </div>
           <v-pagination
             v-model="orderPage"
             :length="orderTotalPages"
@@ -158,7 +158,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-btn color="blue" @click="print">
+    <v-btn color="blue" @click="print('printMe')">
       <v-icon>fas fa-print</v-icon>
     </v-btn>
 
@@ -296,7 +296,11 @@ export default {
     },
 
     changePageOrder(page) {
-      this.getOrderByTime(page);
+      if(this.startTime == "" || this.endTime == ""){
+        this.getOrderThisMonth(page);
+      }else{
+        this.getOrderByTime(page);
+      }
     },
 
     getRevenueByTime() {
@@ -407,9 +411,9 @@ export default {
       this.loaded = true;
     },
 
-    print() {
+    print(id) {
       // Pass the element id here
-      this.$htmlToPaper("printMe");
+      this.$htmlToPaper(id);
     },
   },
   computed: {},

@@ -99,17 +99,7 @@
               class="elevation-1"
               ref="dataTable"
             >
-              <template v-slot:item.action="{ item }">
-                <v-btn color="green" @click="getDetail(item)">
-                  <v-icon>fas fa-info-circle</v-icon>
-                </v-btn>
-                <v-btn color="primary" @click="updateBanner(item)">
-                  <v-icon>fas fa-edit</v-icon>
-                </v-btn>
-                <v-btn color="red" @click="deleteBanner(item)">
-                  <v-icon>fas fa-trash</v-icon>
-                </v-btn>
-              </template>
+              
               ></v-data-table
             >
           </v-col>
@@ -159,7 +149,6 @@ export default {
         { text: "Datetime", value: "createdAt" },
         { text: "Total", value: "totalPrice" },
         { text: "Provider", value: "provider" },
-        { text: "Action", value: "action" },
       ],
     };
   },

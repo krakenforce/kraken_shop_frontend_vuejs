@@ -80,6 +80,16 @@
                           ADD TO CART
                           <v-icon>fas fa-shopping-cart</v-icon>
                         </v-btn>
+
+                        <v-btn
+                          @click="buy(product)"
+                          color="red"
+                          class="white--text mt-2"
+                          rounded
+                        >
+                          <v-icon>fas fa-money-check-alt</v-icon>
+                          &nbsp;BUY
+                        </v-btn>
                       </v-col>
                     </v-row>
                     <v-row>
@@ -341,7 +351,7 @@
         <v-col cols="12" sm="12">
           <v-sheet class="mx-auto" elevation="8">
             <h3>Related Products:</h3>
-            <v-slide-group v-model="model" class="pa-4" show-arrows>
+            <v-slide-group  class="pa-4" show-arrows>
               <v-slide-item
                 v-for="item in productSamePack"
                 :key="item.productId"
@@ -539,6 +549,11 @@ export default {
 
     addToCart(item) {
       this.$store.commit("addToCart", item);
+    },
+
+    buy(item) {
+      this.$store.commit("addToCart", item);
+      this.$router.push("/cart");
     },
 
     sendReview() {

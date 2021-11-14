@@ -50,7 +50,6 @@ export default {
       api.get('/product/search/service_pack?servicePackId=' + packId)
         .then((response) => {
           this.productSamePack = response.data.products;
-          console.log(this.productSamePack);
         })
         .catch((error) => {
           Promise.reject(error);
@@ -62,7 +61,6 @@ export default {
   },
   created() {
     this.productId = this.$route.params.productId;
-     console.log(this.productId);
   }
 
 };

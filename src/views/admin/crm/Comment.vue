@@ -93,9 +93,7 @@
               ref="dataTable"
             >
               <template v-slot:item.action="{ item }">
-                <v-btn color="blue" @click="replyComment(item)">
-                  <v-icon>fas fa-reply</v-icon>
-                </v-btn>
+                
                 <v-btn color="red" @click="deleteFeedback(item)">
                   <v-icon>fas fa-trash</v-icon>
                 </v-btn>

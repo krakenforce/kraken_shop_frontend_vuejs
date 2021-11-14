@@ -71,6 +71,20 @@
       <v-spacer></v-spacer>
     </v-row>
 
+    <v-row v-if="user.vipClassName != ''">
+      <v-col cols="12" md="3">
+        <h2 class="white--text">Vip Class:</h2>
+      </v-col>
+      <v-col cols="12" md="4">
+        <v-icon size="30" v-if="user.vipClassName=='bronze'" color="#CD7F32" >fab fa-vuejs</v-icon>
+        <v-icon size="30" v-if="user.vipClassName=='silver'" color="#757575" >fab fa-vuejs</v-icon>
+        <v-icon size="30" v-if="user.vipClassName=='gold'" color="#FFD700" >fab fa-vuejs</v-icon>
+        <v-icon size="30" v-if="user.vipClassName=='platinum'" color="#E5E4E2" >fab fa-vuejs</v-icon>
+
+      </v-col>
+      <v-spacer></v-spacer>
+    </v-row>
+
     <v-row>
       <v-col cols="12" md="3">
         <h2 class="white--text">User ID:</h2>
@@ -107,6 +121,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.firstName"
@@ -121,6 +136,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.lastName"
@@ -135,6 +151,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.email"
@@ -149,6 +166,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.phone"
@@ -163,6 +181,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.identityNumber"
@@ -178,6 +197,7 @@
       <v-col cols="12" md="4">
         <v-radio-group row v-model="user.gender">
           <v-radio
+            readonly="true"
             v-for="gender in genderGroup"
             :key="gender.text"
             :label="gender.text"
@@ -194,6 +214,7 @@
       <v-col cols="12" md="4">
         <v-radio-group row v-model="user.marriageStatus">
           <v-radio
+            readonly="true"
             v-for="status in marriageStatusGroup"
             :key="status.text"
             :label="status.text"
@@ -209,6 +230,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.address"
@@ -223,6 +245,7 @@
       </v-col>
       <v-col cols="12" md="4">
         <v-text-field
+          readonly="true"
           outlined
           color="white"
           :value="user.job"
@@ -474,7 +497,6 @@ export default {
       this.userUpdateModel.marriage = this.user.marriageStatus;
       this.userUpdateModel.address = this.user.address;
       this.userUpdateModel.job = this.user.job;
-
     },
 
     updateUserInfo() {
@@ -486,7 +508,7 @@ export default {
           type: "application/json",
         })
       );
-      if(this.userUpdateModel.avatar != null){
+      if (this.userUpdateModel.avatar != null) {
         formData.append("avatar", this.userUpdateModel.avatar);
       }
       api
@@ -497,7 +519,7 @@ export default {
           console.log(response.data.message);
           localStorage.removeItem("user");
           this.$router.push("/login");
-          alert("update info success, please re-log in" );
+          alert("update info success, please re-log in");
         })
         .catch((error) => {
           alert(error.response.data.message);

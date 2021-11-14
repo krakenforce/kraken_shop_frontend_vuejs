@@ -15,7 +15,7 @@ class AuthService {
         return response.data;
       })
       .catch((error) => {
-        alert("Cannot login, try again");
+        alert("Username or password wrong, try again");
         window.location.reload();
         Promise.reject(error);
       });

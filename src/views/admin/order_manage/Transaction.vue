@@ -95,11 +95,7 @@
               class="elevation-1"
               ref="dataTable"
             >
-              <template v-slot:item.action="{ item }">
-                <v-btn color="green" @click="getDetail(item)">
-                  <v-icon>fas fa-info-circle</v-icon>
-                </v-btn>
-              </template>
+              
               ></v-data-table
             >
           </v-col>
@@ -151,7 +147,6 @@ export default {
         { text: "Description", value: "description" },
         { text: "Total", value: "total" },
         { text: "Created at", value: "createdAt" },
-        { text: "Action", value: "action" },
       ],
     };
   },

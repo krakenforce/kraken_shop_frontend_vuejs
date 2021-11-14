@@ -160,7 +160,7 @@
             >
           </v-col>
         </v-row>
-        <UserDetail :user="selectedUser" />
+        <UserDetail :user="selectedUser" ref="userDetail" />
       </v-window-item>
     </v-window>
   </v-container>
@@ -262,6 +262,7 @@ export default {
     clickOnTableRow(item) {
       this.selectedUser = item;
       this.step = 3;
+      
     },
 
     onButtonClick() {
