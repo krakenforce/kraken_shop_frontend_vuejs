@@ -241,17 +241,17 @@
             <v-btn icon class="ml-10" @click="dialog = true">
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
-            <v-dialog v-model="dialog" persistent max-width="500">
-              <v-card>
-                <v-card-title class="text-h5"> -- SEARCH -- </v-card-title>
-                <v-card-text>
+            <v-dialog v-model="dialog" max-width="600" max-height="300">
+              <v-card class="pa-5">
+                <v-card-actions>
                   <v-text-field
                     v-model="searchKeyword"
-                    placeholder="Keyword"
+                    placeholder="Enter product name"
+                    height="80"
+                    autofocus="true"
+                    style="font-size: 30px"
                   ></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+                  
                   <v-btn icon class="ml-10" color="blue" @click="searchProduct">
                     <v-icon>mdi-magnify</v-icon>
                   </v-btn>

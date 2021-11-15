@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-window v-model="step" vertical>
       <v-window-item :value="1">
-        <h1 class="gray --text">Tag Category</h1>
+        <h1 class="gray --text">Manage Tag</h1>
         <span
           >Create new product Tag or update the existing ones. You can see their
           detail info</span

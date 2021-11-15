@@ -94,7 +94,7 @@
             >
               <template v-slot:item.action="{ item }">
                 
-                <v-btn color="red" @click="deleteFeedback(item)">
+                <v-btn color="red" @click="deleteComment(item)">
                   <v-icon>fas fa-trash</v-icon>
                 </v-btn>
               </template>
@@ -189,6 +189,20 @@ export default {
     replyComment(value) {
       this.step = 2;
       this.testValue = value;
+    },
+
+    deleteComment(item){
+      let id = item.id;
+      api.delete('/product/comment/' + id)
+      .then((response) => {
+        alert("Delete comment successfully");
+        window.location.reload();
+        return response.data;
+      })
+      .catch((error) => {
+        alert("delete comment failed");
+        return error.response.data;
+      })
     },
 
     getAllComment(){

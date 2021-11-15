@@ -1,39 +1,58 @@
 <template>
-    <v-row justify="center" no-gutters>
-      <v-col cols="12" sm="12">
-        <div class="ma-5 pa-5">
-          <v-container class="text-center" black justify="center" fill-height>
-            <v-row>
-              <v-col cols="auto">
-                <SalePromoteComponent :salePromote="salePromote" /> 
-                <Carousel :homepageBanners="homepageBanners" :itemNumber="itemNumber" />
-                <Products :products="products" :itemNumber="itemNumber" :totalItems="totalItems"/>    
-              </v-col>      
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="12">
-                <BonusInfoComponent/>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12" sm="12">
-                <Footer />
-              </v-col>
-            </v-row>
-          </v-container>
-        </div>
-      </v-col>
-    </v-row>
+  <v-row justify="center" no-gutters>
+    <v-col cols="12" sm="12">
+      <div class="ma-5 pa-5">
+        <v-container class="text-center" black justify="center" fill-height>
+          <v-row>
+            <v-col cols="auto">
+              <SalePromoteComponent :salePromote="salePromote" />
+              <Carousel
+                :homepageBanners="homepageBanners"
+                :itemNumber="itemNumber"
+              />
+              <Products
+                :products="products"
+                :itemNumber="itemNumber"
+                :totalItems="totalItems"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="12">
+              <BonusInfoComponent />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" sm="12">
+              <Footer />
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </v-col>
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card color="dark">
+        <v-card-action class="text-right">
+          <v-btn x-small @click="dialog = false">x</v-btn>
+        </v-card-action>
+        <v-card-text link>
+          <v-img src="@/assets/user/gameNaraka.png" height="300px" width="600px">
+
+          </v-img>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
-import api from "../../services/api"
+import api from "../../services/api";
 
 import Carousel from "../../components/user/Carousel.vue";
 import Products from "../../components/user/Products.vue";
 import Footer from "../../components/user/Footer.vue";
-import BonusInfoComponent from "../../components/user/BonusInfoComponent.vue"
-import SalePromoteComponent from "../../components/user/SalePromoteComponent.vue"
+import BonusInfoComponent from "../../components/user/BonusInfoComponent.vue";
+import SalePromoteComponent from "../../components/user/SalePromoteComponent.vue";
 
 export default {
   name: "Homepage",
@@ -42,16 +61,17 @@ export default {
     Products,
     Footer,
     BonusInfoComponent,
-    SalePromoteComponent
+    SalePromoteComponent,
   },
   data() {
     return {
       homepageBanners: [],
       products: [],
       itemNumber: 12,
-      totalItems: '',
+      totalItems: "",
       salePromote: [],
-    }
+      dialog: false,
+    };
   },
   methods: {
     getAllProduct() {
@@ -64,24 +84,20 @@ export default {
         });
     },
 
-    getAllBanner(){
-      api
-        .get("/banner?pageNo=" + 0 + "&pageSize=" + 10)
-        .then((response) => {
-          this.loading = false;
-          this.homepageBanners = response.data.homepageBanners;
-          this.totalItems = response.data.totalItems;
-          this.totalPages = response.data.totalPages;
-        });
+    getAllBanner() {
+      api.get("/banner?pageNo=" + 0 + "&pageSize=" + 10).then((response) => {
+        this.loading = false;
+        this.homepageBanners = response.data.homepageBanners;
+        this.totalItems = response.data.totalItems;
+        this.totalPages = response.data.totalPages;
+      });
     },
 
-    getAllSalePromote(){
-      api.get("/banner/sale_promote")
-        .then((response) => {
-          this.salePromote = response.data.salePromotes;
-        })
+    getAllSalePromote() {
+      api.get("/banner/sale_promote").then((response) => {
+        this.salePromote = response.data.salePromotes;
+      });
     },
-
   },
   mounted() {
     this.getAllProduct();
@@ -90,7 +106,7 @@ export default {
   },
   created() {
     
-  }
+  },
 };
 </script>
 
