@@ -77,12 +77,12 @@
                 <v-btn color="green" @click="clickOnTableRow(item)">
                   <v-icon>fas fa-info-circle</v-icon>
                 </v-btn>
-                <v-btn color="primary" @click="onButtonClick(item)">
+                <!-- <v-btn color="primary" @click="onButtonClick(item)">
                   <v-icon>fas fa-edit</v-icon>
-                </v-btn>
-                <v-btn color="red" @click="onButtonClick()">
+                </v-btn> -->
+                <!-- <v-btn color="red" @click="onButtonClick()">
                   <v-icon>fas fa-trash</v-icon>
-                </v-btn>
+                </v-btn> -->
               </template>
             </v-data-table>
           </v-col>
@@ -268,6 +268,8 @@ export default {
     onButtonClick() {
       this.dialog = true;
     },
+
+
 
     changeCombobox(value) {
       console.log(value);

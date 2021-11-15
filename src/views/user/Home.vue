@@ -4,6 +4,7 @@
       <Menu />
     </header>
     <router-view :key="$route.fullPath"></router-view>
+    
   </v-app>
 </template>
 
@@ -17,12 +18,14 @@ export default {
   data() {
     return {
       currentUser: null,
+      
     };
   },
   methods: {},
   computed: {},
   created() {
     this.currentUser = localStorage.getItem("user");
+    
   },
 };
 </script>

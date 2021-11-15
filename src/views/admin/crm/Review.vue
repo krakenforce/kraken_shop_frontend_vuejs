@@ -227,9 +227,13 @@ export default {
     deleteReview(item){
       api.delete("/product/review/" + item.id)
         .then((response) => {
+          alert(response.data.message)
+          window.location.reload();
           return response.data;
         })
         .catch((error) => {
+          alert(error.response.data.message)
+          window.location.reload();
           return error.response.data;
         })
     }

@@ -201,6 +201,19 @@ export default {
       this.userEmail = value.email;
     },
 
+    deleteFeedback(item){
+      let id = item.id;
+      api.delete('/user/feedback/' + id)
+      .then((response) => {
+        alert(response.data.message)
+        window.location.reload();
+      })
+      .catch((error) => {
+        alert("Delete fail");
+        Promise.reject(error);
+      })
+    },
+
     sendFeedbackReply(){
       api.post("/user/feedback/reply?detail=" + this.content + "&recipientEmail=" + this.userEmail)
         .then((response) => {
