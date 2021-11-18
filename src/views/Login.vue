@@ -75,7 +75,7 @@
                           ></v-progress-circular>
                         </div>
 
-                        <h6 class="text-center grey--text mt-4 mb-3">
+                        <!-- <h6 class="text-center grey--text mt-4 mb-3">
                           Or log in using
                         </h6>
                         <div
@@ -93,7 +93,7 @@
                           <v-btn depressed outlined color="grey">
                             <v-icon color="blue">fab fa-facebook-f</v-icon>
                           </v-btn>
-                        </div>
+                        </div> -->
                       </v-col>
                     </v-row>
                   </v-card-text>

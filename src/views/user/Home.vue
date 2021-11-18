@@ -22,7 +22,6 @@ export default {
     };
   },
   methods: {},
-  computed: {},
   created() {
     this.currentUser = localStorage.getItem("user");
     
